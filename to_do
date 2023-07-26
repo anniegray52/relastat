@@ -1,5 +1,9 @@
-To do: 
-- reweighting layers 
-- in multipartite file, check about Company-Company matrices
-- sparsity in layers 
+Potential functionality: 
+=======
+- multiple ways to input data
+- reweighting layers/paritions
+- sparse/dense layers? 
+- threshold to include data ? (used in bid data)
+- selection of CC for partition you want (check about Company-Company matrices)
+
 
