@@ -10,13 +10,24 @@ import scipy.stats as stats
 import scipy
 import matplotlib.pyplot as plt
 
+from misc import *
+
+
+def zero_matrix(m, n=None):
+    """
+    Create a zero matrix.
+    """
+    if n == None:
+        n = m
+    M = sparse.coo_matrix(([], ([], [])), shape=(m, n))
+    return M
 
 ## ==================== ## data preparation ## ==================== ##
 
 
 # can handle the lyon example (two columns from the same partition) but need to check if it can handle more advance cases
 
-def matrix_from_tables(tables, relationships, time_col=None, join_token='::'):
+def matrix_from_tables(tables, relationships, dynamic_col=None, join_token='::'):
     """ 
     Create a DMP graph from a dataframe.    
 
@@ -29,7 +40,7 @@ def matrix_from_tables(tables, relationships, time_col=None, join_token='::'):
         The partition pairs to be used to create the graph. Each element of
         the list is a list of two elements, which are the names of the
         partitions to be joined.
-    time_col : str or list of str
+    dynamic_col : str or list of str
         The name of the column containing the time information. If a list of
         strings is passed, each string is the name of the column containing
         the time information for each dataframe in data.
@@ -53,16 +64,16 @@ def matrix_from_tables(tables, relationships, time_col=None, join_token='::'):
         relationships = [relationships]
     if not isinstance(relationships[0][0], list):
         relationships = [relationships] * len(tables)
-    # Handle the case when time_col is None
-    if time_col is None:
-        time_col = [None] * len(tables)
-    elif isinstance(time_col, str):
-        time_col = [time_col] * len(tables)
-    if len(time_col) != len(tables):
-        time_col = time_col * len(tables)
+    # Handle the case when dynamic_col is None
+    if dynamic_col is None:
+        dynamic_col = [None] * len(tables)
+    elif isinstance(dynamic_col, str):
+        dynamic_col = [dynamic_col] * len(tables)
+    if len(dynamic_col) != len(tables):
+        dynamic_col = dynamic_col * len(tables)
 
     edge_list = create_edge_list(
-        tables, relationships, time_col, join_token)
+        tables, relationships, dynamic_col, join_token)
     nodes, partitions, times, node_ids, time_ids = extract_node_time_info(
         edge_list, join_token)
 
@@ -74,23 +85,23 @@ def matrix_from_tables(tables, relationships, time_col=None, join_token='::'):
     return A.tocsr(), attributes
 
 
-def create_edge_list(tables, relationships, time_col, join_token):
+def create_edge_list(tables, relationships, dynamic_col, join_token):
     edge_list = []
-    for data0, relationships0, time_col0 in zip(tables, relationships, time_col):
+    for data0, relationships0, dynamic_col0 in zip(tables, relationships, dynamic_col):
         for partition_pair in relationships0:
             if set(partition_pair).issubset(data0.columns):
-                if time_col0:
-                    if time_col0 == 'T':
+                if dynamic_col0:
+                    if dynamic_col0 == 'T':
                         pair_data = deepcopy(data0[partition_pair +
-                                                   [time_col0]].drop_duplicates())
+                                                   [dynamic_col0]].drop_duplicates())
                         pair_data.rename(columns={'T': 'T0'}, inplace=True)
                         pair_data['T'] = pair_data['T0']
                         pair_data = pair_data.drop(columns=['T0'])
                     else:
                         pair_data = deepcopy(data0[partition_pair +
-                                                   [time_col0]].drop_duplicates())
-                        pair_data['T'] = pair_data[time_col0]
-                        pair_data = pair_data.drop(columns=[time_col0])
+                                                   [dynamic_col0]].drop_duplicates())
+                        pair_data['T'] = pair_data[dynamic_col0]
+                        pair_data = pair_data.drop(columns=[dynamic_col0])
                 else:
                     pair_data = data0[partition_pair].drop_duplicates()
                     pair_data['T'] = np.nan
@@ -245,7 +256,7 @@ def subgraph_idx(A, attributes, idx0, idx1):
 # check what happens when repeated partition in row and column
 
 
-def find_connected_components(A, attributes, n_components=1):
+def find_connected_components(A, attributes, n_components=None):
     """
     Find connected components of a multipartite graph.
 

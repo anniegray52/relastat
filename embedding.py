@@ -9,6 +9,27 @@ from scipy import linalg
 import scipy.stats as stats
 import scipy
 import matplotlib.pyplot as plt
+import warnings
+
+
+def symmetric_dilation(M):
+    """
+    Dilate a matrix to a symmetric matrix.
+    """
+    m, n = M.shape
+    D = sparse.vstack([sparse.hstack([zero_matrix(m), M]),
+                      sparse.hstack([M.T, zero_matrix(n)])])
+    return D
+
+
+def zero_matrix(m, n=None):
+    """
+    Create a zero matrix.
+    """
+    if n == None:
+        n = m
+    M = sparse.coo_matrix(([], ([], [])), shape=(m, n))
+    return M
 
 ## ==================== ## embedding functions ## ==================== ##
 
@@ -120,7 +141,7 @@ def to_laplacian(A, regulariser=0):
 
 def embed(A, d=10, matrix='adjacency', regulariser=0):
     """ 
-    Embed a graph using the laplacian or adjacency matrix.  
+    Embed a graph using the Laplacian or adjacency matrix.  
 
     Parameters  
     ----------  
@@ -129,7 +150,7 @@ def embed(A, d=10, matrix='adjacency', regulariser=0):
     d : int 
         The dimension of the embedding.
     matrix : str    
-        The matrix to be used for embedding.
+        The matrix to be used for embedding. Should be 'adjacency' or 'laplacian'.
     regulariser : float 
         The regulariser to be added to the degrees of the nodes (if matrix = 'laplacian' used).    
 
@@ -141,14 +162,27 @@ def embed(A, d=10, matrix='adjacency', regulariser=0):
         The right embedding of the graph.    
     """
 
+    # Check if there is more than one connected component
+    num_components = connected_components(
+        symmetric_dilation(A), directed=False)[0]
+
+    if num_components > 1:
+        warnings.warn(
+            'Warning: More than one connected component in the graph.')
+    if matrix not in ['adjacency', 'laplacian']:
+        raise ValueError(
+            "Invalid matrix type. Use 'adjacency' or 'laplacian'.")
+
     if matrix == 'laplacian':
         L = to_laplacian(A, regulariser)
         u, s, vT = svds(L, d)
     else:
         u, s, vT = svds(A, d)
+
     o = np.argsort(s[::-1])
     left_embedding = u[:, o] @ np.diag(np.sqrt(s[o]))
     right_embedding = vT.T[:, o] @ np.diag(np.sqrt(s[o]))
+
     return left_embedding, right_embedding
 
 
