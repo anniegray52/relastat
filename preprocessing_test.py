@@ -7,8 +7,8 @@ class TestYourCode(unittest.TestCase):
 
     def setUp(self):
         # Define test data and relationships for your tests
-        self.tables = [pd.DataFrame({'A': [1, 2, 3], 'B': [4, 5, 6], 'T': [1, 2, 3]}), pd.DataFrame({
-            'C': [7, 8, 9], 'D': [10, 11, 12], 'T': [1, 2, 3]})]
+        self.tables = [pd.DataFrame({'A': ['a1', 'a2', 'a3'], 'B': ['b4', 'b5', 'b6'], 'T': ['t1', 't2', 't3']}), pd.DataFrame({
+            'C': ['c7', 'c8', 'c9'], 'D': ['d10', 'd11', 'd12'], 'T': ['t1', 't2', 't3']})]
         self.relationships = [['A', 'B'], ['C', 'D']]
         self.time_col = 'T'
         self.join_token = '::'
@@ -77,7 +77,7 @@ class TestYourCode(unittest.TestCase):
             time_col = time_col * len(tables)
 
         edge_list = create_edge_list(
-            tables, relationships, time_col=time_col, join_token='::')
+            tables, relationships, time_col, join_token='::')
 
         # Check if the columns from dataframes are correctly combined in the edge_list
         expected_columns = ['V1', 'V2', 'T', 'P1', 'P2']
@@ -98,17 +98,33 @@ class TestYourCode(unittest.TestCase):
         relationships1 = [['A', 'B'], ['B', 'C']]
         time_col1 = 'ID'
         A1, attributes1 = matrix_from_tables(
-            tables, relationships1, time_col=time_col1, join_token='::')
+            tables, relationships1, time_col1, join_token='::')
 
         relationships2 = [[['A', 'B'], ['B', 'C']], [['B', 'C']]]
         time_col2 = ['ID', 'ID']
         A2, attributes2 = matrix_from_tables(
-            tables, relationships2, time_col=time_col2, join_token='::')
+            tables, relationships2, time_col2, join_token='::')
 
         self.assertTrue(np.allclose(A1.toarray(), A2.toarray()))
         self.assertTrue(attributes1 == attributes2)
         self.assertEqual(A1.shape, (13, 78))
         self.assertEqual(A1.shape, (len(attributes1[0]), len(attributes1[1])))
+
+    def test_find_cc_containing_most(self):
+        df = pd.DataFrame(
+            {'A': ['a1', 'a1', 'a2', 'a2', 'a1', 'a1', 'a2', 'a2'],
+             'B': ['b1', 'b2', 'b1', 'b2', 'b1', 'b2', 'b1', 'b2'],
+             'ID': [1, 1, 1, 1, 2, 2, 2, 2]})
+        relationships = ['A', 'B']
+        time_col = 'ID'
+        A1, attributes1 = matrix_from_tables(
+            df, relationships, dynamic_col=time_col, join_token='::')
+
+        c0, att0 = find_cc_containing_most(A1, attributes1, 'B', dynamic=False)
+        c1, att1 = find_cc_containing_most(A1, attributes1, 'A', dynamic=True)
+
+        self.assertEqual(np.sum(c0.todense() == c1.todense()), 8)
+        self.assertTrue(att0 == att1)
 
 
 if __name__ == "__main__":
