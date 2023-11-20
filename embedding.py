@@ -12,6 +12,8 @@ import matplotlib.pyplot as plt
 import warnings
 
 
+## ==================== ## misc functions ## ==================== ##
+
 def symmetric_dilation(M):
     """
     Dilate a matrix to a symmetric matrix.
@@ -31,7 +33,47 @@ def zero_matrix(m, n=None):
     M = sparse.coo_matrix(([], ([], [])), shape=(m, n))
     return M
 
-## ==================== ## embedding functions ## ==================== ##
+
+def safe_inv_sqrt(a, tol=1e-12):
+    """
+    Compute the inverse square root of an array, ignoring division by zero.
+    """
+    with np.errstate(divide="ignore"):
+        b = 1 / np.sqrt(a)
+    b[np.isinf(b)] = 0
+    b[a < tol] = 0
+    return b
+
+
+def to_laplacian(A, regulariser=0):
+    """
+    Convert an adjacency matrix to a Laplacian matrix.
+
+    Parameters
+    ----------
+    A : scipy.sparse.csr_matrix
+        The adjacency matrix.
+    regulariser : float
+        The regulariser to be added to the degrees of the nodes.
+
+    Returns
+    -------
+    L : scipy.sparse.csr_matrix
+        The Laplacian matrix.
+    """
+
+    left_degrees = np.reshape(np.asarray(A.sum(axis=1)), (-1,))
+    right_degrees = np.reshape(np.asarray(A.sum(axis=0)), (-1,))
+    if regulariser == 'auto':
+        regulariser = np.mean(np.concatenate((left_degrees, right_degrees)))
+    left_degrees_inv_sqrt = safe_inv_sqrt(left_degrees + regulariser)
+    right_degrees_inv_sqrt = safe_inv_sqrt(right_degrees + regulariser)
+    L = sparse.diags(
+        left_degrees_inv_sqrt) @ A @ sparse.diags(right_degrees_inv_sqrt)
+    return L
+
+
+## ==================== ## dimension selection functions ## ==================== ##
 
 
 def dim_select(A, plot=True, plotrange=50):
@@ -100,43 +142,33 @@ def dim_select(A, plot=True, plotrange=50):
     return lq_best
 
 
-def safe_inv_sqrt(a, tol=1e-12):
+def wasserstein_dim_select(Y, split=0.5, rmin=1, rmax=50):
+    """ 
+    Select the number of dimensions for Y using Wasserstein distances.
     """
-    Compute the inverse square root of an array, ignoring division by zero.
-    """
-    with np.errstate(divide="ignore"):
-        b = 1 / np.sqrt(a)
-    b[np.isinf(b)] = 0
-    b[a < tol] = 0
-    return b
+    n = Y.shape[0]
+    train = round(n * split)
+    rtry = int(np.min((train, rmax)))
+    if sparse.issparse(Y):
+        Y = Y.todense()
+    Ytrain = Y[:train, :]
+    Ytest = Y[train:n, :]
+    U, s, Vh = sparse.linalg.svds(Ytrain, k=rtry-1)
+    idx = s.argsort()[::-1]
+    s = s[idx]
+    Vh = Vh[idx, :]
+    ws = []
+    for r in tqdm(range(rmin, rtry+1)):
+        P = Vh.T[:, :r] @ Vh[:r, :]
+        Yproj = Ytrain @ P.T
+        n1 = Yproj.shape[0]
+        n2 = Ytest.shape[0]
+        M = ot.dist(Yproj, Ytest, metric='euclidean')
+        W1 = ot.emd2(np.repeat(1/n1, n1), np.repeat(1/n2, n2), M)
+        ws.append(W1)
+    return ws
 
-
-def to_laplacian(A, regulariser=0):
-    """
-    Convert an adjacency matrix to a Laplacian matrix.
-
-    Parameters
-    ----------
-    A : scipy.sparse.csr_matrix
-        The adjacency matrix.
-    regulariser : float
-        The regulariser to be added to the degrees of the nodes.
-
-    Returns
-    -------
-    L : scipy.sparse.csr_matrix
-        The Laplacian matrix.
-    """
-
-    left_degrees = np.reshape(np.asarray(A.sum(axis=1)), (-1,))
-    right_degrees = np.reshape(np.asarray(A.sum(axis=0)), (-1,))
-    if regulariser == 'auto':
-        regulariser = np.mean(np.concatenate((left_degrees, right_degrees)))
-    left_degrees_inv_sqrt = safe_inv_sqrt(left_degrees + regulariser)
-    right_degrees_inv_sqrt = safe_inv_sqrt(right_degrees + regulariser)
-    L = sparse.diags(
-        left_degrees_inv_sqrt) @ A @ sparse.diags(right_degrees_inv_sqrt)
-    return L
+## ==================== ## embedding functions ## ==================== ##
 
 
 def embed(A, d=10, matrix='adjacency', regulariser=0):

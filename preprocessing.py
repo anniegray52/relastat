@@ -12,6 +12,10 @@ import matplotlib.pyplot as plt
 
 from misc import *
 
+from collections import Counter
+
+## ==================== ## misc functions ## ==================== ##
+
 
 def zero_matrix(m, n=None):
     """
@@ -22,10 +26,24 @@ def zero_matrix(m, n=None):
     M = sparse.coo_matrix(([], ([], [])), shape=(m, n))
     return M
 
+
+def count_based_on_keys(list_of_dicts, selected_keys):
+    if isinstance(selected_keys, str):
+        counts = Counter(d[selected_keys] for d in list_of_dicts)
+    elif len(selected_keys) == 1:
+        counts = Counter(d[selected_keys[0]] for d in list_of_dicts)
+    else:
+        counts = Counter(tuple(d[key] for key in selected_keys)
+                         for d in list_of_dicts)
+    return counts
+
+
 ## ==================== ## data preparation ## ==================== ##
 
 
 # can handle the lyon example (two columns from the same partition) but need to check if it can handle more advance cases
+
+## ==================== ## graph functions ## ==================== ##
 
 def matrix_from_tables(tables, relationships, dynamic_col=None, join_token='::'):
     """ 
@@ -283,12 +301,17 @@ def find_connected_components(A, attributes, n_components=None):
 
     A_dilation = symmetric_dilation(A)
     _, cc = connected_components(A_dilation)
+    print(f"Number of connected components: {_}")
     cc = [cc[:A.shape[0]], cc[A.shape[0]:]]
     if n_components == None:
-        n_components = np.max(cc) + 1
+        # n_components = np.max(cc) + 1
+        n_components = _
+    cc_As = []
+    cc_attributes = []
+    if n_components == 1:
+        cc_As = A
+        cc_attributes = attributes
     else:
-        cc_As = []
-        cc_attributes = []
         for i in range(n_components):
             idx0 = np.where(cc[0] == i)[0]
             idx1 = np.where(cc[1] == i)[0]
@@ -296,10 +319,48 @@ def find_connected_components(A, attributes, n_components=None):
                 A, attributes, idx0, idx1)
             cc_As.append(store_cc_A)
             cc_attributes.append(store_cc_attributes)
-        if len(cc_As) == 1:
-            cc_As = cc_As[0]
-            cc_attributes = cc_attributes[0]
-        return cc_As, cc_attributes
+
+    return cc_As, cc_attributes
+
+
+def find_cc_containing_most(A, attributes, partition, dynamic=False):
+    """ 
+    Find the connected component containing the most nodes from a partition.    
+
+    Parameters
+    ----------
+    A : scipy.sparse.csr_matrix
+        The adjacency matrix of the graph.
+    attributes : list of lists
+        The attributes of the nodes. The first list contains the attributes
+        of the nodes in rows. The second list contains
+        the attributes of the nodes in the columns.
+    partition : str
+        The partition to be searched.
+    dynamic : bool
+        Whether we want the connected component containing the most nodes from dynamic part or not.
+
+    Returns
+    -------
+    cc_A : scipy.sparse.csr_matrix
+        The adjacency matrix of the connected component.
+    cc_attributes : list of lists
+        The attributes of the nodes of the connected component. The first list contains
+        the attributes of the nodes in the rows. The second
+        list contains the attributes of the nodes in the columns.
+    """
+    cc_A, cc_attributes = find_connected_components(
+        A, attributes)
+    if dynamic == False:
+        attrs = [att[0] for att in cc_attributes]
+        counts = [count_based_on_keys(att, 'partition') for att in attrs]
+        select_idx = np.argmax([c[partition] for c in counts])
+        return cc_A[select_idx], cc_attributes[select_idx]
+    if dynamic == True:
+        attrs = [att[1] for att in cc_attributes]
+        counts = [count_based_on_keys(att, 'partition') for att in attrs]
+        select_idx = np.argmax([c[partition] for c in counts])
+        return cc_A[select_idx], cc_attributes[select_idx]
 
 
 def to_networkx(A, attributes, symmetric=None):
@@ -328,3 +389,115 @@ def to_networkx(A, attributes, symmetric=None):
         nx.set_node_attributes(
             G_nx, {i + n0: {'bipartite': 1} for i in range(n1)})
         return G_nx
+
+
+## ==================== ## time series functions ## ==================== ##
+
+
+def matrix_from_time_series(data, time_col, drop_nas=True):
+    """ 
+    Create a matrix from a time series. 
+
+    Parameters  
+    ----------  
+    data : pandas.DataFrame  
+        The data to be used to create the matrix.   
+    time_col : str  
+        The name of the column containing the time information.
+    drop_nas : bool 
+        Whether to drop rows with missing values.
+
+    Returns 
+    ------- 
+    Y : numpy.ndarray   
+        The matrix created from the time series.
+    attributes : list of lists  
+        The attributes of the nodes. The first list contains the attributes
+        of the nodes in rows. The second list contains
+        the attributes of the nodes in the columns.
+    """
+    data = data.sort_values(by=time_col)
+    data = data.dropna(axis=1, how='any')
+
+    times = list(data[time_col])
+    data.drop([time_col], axis=1, inplace=True)
+    ids = list(data.columns)
+
+    Y = np.array(data).T
+    attributes = [
+        [{'name': i} for i in ids], [{'time': i} for i in times]
+    ]
+    return Y, attributes
+
+## ==================== ## text analysis functions ## ==================== ##
+
+
+def del_email_address(text):
+    e = '\S*@\S*\s?'
+    pattern = re.compile(e)
+    return pattern.sub('', text)
+
+
+def clean_text_(text):
+    return " ".join([Word(word).lemmatize() for word in re.sub("[^A-Za-z0-9]+", " ", text).lower().split()])
+
+
+def remove_stopwords_(text, stopwords):
+    return " ".join([word for word in text.split() if word not in stopwords])
+
+
+def matrix_from_text(data, column_name, remove_stopwords=True, clean_text=True,
+                     remove_email_addresses=False, update_stopwords=None,
+                     **kwargs):
+    """
+    Create a matrix from a column of text data. 
+
+    Parameters  
+    ----------  
+    data : pandas.DataFrame  
+        The data to be used to create the matrix.   
+    column_name : str   
+        The name of the column containing the text data.
+    remove_stopwords : bool 
+        Whether to remove stopwords.
+    clean_text : bool   
+        Whether to clean the text data.     
+    remove_email_addresses : bool   
+        Whether to remove email addresses.  
+    update_stopwords : list of str  
+        The list of additional stopwords to be removed.    
+    kwargs : dict   
+        Other arguments to be passed to sklearn.feature_extraction.text.TfidfVectorizer.    
+
+    Returns 
+    ------- 
+    Y : numpy.ndarray   
+        The matrix created from the text data.  
+    attributes : list of lists  
+        The attributes of the nodes. The first list contains the attributes
+        of the nodes in rows. The second list contains
+        the attributes of the nodes in the columns. 
+    """
+
+    # gets rid of email addresses  in data
+    if remove_email_addresses:
+        data[column_name] = data.data.apply(lambda row: del_email_address(row))
+
+    if clean_text:
+        # gets rid of stopwords, symbols, makes lower case and base words
+        data[column_name] = data.data.apply(lambda row: clean_text_(row))
+
+    if remove_stopwords:
+        stopwords = set(nltk.corpus.stopwords.words("english"))
+        if update_stopwords is not None:
+            stopwords.update(update_stopwords)
+        data[column_name] = data.data.apply(
+            lambda row: remove_stopwords_(row, stopwords))
+
+    # create tfidf matrix
+    vectorizer = TfidfVectorizer(**kwargs)
+    Y = vectorizer.fit_transform(data.data)
+    attr0 = [{'name': i} for i in vectorizer.get_feature_names_out()]
+    attr1 = [{'name': 'document_' + str(i)} for i in list(data.index)]
+    attributes = [attr0, attr1]
+    return Y, attributes
