@@ -3,7 +3,7 @@ import unittest
 from preprocessing import *
 
 
-class TestYourCode(unittest.TestCase):
+class test_graph_functions(unittest.TestCase):
 
     def setUp(self):
         # Define test data and relationships for your tests
@@ -125,6 +125,21 @@ class TestYourCode(unittest.TestCase):
 
         self.assertEqual(np.sum(c0.todense() == c1.todense()), 8)
         self.assertTrue(att0 == att1)
+
+
+class test_text_functions(unittest.TestCase):
+    self.text = pd.DataFrame(
+        ['This is a test sentence', 'This is another test sentence', 'This contains an email address: email_address@email.com'], columns=['data'])
+    self.column = 'data'
+
+    Y, attributes = matrix_from_text(
+        self.text, self.column, remove_email_addresses=True)
+    self.assertTrue(isinstance(Y, sparse.csr_matrix))
+    self.assertTrue(isinstance(attributes, list))
+
+    self.assertEqual(Y.shape, (3, 6))
+    self.assertEqual(len(attributes[0]), 3)
+    self.assertEqual(len(attributes[1]), 6)
 
 
 if __name__ == "__main__":
