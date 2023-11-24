@@ -45,7 +45,8 @@ def count_based_on_keys(list_of_dicts, selected_keys):
 
 ## ==================== ## graph functions ## ==================== ##
 
-def matrix_from_tables(tables, relationships, dynamic_col=None, join_token='::'):
+
+def matrix_from_tables(tables, relationships, dynamic_col=None, weight_col=None, join_token='::'):
     """ 
     Create a DMP graph from a dataframe.    
 
@@ -89,43 +90,50 @@ def matrix_from_tables(tables, relationships, dynamic_col=None, join_token='::')
         dynamic_col = [dynamic_col] * len(tables)
     if len(dynamic_col) != len(tables):
         dynamic_col = dynamic_col * len(tables)
+    # Handle the case when weight_col is None
+    if weight_col is None:
+        weight_col = [None] * len(tables)
+    elif isinstance(weight_col, str):
+        weight_col = [weight_col] * len(tables)
+    if len(weight_col) != len(tables):
+        weight_col = weight_col * len(tables)
 
     edge_list = create_edge_list(
-        tables, relationships, dynamic_col, join_token)
+        tables, relationships, dynamic_col, join_token, weight_col)
     nodes, partitions, times, node_ids, time_ids = extract_node_time_info(
         edge_list, join_token)
 
     edge_list = transform_edge_data(edge_list, node_ids, time_ids, len(nodes))
-    A = create_adjacency_matrix(edge_list, len(nodes), len(times))
+    A = create_adjacency_matrix(edge_list, len(nodes), len(times), weight_col)
     attributes = create_node_attributes(
         nodes, partitions, times, len(nodes), len(times))
 
     return A.tocsr(), attributes
 
 
-def create_edge_list(tables, relationships, dynamic_col, join_token):
+def create_edge_list(tables, relationships, dynamic_col, join_token, weight_col):
     edge_list = []
-    for data0, relationships0, dynamic_col0 in zip(tables, relationships, dynamic_col):
+    for data0, relationships0, dynamic_col0, weight_col0 in zip(tables, relationships, dynamic_col, weight_col):
         for partition_pair in relationships0:
             if set(partition_pair).issubset(data0.columns):
-                if dynamic_col0:
-                    if dynamic_col0 == 'T':
-                        pair_data = deepcopy(data0[partition_pair +
-                                                   [dynamic_col0]].drop_duplicates())
-                        pair_data.rename(columns={'T': 'T0'}, inplace=True)
-                        pair_data['T'] = pair_data['T0']
-                        pair_data = pair_data.drop(columns=['T0'])
-                    else:
-                        pair_data = deepcopy(data0[partition_pair +
-                                                   [dynamic_col0]].drop_duplicates())
-                        pair_data['T'] = pair_data[dynamic_col0]
-                        pair_data = pair_data.drop(columns=[dynamic_col0])
-                else:
-                    pair_data = data0[partition_pair].drop_duplicates()
-                    pair_data['T'] = np.nan
 
-                pair_data.columns = ['V1', 'V2', 'T']
-                # if len(intersection(pair_data['V1'], pair_data['V2'])) != 0:
+                cols = deepcopy(partition_pair)
+                colnames = ['V1', 'V2']
+
+                if dynamic_col0:
+                    cols.append(dynamic_col0)
+                if weight_col0:
+                    cols.append(weight_col0)
+                    colnames.append('W')
+
+                pair_data = deepcopy(
+                    data0[cols].drop_duplicates())
+                if not dynamic_col0:
+                    pair_data['T'] = np.nan
+                colnames.append('T')
+
+                pair_data.columns = colnames
+
                 if len(list(set(pair_data['V1']) & set(pair_data['V2']))) != 0:
                     pair_data['V1'] = [
                         f"{partition_pair[0]}{join_token}{x}" for x in pair_data['V1']]
@@ -133,6 +141,7 @@ def create_edge_list(tables, relationships, dynamic_col, join_token):
                         f"{partition_pair[0]}{join_token}{x}" for x in pair_data['V2']]
                     pair_data['P1'] = partition_pair[0]
                     pair_data['P2'] = partition_pair[1]
+
                     edge_list.append(pair_data)
                 else:
                     pair_data['V1'] = [
@@ -141,6 +150,7 @@ def create_edge_list(tables, relationships, dynamic_col, join_token):
                         f"{partition_pair[1]}{join_token}{x}" for x in pair_data['V2']]
                     pair_data['P1'] = partition_pair[0]
                     pair_data['P2'] = partition_pair[1]
+
                     edge_list.append(pair_data)
                 print(partition_pair)
     return pd.concat(edge_list)
@@ -165,10 +175,13 @@ def transform_edge_data(edge_list, node_ids, time_ids, n_nodes):
     return edge_list
 
 
-def create_adjacency_matrix(edge_list, n_nodes, n_times):
+def create_adjacency_matrix(edge_list, n_nodes, n_times, weight_col):
     row_indices = pd.concat([edge_list['V_ID1'], edge_list['V_ID2']])
     col_indices = pd.concat([edge_list['X_ID2'], edge_list['X_ID1']])
-    values = np.ones(2 * len(edge_list))
+    if weight_col[0]:
+        values = pd.concat([edge_list['W'], edge_list['W']])
+    else:
+        values = np.ones(2 * len(edge_list))
     return sparse.coo_matrix((values, (row_indices, col_indices)), shape=(n_nodes, n_nodes * n_times))
 
 
