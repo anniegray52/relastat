@@ -22,6 +22,10 @@
             color: #555;
         }
 
+        h3 {
+            color: #777;
+        }
+
         p {
             color: #777;
         }
@@ -40,30 +44,49 @@
     <h1>Your Project Title</h1>
     <p>A brief description of your project.</p>
 
-    <h2>Graph Functions</h2>
+    <nav>
+        <ul>
+            <li><a href="#graph-functions">Graph Functions</a></li>
+            <li><a href="#time-series-functions">Time Series Functions</a></li>
+            <li><a href="#helper-functions">Helper Functions</a></li>
+            <li><a href="#additional-tips">Additional Tips</a></li>
+            <li><a href="#github-pages-setup">GitHub Pages Setup</a></li>
+        </ul>
+    </nav>
 
-    <h3><code>matrix_from_tables</code></h3>
-    <p>Create a DMP (Dynamic MultiPartite) graph from one or more dataframes.</p>
-    <!-- Add more detailed explanations for parameters, returns, etc. -->
+    <section id="graph-functions">
+        <h2>Graph Functions</h2>
 
-    <h3><code>matrix_from_time_series</code></h3>
-    <p>Create a matrix from a time series.</p>
-    <!-- Add more detailed explanations for parameters, returns, etc. -->
+        <h3><code>matrix_from_tables</code></h3>
+        <p>Create a DMP (Dynamic MultiPartite) graph from one or more dataframes.</p>
+        <!-- Add more detailed explanations for parameters, returns, etc. -->
 
-    <h3><code>to_networkx</code></h3>
-    <p>Convert a multipartite graph to a NetworkX graph.</p>
-    <!-- Add more detailed explanations for parameters, returns, etc. -->
+        <h3><code>to_networkx</code></h3>
+        <p>Convert a multipartite graph to a NetworkX graph.</p>
+        <!-- Add more detailed explanations for parameters, returns, etc. -->
 
-    <!-- Add sections for other functions -->
+        <!-- Add more graph-related functions -->
+    </section>
 
-    <h2>Helper Functions</h2>
+    <section id="time-series-functions">
+        <h2>Time Series Functions</h2>
 
-    <h3><code>create_edge_list</code></h3>
-    <p>Create an edge list from tables, relationships, dynamic columns, and weight columns.</p>
-    <!-- Add more detailed explanations for parameters, returns, etc. -->
+        <h3><code>matrix_from_time_series</code></h3>
+        <p>Create a matrix from a time series.</p>
+        <!-- Add more detailed explanations for parameters, returns, etc. -->
 
-    <!-- Add sections for other helper functions -->
+        <!-- Add more time series-related functions -->
+    </section>
 
+    <section id="helper-functions">
+        <h2>Helper Functions</h2>
+
+        <h3><code>create_edge_list</code></h3>
+        <p>Create an edge list from tables, relationships, dynamic columns, and weight columns.</p>
+        <!-- Add more detailed explanations for parameters, returns, etc. -->
+
+        <!-- Add more helper functions -->
+    </section>
 
 </body>
 
