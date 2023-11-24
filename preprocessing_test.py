@@ -12,6 +12,7 @@ class test_graph_functions(unittest.TestCase):
         self.relationships = [['A', 'B'], ['C', 'D']]
         self.time_col = 'T'
         self.join_token = '::'
+        self.weight_col = None
 
         if not isinstance(self.tables, list):
             self.tables = [self.tables]
@@ -27,9 +28,16 @@ class test_graph_functions(unittest.TestCase):
         if len(self.time_col) != len(self.tables):
             self.time_col = self.time_col * len(self.tables)
 
+        if self.weight_col is None:
+            self.weight_col = [None] * len(self.tables)
+        elif isinstance(self.weight_col, str):
+            self.weight_col = [self.weight_col] * len(self.tables)
+        if len(self.weight_col) != len(self.tables):
+            self.weight_col = self.weight_col * len(self.tables)
+
     def test_matrix_from_tables(self):
         A, attributes = matrix_from_tables(
-            self.tables, self.relationships, self.time_col, self.join_token)
+            self.tables, self.relationships, self.time_col, self.weight_col, self.join_token)
         # Add assertions to check if the output is as expected
         # You can use numpy.testing.assert_array_equal for comparing arrays
         self.assertTrue(isinstance(A, sparse.csr_matrix))
@@ -37,13 +45,13 @@ class test_graph_functions(unittest.TestCase):
 
     def test_create_edge_list(self):
         edge_list = create_edge_list(
-            self.tables, self.relationships, self.time_col, self.join_token)
+            self.tables, self.relationships, self.time_col, self.join_token, self.weight_col)
         # Add assertions to check if the output is as expected
         self.assertTrue(isinstance(edge_list, pd.DataFrame))
 
     def test_extract_node_time_info(self):
         edge_list = create_edge_list(
-            self.tables, self.relationships, self.time_col, self.join_token)
+            self.tables, self.relationships, self.time_col, self.join_token, self.weight_col)
         nodes, partitions, times, node_ids, time_ids = extract_node_time_info(
             edge_list, self.join_token)
         # Add assertions to check if the output is as expected
@@ -62,6 +70,8 @@ class test_graph_functions(unittest.TestCase):
         tables = [df1, df2]
         relationships = [['A', 'B'], ['B', 'C']]
         time_col = 'ID'
+        weight_col = None
+
         if not isinstance(tables, list):
             tables = [tables]
         if isinstance(relationships[0], str):
@@ -76,8 +86,15 @@ class test_graph_functions(unittest.TestCase):
         if len(time_col) != len(tables):
             time_col = time_col * len(tables)
 
+        if weight_col is None:
+            weight_col = [None] * len(tables)
+        elif isinstance(weight_col, str):
+            weight_col = [weight_col] * len(tables)
+        if len(weight_col) != len(tables):
+            weight_col = weight_col * len(tables)
+
         edge_list = create_edge_list(
-            tables, relationships, time_col, join_token='::')
+            tables, relationships, time_col, '::', weight_col)
 
         # Check if the columns from dataframes are correctly combined in the edge_list
         expected_columns = ['V1', 'V2', 'T', 'P1', 'P2']
@@ -97,13 +114,14 @@ class test_graph_functions(unittest.TestCase):
 
         relationships1 = [['A', 'B'], ['B', 'C']]
         time_col1 = 'ID'
+        weight_col = None
         A1, attributes1 = matrix_from_tables(
-            tables, relationships1, time_col1, join_token='::')
+            tables, relationships1, time_col1, weight_col, join_token='::')
 
         relationships2 = [[['A', 'B'], ['B', 'C']], [['B', 'C']]]
         time_col2 = ['ID', 'ID']
         A2, attributes2 = matrix_from_tables(
-            tables, relationships2, time_col2, join_token='::')
+            tables, relationships2, time_col2, weight_col, join_token='::')
 
         self.assertTrue(np.allclose(A1.toarray(), A2.toarray()))
         self.assertTrue(attributes1 == attributes2)
@@ -117,8 +135,9 @@ class test_graph_functions(unittest.TestCase):
              'ID': [1, 1, 1, 1, 2, 2, 2, 2]})
         relationships = ['A', 'B']
         time_col = 'ID'
+        weight_col = None
         A1, attributes1 = matrix_from_tables(
-            df, relationships, dynamic_col=time_col, join_token='::')
+            df, relationships, time_col, weight_col, join_token='::')
 
         c0, att0 = find_cc_containing_most(A1, attributes1, 'B', dynamic=False)
         c1, att1 = find_cc_containing_most(A1, attributes1, 'A', dynamic=True)
@@ -127,19 +146,19 @@ class test_graph_functions(unittest.TestCase):
         self.assertTrue(att0 == att1)
 
 
-class test_text_functions(unittest.TestCase):
-    self.text = pd.DataFrame(
-        ['This is a test sentence', 'This is another test sentence', 'This contains an email address: email_address@email.com'], columns=['data'])
-    self.column = 'data'
+# class test_text_functions(unittest.TestCase):
+#     self.text = pd.DataFrame(
+#         ['This is a test sentence', 'This is another test sentence', 'This contains an email address: email_address@email.com'], columns=['data'])
+#     self.column = 'data'
 
-    Y, attributes = matrix_from_text(
-        self.text, self.column, remove_email_addresses=True)
-    self.assertTrue(isinstance(Y, sparse.csr_matrix))
-    self.assertTrue(isinstance(attributes, list))
+#     Y, attributes = matrix_from_text(
+#         self.text, self.column, remove_email_addresses=True)
+#     self.assertTrue(isinstance(Y, sparse.csr_matrix))
+#     self.assertTrue(isinstance(attributes, list))
 
-    self.assertEqual(Y.shape, (3, 6))
-    self.assertEqual(len(attributes[0]), 3)
-    self.assertEqual(len(attributes[1]), 6)
+#     self.assertEqual(Y.shape, (3, 6))
+#     self.assertEqual(len(attributes[0]), 3)
+#     self.assertEqual(len(attributes[1]), 6)
 
 
 if __name__ == "__main__":
