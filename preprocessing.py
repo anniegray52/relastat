@@ -41,8 +41,6 @@ def count_based_on_keys(list_of_dicts, selected_keys):
 ## ==================== ## data preparation ## ==================== ##
 
 
-# can handle the lyon example (two columns from the same partition) but need to check if it can handle more advance cases
-
 ## ==================== ## graph functions ## ==================== ##
 
 
