@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Project Title</title>
+    <title>Python Code Documentation</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -36,20 +36,45 @@
             overflow: auto;
             border-radius: 5px;
         }
+
+        nav {
+            margin-bottom: 20px;
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            display: flex;
+            justify-content: space-around;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        nav a:hover {
+            background-color: #eee;
+        }
     </style>
 </head>
 
 <body>
 
-    <h1>Your Project Title</h1>
-    <p>A brief description of your project.</p>
+    <h1>Python Code Documentation</h1>
+    <p>This documentation provides details about the Python code and its associated functions.</p>
 
     <nav>
         <ul>
             <li><a href="#graph-functions">Graph Functions</a></li>
             <li><a href="#time-series-functions">Time Series Functions</a></li>
             <li><a href="#helper-functions">Helper Functions</a></li>
-            <li><a href="#additional-tips">Additional Tips</a></li>
+            <li><a href="#connected-components">Connected Components</a></li>
+            <li><a href="#networkx-conversion">NetworkX Conversion</a></li>
             <li><a href="#github-pages-setup">GitHub Pages Setup</a></li>
         </ul>
     </nav>
@@ -59,11 +84,46 @@
 
         <h3><code>matrix_from_tables</code></h3>
         <p>Create a DMP (Dynamic MultiPartite) graph from one or more dataframes.</p>
-        <!-- Add more detailed explanations for parameters, returns, etc. -->
+        <p><strong>Parameters:</strong></p>
+        <ul>
+            <li><code>tables</code>: pandas.DataFrame or list of pandas.DataFrame</li>
+            <li><code>relationships</code>: list of lists</li>
+            <li><code>dynamic_col</code>: str or list of str</li>
+            <li><code>join_token</code>: str</li>
+        </ul>
+        <p><strong>Returns:</strong></p>
+        <ul>
+            <li><code>A</code>: scipy.sparse.csr_matrix</li>
+            <li><code>attributes</code>: list of lists</li>
+        </ul>
 
-        <h3><code>to_networkx</code></h3>
-        <p>Convert a multipartite graph to a NetworkX graph.</p>
-        <!-- Add more detailed explanations for parameters, returns, etc. -->
+        <h3><code>create_edge_list</code></h3>
+        <p>Create an edge list from tables, relationships, dynamic columns, and weight columns.</p>
+        <p><strong>Parameters:</strong></p>
+        <ul>
+            <li><code>tables</code>: pandas.DataFrame or list of pandas.DataFrame</li>
+            <li><code>relationships</code>: list of lists</li>
+            <!-- Add more parameters as needed -->
+        </ul>
+        <p><strong>Returns:</strong></p>
+        <ul>
+            <li><code>edge_list</code>: pandas.DataFrame</li>
+        </ul>
+
+        <h3><code>extract_node_time_info</code></h3>
+        <p>Extract node and time information from an edge list.</p>
+        <p><strong>Parameters:</strong></p>
+        <ul>
+            <li><code>edge_list</code>: pandas.DataFrame</li>
+            <li><code>join_token</code>: str</li>
+        </ul>
+        <p><strong>Returns:</strong></p>
+        <ul>
+            <li><code>nodes</code>: list</li>
+            <li><code>partitions</code>: list</li>
+            <li><code>times</code>: list</li>
+            <!-- Add more returns as needed -->
+        </ul>
 
         <!-- Add more graph-related functions -->
     </section>
@@ -73,7 +133,17 @@
 
         <h3><code>matrix_from_time_series</code></h3>
         <p>Create a matrix from a time series.</p>
-        <!-- Add more detailed explanations for parameters, returns, etc. -->
+        <p><strong>Parameters:</strong></p>
+        <ul>
+            <li><code>data</code>: pandas.DataFrame</li>
+            <li><code>time_col</code>: str</li>
+            <li><code>drop_nas</code>: bool</li>
+        </ul>
+        <p><strong>Returns:</strong></p>
+        <ul>
+            <li><code>Y</code>: numpy.ndarray</li>
+            <li><code>attributes</code>: list of lists</li>
+        </ul>
 
         <!-- Add more time series-related functions -->
     </section>
@@ -81,13 +151,39 @@
     <section id="helper-functions">
         <h2>Helper Functions</h2>
 
-        <h3><code>create_edge_list</code></h3>
-        <p>Create an edge list from tables, relationships, dynamic columns, and weight columns.</p>
-        <!-- Add more detailed explanations for parameters, returns, etc. -->
+        <h3><code>symmetric_dilation</code></h3>
+        <p>Dilate a matrix to a symmetric matrix.</p>
+        <p><strong>Parameters:</strong></p>
+        <ul>
+            <li><code>M</code>: scipy.sparse.csr_matrix</li>
+        </ul>
+        <p><strong>Returns:</strong></p>
+        <ul>
+            <li><code>D</code>: scipy.sparse.csr_matrix</li>
+        </ul>
+
+        <h3><code>find_connected_components</code></h3>
+        <p>Find connected components of a multipartite graph.</p>
+        <p><strong>Parameters:</strong></p>
+        <ul>
+            <li><code>A</code>: scipy.sparse.csr_matrix</li>
+            <li><code>attributes</code>: list of lists</li>
+            <!-- Add more parameters as needed -->
+        </ul>
+        <p><strong>Returns:</strong></p>
+        <ul>
+            <li><code>cc_As</code>: list of scipy.sparse.csr_matrix</li>
+            <li><code>cc_attributes</code>: list of lists</li>
+        </ul>
 
         <!-- Add more helper functions -->
     </section>
 
-</body>
+    <section id="connected-components">
+        <h2>Connected Components</h2>
 
-</html>
+        <h3><code>find_cc_containing_most</code></h3>
+        <p>Find the connected component containing the most nodes from a partition.</p>
+        <p><strong>Parameters:</strong></p>
+        <ul>
+            <li><code>A</code>: scipy.sparse.csr_matrix</li>
