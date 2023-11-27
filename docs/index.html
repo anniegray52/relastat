@@ -15,11 +15,11 @@
         }
 
         h1 {
-            color: #333;
+            color: rgb(0, 0, 0)323;
         }
 
         h2 {
-            color: #555;
+            color: #000000;
         }
 
         h3 {
@@ -65,8 +65,8 @@
 
 <body>
 
-    <h1>Python Code Documentation</h1>
-    <p>This documentation provides details about the Python code and its associated functions.</p>
+    <h1>Codebase</h1>
+    <p>Codebase for statistics based on similarity and connectivity.</p>
 
     <nav>
         <ul>
@@ -75,7 +75,6 @@
             <li><a href="#helper-functions">Helper Functions</a></li>
             <li><a href="#connected-components">Connected Components</a></li>
             <li><a href="#networkx-conversion">NetworkX Conversion</a></li>
-            <li><a href="#github-pages-setup">GitHub Pages Setup</a></li>
         </ul>
     </nav>
 
@@ -83,18 +82,39 @@
         <h2>Graph Functions</h2>
 
         <h3><code>matrix_from_tables</code></h3>
-        <p>Create a DMP (Dynamic MultiPartite) graph from one or more dataframes.</p>
+        <p>Create a matrix and attributes from one or more dataframes.</p>
         <p><strong>Parameters:</strong></p>
         <ul>
-            <li><code>tables</code>: pandas.DataFrame or list of pandas.DataFrame</li>
-            <li><code>relationships</code>: list of lists</li>
-            <li><code>dynamic_col</code>: str or list of str</li>
-            <li><code>join_token</code>: str</li>
+            <li><code>tables</code>: pandas.DataFrame or list of pandas.DataFrame.
+                The data to be used to create the graph. If a list of dataframes is
+                passed, each dataframe is used to create a separate graph.</li>
+            <li><code>relationships</code>: list of lists.
+                The relationship pairs to be used to create the graph. Types:
+                <dd>- list of pairs: Each element of
+                    the list is a list of two elements, which are the names of the
+                    columns to be joined. All tables will be searched for these column names. </dd>
+                <dd>- list of lists of pairs: the number of lists is equal to the number of tables, to specify
+                    relationship
+                    pairs for each table. Each sublist is a list of pairs of columns to link.</dd>
+            </li>
+            <li><code>dynamic_col</code>: str or list of str. The name of the column containing the time information. If
+                a list of
+                strings is passed, each string is the name of the column containing
+                the time information for each dataframe in data. Default is None, meaning there is no temporal aspect.
+            </li>
+            <li><code>weight_col</code>: str or list of str. The name of the column containing edge weights. If
+                a list of strings is passed, each string is the name of the column containing
+                the weight information for each dataframe in data. Default is None, which means all the edges will have
+                weight one.</li>
+            <li><code>join_token</code>: str. The token used to join the relationship name and the ID name.</li>
         </ul>
         <p><strong>Returns:</strong></p>
         <ul>
-            <li><code>A</code>: scipy.sparse.csr_matrix</li>
-            <li><code>attributes</code>: list of lists</li>
+            <li><code>A</code>: scipy.sparse.csr_matrix. The matrix of the graph.</li>
+            <li><code>attributes</code>: list of lists. The attributes of the data points. The first list contains the
+                attributes
+                of the data points that do not change over time. The second list contains
+                the attributes of the data points that change over time.</li>
         </ul>
 
         <h3><code>create_edge_list</code></h3>
