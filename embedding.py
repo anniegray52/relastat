@@ -99,16 +99,6 @@ def dim_select(A, plot=True, plotrange=50):
     if scipy.sparse.issparse(A):
         A = A.todense()
 
-    # # Construct rectangular matrices
-    # if len(As.shape) == 2:
-    #     As = np.array([As[:,:]])
-
-    # if len(As.shape) == 3:
-    #     T = len(As)
-    #     A = As[0,:,:]
-    #     for t in range(1,T):
-    #         A = np.block([A,As[t]])
-
     UA, SA, VAt = np.linalg.svd(A)
 
     # Compute likelihood profile
@@ -171,14 +161,14 @@ def wasserstein_dim_select(Y, split=0.5, rmin=1, rmax=50):
 ## ==================== ## embedding functions ## ==================== ##
 
 
-def embed(A, d=10, matrix='adjacency', regulariser=0):
+def embed(Y, d=10, right_embedding=False, make_laplacian=False, regulariser=0):
     """ 
     Embed a graph using the Laplacian or adjacency matrix.  
 
     Parameters  
     ----------  
     A : scipy.sparse.csr_matrix  
-        The adjacency matrix of the graph.  
+        The matrix.  
     d : int 
         The dimension of the embedding.
     matrix : str    
@@ -201,21 +191,24 @@ def embed(A, d=10, matrix='adjacency', regulariser=0):
     if num_components > 1:
         warnings.warn(
             'Warning: More than one connected component in the graph.')
-    if matrix not in ['adjacency', 'laplacian']:
-        raise ValueError(
-            "Invalid matrix type. Use 'adjacency' or 'laplacian'.")
+    # if matrix not in ['adjacency', 'laplacian']:
+    #     raise ValueError(
+    #         "Invalid matrix type. Use 'adjacency' or 'laplacian'.")
 
-    if matrix == 'laplacian':
-        L = to_laplacian(A, regulariser)
+    if make_laplacian == True:
+        L = to_laplacian(Y, regulariser)
         u, s, vT = svds(L, d)
     else:
-        u, s, vT = svds(A, d)
+        u, s, vT = svds(Y, d)
 
     o = np.argsort(s[::-1])
     left_embedding = u[:, o] @ np.diag(np.sqrt(s[o]))
-    right_embedding = vT.T[:, o] @ np.diag(np.sqrt(s[o]))
 
-    return left_embedding, right_embedding
+    if right_embedding == True:
+        right_embedding = vT.T[:, o] @ np.diag(np.sqrt(s[o]))
+        return left_embedding, right_embedding
+    else:
+        return left_embedding
 
 
 def recover_subspaces(embedding, attributes):
