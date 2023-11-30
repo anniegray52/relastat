@@ -504,12 +504,12 @@ def matrix_from_text(data, column_name, remove_stopwords=True, clean_text=True,
         stopwords = set(nltk.corpus.stopwords.words("english"))
         if update_stopwords is not None:
             stopwords.update(update_stopwords)
-        data[column_name] = data.data.apply(
+        data[column_name] = data.column_name.apply(
             lambda row: remove_stopwords_(row, stopwords))
 
     # create tfidf matrix
     vectorizer = TfidfVectorizer(**kwargs)
-    Y = vectorizer.fit_transform(data.data)
+    Y = vectorizer.fit_transform(data.column_name)
     attr0 = [{'name': i} for i in vectorizer.get_feature_names_out()]
     attr1 = [{'name': 'document_' + str(i)} for i in list(data.index)]
     attributes = [attr0, attr1]
