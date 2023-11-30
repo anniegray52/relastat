@@ -492,11 +492,13 @@ def matrix_from_text(data, column_name, remove_stopwords=True, clean_text=True,
 
     # gets rid of email addresses  in data
     if remove_email_addresses:
-        data[column_name] = data.data.apply(lambda row: del_email_address(row))
+        data[column_name] = data.column_name.apply(
+            lambda row: del_email_address(row))
 
     if clean_text:
         # gets rid of stopwords, symbols, makes lower case and base words
-        data[column_name] = data.data.apply(lambda row: clean_text_(row))
+        data[column_name] = data.column_name.apply(
+            lambda row: clean_text_(row))
 
     if remove_stopwords:
         stopwords = set(nltk.corpus.stopwords.words("english"))
