@@ -14,16 +14,58 @@
             padding: 20px;
         }
 
+        .container {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px;
+        }
+
+        .nav-container,
+        .content-container {
+            flex-basis: 48%;
+            margin: 0 10px;
+        }
+
+        .nav-container {
+            flex-basis: 60%;
+            /* Adjust as needed */
+        }
+
+        .content-container {
+            flex-basis: 40%;
+            /* Adjust as needed */
+        }
+
+        .nav-container nav ul {
+            padding: 10px;
+            background-color: #f4f4f4;
+            border-radius: 5px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .nav-container nav a {
+            display: block;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 5px;
+            transition: background-color 0.3s;
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .nav-container nav a:hover {
+            background-color: #eee;
+        }
+
         h1 {
             color: rgb(0, 0, 0)323;
         }
 
-        h2 {
-            color: #000000;
-        }
-
+        h2,
         h3 {
-            color: #777;
+            color: #000000;
         }
 
         p {
@@ -35,79 +77,7 @@
             padding: 10px;
             overflow: auto;
             border-radius: 5px;
-        }
-
-        nav {
-            margin-bottom: 20px;
-        }
-
-        nav ul {
-            list-style-type: none;
-            padding: 0;
-            display: flex;
-            justify-content: space-around;
-        }
-
-        nav a {
-            text-decoration: none;
-            color: #333;
-            font-weight: bold;
-            padding: 10px;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-        }
-
-        nav a:hover {
-            background-color: #eee;
-        }
-
-        .container {
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .nav-container {
-            flex-basis: 20%;
-            /* Adjust as needed */
-        }
-
-        .content-container {
-            flex-basis: 80%;
-            /* Adjust as needed */
-        }
-
-        .nav-container {
-            order: 1;
-            /* Place navigation on the left */
-        }
-
-        .content-container {
-            order: 2;
-            /* Place content on the right */
-        }
-
-        /* Additional styling for navigation links */
-        .nav-container nav ul {
-            padding: 10px;
-            /* Adjust padding as needed */
-            background-color: #f4f4f4;
-            /* Add a background color for navigation */
-            border-radius: 5px;
-            display: flex;
-            flex-direction: column;
-            /* Set the direction to column for vertical stacking */
-        }
-
-        .nav-container nav a {
-            display: block;
-            padding: 10px;
-            border-radius: 5px;
-            margin-bottom: 5px;
-            transition: background-color 0.3s;
-        }
-
-        .nav-container nav a:hover {
-            background-color: #eee;
+            font-family: 'Courier New', monospace;
         }
     </style>
 </head>
