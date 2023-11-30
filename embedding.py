@@ -186,7 +186,7 @@ def embed(Y, d=10, right_embedding=False, make_laplacian=False, regulariser=0):
 
     # Check if there is more than one connected component
     num_components = connected_components(
-        symmetric_dilation(A), directed=False)[0]
+        symmetric_dilation(Y), directed=False)[0]
 
     if num_components > 1:
         warnings.warn(

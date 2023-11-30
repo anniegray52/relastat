@@ -6,3 +6,49 @@ Potential functionality:
 - threshold to include data ? (used in bid data)
 - selection of CC for partition you want (check about Company-Company matrices)
 - checks for missing data etc
+
+
+## ======== ## preprocessing.py ## ======== ##
+
+Misc Functions
+-- zero_matrix
+-- count_based_on_keys
+
+Data Preparation
+-- matrix_from_tables
+
+Graph Functions
+-- create_edge_list
+-- extract_node_time_info
+-- transform_edge_data
+-- create_adjacency_matrix
+-- create_node_attributes
+-- find_subgraph
+-- symmetric_dilation
+-- subgraph_idx
+-- find_connected_components
+-- find_cc_containing_most
+-- to_networkx
+
+Time Series Functions
+-- matrix_from_time_series
+
+Text Analysis Functions
+-- del_email_address
+-- clean_text_
+-- remove_stopwords_
+-- matrix_from_text
+
+## ======== ## embedding.py ## ======== ##
+
+-- symmetric_dilation
+-- zero_matrix
+-- safe_inv_sqrt
+-- to_laplacian
+-- dim_select
+-- wasserstein_dim_select
+-- embed
+-- recover_subspaces
+-- select
+-- truncate
+-- degree_correction
