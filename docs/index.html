@@ -16,25 +16,24 @@
 
         .container {
             display: flex;
-            justify-content: space-between;
             margin: 20px;
         }
 
         .nav-container,
         .content-container {
-            flex-basis: 48%;
-            margin: 0 10px;
+            box-sizing: border-box;
+            /* Include padding and border in the total width */
+            padding: 10px;
         }
 
         .nav-container {
-            flex-basis: 90%;
-            /* Adjust as needed */
+            width: 90%;
         }
 
         .content-container {
-            flex-basis: 10%;
-            /* Adjust as needed */
+            width: 10%;
         }
+
 
         .nav-container nav ul {
             padding: 10px;
