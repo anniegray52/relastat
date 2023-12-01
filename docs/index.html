@@ -86,151 +86,179 @@
         <div class="nav-container">
 
 
-            <h1>Codebase</h1>
-            <p>Codebase for statistics based on similarity and connectivity.</p>
-
             <nav>
                 <ul>
-                    <li><a href="#graph-functions">Graph Functions</a></li>
-                    <li><a href="#time-series-functions">Time Series Functions</a></li>
-                    <li><a href="#helper-functions">Helper Functions</a></li>
-                    <li><a href="#connected-components">Connected Components</a></li>
-                    <li><a href="#networkx-conversion">NetworkX Conversion</a></li>
+                    <li><a href="#overview">Overview</a></li>
+                    <li><a href="#preprocessing-functions">Preprocessing</a></li>
+                    <li><a href="#embedding">Embedding</a></li>
+                    <li><a href="#analysis">Analysis</a></li>
+                    <li><a href="#references">References</a></li>
                 </ul>
             </nav>
         </div>
         <div class="content-container">
-            <section id="graph-functions">
-                <h2>Graph Functions</h2>
 
-                <h3><code>matrix_from_tables</code></h3>
-                <p>Create a matrix and attributes from one or more dataframes.</p>
-                <p><strong>Parameters:</strong></p>
-                <ul>
-                    <li><code>tables</code>: pandas.DataFrame or list of pandas.DataFrame.
-                        The data to be used to create the graph. If a list of dataframes is
-                        passed, each dataframe is used to create a separate graph.</li>
-                    <li><code>relationships</code>: list of lists.
-                        The relationship pairs to be used to create the graph. Types:
-                        <dd>- list of pairs: Each element of
-                            the list is a list of two elements, which are the names of the
-                            columns to be joined. All tables will be searched for these column names. </dd>
-                        <dd>- list of lists of pairs: the number of lists is equal to the number of tables, to specify
-                            relationship
-                            pairs for each table. Each sublist is a list of pairs of columns to link.</dd>
-                    </li>
-                    <li><code>dynamic_col</code>: <code>str</code> or list of <code>str</code>. The name of the column
-                        containing the time information. If
-                        a list of
-                        strings is passed, each string is the name of the column containing
-                        the time information for each dataframe in data. Default <code>= None</code>, meaning there is
-                        no
-                        temporal aspect.
-                    </li>
-                    <li><code>weight_col</code>: <code>str</code> or list of <code>str</code>. The name of the column
-                        containing
-                        edge weights. If
-                        a list of strings is passed, each string is the name of the column containing
-                        the weight information for each dataframe in data. Default <code>= None</code>, which means all
-                        the
-                        edges will have
-                        weight one.</li>
-                    <li><code>join_token</code>: <code>str</code>. The token used to join the relationship name and the
-                        ID name.
-                        Default <code>='::'</code></li>
-                </ul>
-                <p><strong>Returns:</strong></p>
-                <ul>
-                    <li><code>A</code>: <code>scipy.sparse.csr_matrix</code>. The matrix of the graph.</li>
-                    <li><code>attributes</code>: list of lists. The attributes of the data points. The first list
-                        contains the
-                        attributes
-                        of the data points that do not change over time. The second list contains
-                        the attributes of the data points that change over time.</li>
-                </ul>
+            <h1>Codebase</h1>
+            <p>For statistics based on similarity and connectivity.</p>
+            <section id="overview">
+                <h2>Overview</h2>
+                <p>For statistics based on similarity and connectivity.</p>
 
-                The following function is used within <code>matrix_from_tables</code>:
 
-                <h3><code>create_edge_list</code></h3>
-                <p>Create an edge list from tables, relationships, dynamic columns, and weight columns.</p>
-                <p><strong>Parameters:</strong></p>
-                <ul>
-                    <li><code>tables</code>: pandas.DataFrame or list of pandas.DataFrame</li>
-                    <li><code>relationships</code>: list of lists</li>
-                    <li><code>dynamic_col</code>: str or list of str</li>
-                    <li><code>weight_col</code>: str or list of str</li>
-                    <li><code>join_token</code>: str</li>
-                </ul>
-                <p><strong>Returns:</strong></p>
-                <ul>
-                    <li><code>edge_list</code>: pandas.DataFrame</li>
-                </ul>
+                <section id="graph-functions">
+                    <h1>Preprocessing Functions</h1>
 
-                There are more functions within the <code>preprocessing.py</code> module, but they are not used directly
-                by the
-                user. They are used within the <code>matrix_from_tables</code> function.
-            </section>
+                    <h2>Graph Functions</h2>
 
-            <section id="time-series-functions">
-                <h2>Time Series Functions</h2>
+                    <h3><code>matrix_from_tables</code></h3>
+                    <p>Create a matrix and attributes from one or more dataframes.</p>
+                    <p><strong>Parameters:</strong></p>
+                    <ul>
+                        <li><code>tables</code>: pandas.DataFrame or list of pandas.DataFrame.
+                            The data to be used to create the graph. If a list of dataframes is
+                            passed, each dataframe is used to create a separate graph.</li>
+                        <li><code>relationships</code>: list of lists.
+                            The relationship pairs to be used to create the graph. Types:
+                            <dd>- list of pairs: Each element of
+                                the list is a list of two elements, which are the names of the
+                                columns to be joined. All tables will be searched for these column names. </dd>
+                            <dd>- list of lists of pairs: the number of lists is equal to the number of tables, to
+                                specify
+                                relationship
+                                pairs for each table. Each sublist is a list of pairs of columns to link.</dd>
+                        </li>
+                        <li><code>dynamic_col</code>: <code>str</code> or list of <code>str</code>. The name of the
+                            column
+                            containing the time information. If
+                            a list of
+                            strings is passed, each string is the name of the column containing
+                            the time information for each dataframe in data. Default <code>= None</code>, meaning there
+                            is
+                            no
+                            temporal aspect.
+                        </li>
+                        <li><code>weight_col</code>: <code>str</code> or list of <code>str</code>. The name of the
+                            column
+                            containing
+                            edge weights. If
+                            a list of strings is passed, each string is the name of the column containing
+                            the weight information for each dataframe in data. Default <code>= None</code>, which means
+                            all
+                            the
+                            edges will have
+                            weight one.</li>
+                        <li><code>join_token</code>: <code>str</code>. The token used to join the relationship name and
+                            the
+                            ID name.
+                            Default <code>='::'</code></li>
+                    </ul>
+                    <p><strong>Returns:</strong></p>
+                    <ul>
+                        <li><code>A</code>: <code>scipy.sparse.csr_matrix</code>. The matrix of the graph.</li>
+                        <li><code>attributes</code>: list of lists. The attributes of the data points. The first list
+                            contains the
+                            attributes
+                            of the data points that do not change over time. The second list contains
+                            the attributes of the data points that change over time.</li>
+                    </ul>
 
-                <h3><code>matrix_from_time_series</code></h3>
-                <p>Create a matrix from a time series.</p>
-                <p><strong>Parameters:</strong></p>
-                <ul>
-                    <li><code>data</code>: pandas.DataFrame</li>
-                    <li><code>time_col</code>: str</li>
-                    <li><code>drop_nas</code>: bool</li>
-                </ul>
-                <p><strong>Returns:</strong></p>
-                <ul>
-                    <li><code>Y</code>: numpy.ndarray</li>
-                    <li><code>attributes</code>: list of lists</li>
-                </ul>
+                    The following function is used within <code>matrix_from_tables</code>:
 
-                <!-- Add more time series-related functions -->
-            </section>
+                    <h3><code>create_edge_list</code></h3>
+                    <p>Create an edge list from tables, relationships, dynamic columns, and weight columns.</p>
+                    <p><strong>Parameters:</strong></p>
+                    <ul>
+                        <li><code>tables</code>: pandas.DataFrame or list of pandas.DataFrame</li>
+                        <li><code>relationships</code>: list of lists</li>
+                        <li><code>dynamic_col</code>: str or list of str</li>
+                        <li><code>weight_col</code>: str or list of str</li>
+                        <li><code>join_token</code>: str</li>
+                    </ul>
+                    <p><strong>Returns:</strong></p>
+                    <ul>
+                        <li><code>edge_list</code>: pandas.DataFrame</li>
+                    </ul>
 
-            <section id="helper-functions">
-                <h2>Helper Functions</h2>
+                    <h3><code>Other function</code></h3>
+                    <p>These are more functions within the <code>preprocessing.py</code> module, but they are not used
+                        directly
+                        by the user. They are used within the <code>matrix_from_tables</code> function.</p>
+                    <ul>
+                        <li><code>extract_node_time_info</code></li>
+                        <li><code>transform_edge_data</code></li>
+                        <li><code>create_adjacency_matrix</code></li>
+                        <li><code>create_node_attributes</code></li>
+                        <li><code>create_edge_list_from_weight_col</code></li>
+                        <li><code>create_edge_list_from_join_token</code></li>
+                    </ul>
 
-                <h3><code>symmetric_dilation</code></h3>
-                <p>Dilate a matrix to a symmetric matrix.</p>
-                <p><strong>Parameters:</strong></p>
-                <ul>
-                    <li><code>M</code>: scipy.sparse.csr_matrix</li>
-                </ul>
-                <p><strong>Returns:</strong></p>
-                <ul>
-                    <li><code>D</code>: scipy.sparse.csr_matrix</li>
-                </ul>
+                    <h2>Time Series Functions</h2>
 
-                <h3><code>find_connected_components</code></h3>
-                <p>Find connected components of a multipartite graph.</p>
-                <p><strong>Parameters:</strong></p>
-                <ul>
-                    <li><code>A</code>: scipy.sparse.csr_matrix</li>
-                    <li><code>attributes</code>: list of lists</li>
-                    <!-- Add more parameters as needed -->
-                </ul>
-                <p><strong>Returns:</strong></p>
-                <ul>
-                    <li><code>cc_As</code>: list of scipy.sparse.csr_matrix</li>
-                    <li><code>cc_attributes</code>: list of lists</li>
-                </ul>
+                    <h3><code>matrix_from_time_series</code></h3>
+                    <p>Create a matrix from a time series.</p>
+                    <p><strong>Parameters:</strong></p>
+                    <ul>
+                        <li><code>data</code>: pandas.DataFrame</li>
+                        <li><code>time_col</code>: str</li>
+                        <li><code>drop_nas</code>: bool</li>
+                    </ul>
+                    <p><strong>Returns:</strong></p>
+                    <ul>
+                        <li><code>Y</code>: numpy.ndarray</li>
+                        <li><code>attributes</code>: list of lists</li>
+                    </ul>
 
-                <!-- Add more helper functions -->
-            </section>
+                    <h2>Text functions</h2>
 
-            <section id="connected-components">
-                <h2>Connected Components</h2>
+                    <h2>Helper Functions</h2>
 
-                <h3><code>find_cc_containing_most</code></h3>
-                <p>Find the connected component containing the most nodes from a partition.</p>
-                <p><strong>Parameters:</strong></p>
-                <ul>
-                    <li><code>A</code>: scipy.sparse.csr_matrix</li>
+                    <h3><code>symmetric_dilation</code></h3>
+                    <p>Dilate a matrix to a symmetric matrix.</p>
+                    <p><strong>Parameters:</strong></p>
+                    <ul>
+                        <li><code>M</code>: scipy.sparse.csr_matrix</li>
+                    </ul>
+                    <p><strong>Returns:</strong></p>
+                    <ul>
+                        <li><code>D</code>: scipy.sparse.csr_matrix</li>
+                    </ul>
 
+                    <h3><code>find_connected_components</code></h3>
+                    <p>Find connected components of a multipartite graph.</p>
+                    <p><strong>Parameters:</strong></p>
+                    <ul>
+                        <li><code>A</code>: scipy.sparse.csr_matrix</li>
+                        <li><code>attributes</code>: list of lists</li>
+                        <!-- Add more parameters as needed -->
+                    </ul>
+                    <p><strong>Returns:</strong></p>
+                    <ul>
+                        <li><code>cc_As</code>: list of scipy.sparse.csr_matrix</li>
+                        <li><code>cc_attributes</code>: list of lists</li>
+                    </ul>
+
+                    <!-- Add more helper functions -->
+                </section>
+
+
+                <section id="Embedding">
+                    <h1>Embedding Functions</h1>
+                    <h2>Connected Components</h2>
+
+                    <h3><code>find_cc_containing_most</code></h3>
+                    <p>Find the connected component containing the most nodes from a partition.</p>
+                    <p><strong>Parameters:</strong></p>
+                    <ul>
+                        <li><code>A</code>: scipy.sparse.csr_matrix</li>
+                </section>
+                <section id="Analysis">
+                    <h1>Analysis Functions</h1>
+                </section>
+
+
+                <section id="references">
+                    <h1>References</h1>
+                </section>
         </div>
     </div>
 
