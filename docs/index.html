@@ -198,19 +198,47 @@
                     <p>Create a matrix from a time series.</p>
                     <p><strong>Parameters:</strong></p>
                     <ul>
-                        <li><code>data</code>: pandas.DataFrame</li>
-                        <li><code>time_col</code>: str</li>
-                        <li><code>drop_nas</code>: bool</li>
+                        <li><code>data</code>: pandas.DataFrame. The data to be used to create the matrix. n columns for
+                            data points and a time column.</li>
+                        <li><code>time_col</code>: str. The name of the column containing the time information.</li>
+                        <li><code>drop_nas</code>: bool. Whether to drop rows with missing values.</li>
                     </ul>
                     <p><strong>Returns:</strong></p>
                     <ul>
-                        <li><code>Y</code>: numpy.ndarray</li>
-                        <li><code>attributes</code>: list of lists</li>
+                        <li><code>Y</code>: numpy.ndarray. Time series matrix, n rows and p columns, where p is the
+                            number of time points. </li>
+                        <li><code>attributes</code>: list of lists. The attributes of the nodes. The first list contains
+                            the attributes
+                            of the nodes in rows. The second list contains
+                            the attributes of the nodes in the columns.</li>
                     </ul>
 
                     <h2>Text functions</h2>
 
-                    <h2>Helper Functions</h2>
+                    <h3><code>matrix_from_text</code></h3>
+
+                    <pre>
+                                <code>
+                                    /**
+                                    * Create a matrix from a column of text data.
+                                    *
+                                    * @param {pandas.DataFrame} data - The data to be used to create the matrix.
+                                    * @param {string} column_name - The name of the column containing the text data.
+                                    * @param {boolean} [remove_stopwords] - Whether to remove stopwords.
+                                    * @param {boolean} [clean_text] - Whether to clean the text data.
+                                    * @param {boolean} [remove_email_addresses] - Whether to remove email addresses.
+                                    * @param {Array<string>} [update_stopwords] - The list of additional stopwords to be removed.
+                                    * @param {Object} [kwargs] - Other arguments to be passed to sklearn.feature_extraction.text.TfidfVectorizer.
+                                    *
+                                    * @returns {numpy.ndarray} Y - The matrix created from the text data.
+                                    * @returns {Array<Array>} attributes - The attributes of the nodes. The first list contains the attributes
+                                    *                                      of the nodes in rows. The second list contains
+                                    *                                      the attributes of the nodes in the columns.
+                                    */
+                                </code>
+                            </pre>
+
+
 
                     <h3><code>symmetric_dilation</code></h3>
                     <p>Dilate a matrix to a symmetric matrix.</p>
