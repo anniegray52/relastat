@@ -98,17 +98,17 @@
         </div>
         <div class="content-container">
 
-            <h1>Codebase</h1>
+            <h1><u>Codebase</u></h1>
             <p>For statistics based on similarity and connectivity.</p>
             <section id="overview">
-                <h2>Overview</h2>
+                <h2><u>Overview</u></h2>
                 <p>For statistics based on similarity and connectivity.</p>
 
 
                 <section id="graph-functions">
-                    <h1>Preprocessing Functions</h1>
+                    <h1><u>Preprocessing Functions</u></h1>
 
-                    <h2>Graph Functions</h2>
+                    <h2><u>Graph Functions</u></h2>
 
                     <h3><code>matrix_from_tables</code></h3>
                     <p>Create a matrix and attributes from one or more dataframes.</p>
@@ -179,7 +179,7 @@
                         <li><code>edge_list</code>: pandas.DataFrame</li>
                     </ul>
 
-                    <h3><code>Other function</code></h3>
+                    <h3><code>Other functions</code></h3>
                     <p>These are more functions within the <code>preprocessing.py</code> module, but they are not used
                         directly
                         by the user. They are used within the <code>matrix_from_tables</code> function.</p>
@@ -192,7 +192,7 @@
                         <li><code>create_edge_list_from_join_token</code></li>
                     </ul>
 
-                    <h2>Time Series Functions</h2>
+                    <h2><u>Time Series Functions</u></h2>
 
                     <h3><code>matrix_from_time_series</code></h3>
                     <p>Create a matrix from a time series.</p>
@@ -213,7 +213,7 @@
                             the attributes of the nodes in the columns.</li>
                     </ul>
 
-                    <h2>Text functions</h2>
+                    <h2><u>Text functions</u></h2>
 
                     <h3><code>matrix_from_text</code></h3>
                     <p>Create a matrix from a text data.</p>
@@ -240,39 +240,51 @@
                     </ul>
 
 
-
-                    <h3><code>symmetric_dilation</code></h3>
-                    <p>Dilate a matrix to a symmetric matrix.</p>
-                    <p><strong>Parameters:</strong></p>
+                    <h3><code>Other functions</code></h3>
+                    <p>These are more functions within the <code>preprocessing.py</code> module, but they are not used
+                        directly
+                        by the user. They are used within the <code>matrix_from_text</code> function.</p>
                     <ul>
-                        <li><code>M</code>: scipy.sparse.csr_matrix</li>
-                    </ul>
-                    <p><strong>Returns:</strong></p>
-                    <ul>
-                        <li><code>D</code>: scipy.sparse.csr_matrix</li>
+                        <li><code>del_email_address</code></li>
+                        <li><code>clean_text_</code></li>
+                        <li><code>remove_stopwords_</code></li>
                     </ul>
 
-                    <h3><code>find_connected_components</code></h3>
-                    <p>Find connected components of a multipartite graph.</p>
-                    <p><strong>Parameters:</strong></p>
-                    <ul>
-                        <li><code>A</code>: scipy.sparse.csr_matrix</li>
-                        <li><code>attributes</code>: list of lists</li>
-                        <!-- Add more parameters as needed -->
-                    </ul>
-                    <p><strong>Returns:</strong></p>
-                    <ul>
-                        <li><code>cc_As</code>: list of scipy.sparse.csr_matrix</li>
-                        <li><code>cc_attributes</code>: list of lists</li>
-                    </ul>
-
-                    <!-- Add more helper functions -->
-                </section>
+                    <section id="Embedding">
+                        <h1><u>Embedding Functions</u></h1>
 
 
-                <section id="Embedding">
-                    <h1>Embedding Functions</h1>
-                    <h2>Connected Components</h2>
+                        <h3><code>symmetric_dilation</code></h3>
+                        <p>Dilate a matrix to a symmetric matrix.</p>
+                        <p><strong>Parameters:</strong></p>
+                        <ul>
+                            <li><code>M</code>: scipy.sparse.csr_matrix</li>
+                        </ul>
+                        <p><strong>Returns:</strong></p>
+                        <ul>
+                            <li><code>D</code>: scipy.sparse.csr_matrix</li>
+                        </ul>
+
+                        <h3><code>find_connected_components</code></h3>
+                        <p>Find connected components of a multipartite graph.</p>
+                        <p><strong>Parameters:</strong></p>
+                        <ul>
+                            <li><code>A</code>: scipy.sparse.csr_matrix</li>
+                            <li><code>attributes</code>: list of lists</li>
+                            <!-- Add more parameters as needed -->
+                        </ul>
+                        <p><strong>Returns:</strong></p>
+                        <ul>
+                            <li><code>cc_As</code>: list of scipy.sparse.csr_matrix</li>
+                            <li><code>cc_attributes</code>: list of lists</li>
+                        </ul>
+
+                        <!-- Add more helper functions -->
+                    </section>
+
+
+
+                    <h2><u>Connected Components</u></h2>
 
                     <h3><code>find_cc_containing_most</code></h3>
                     <p>Find the connected component containing the most nodes from a partition.</p>
@@ -281,7 +293,7 @@
                         <li><code>A</code>: scipy.sparse.csr_matrix</li>
                 </section>
                 <section id="Analysis">
-                    <h1>Analysis Functions</h1>
+                    <h1><u>Analysis Functions</u></h1>
                 </section>
 
 
