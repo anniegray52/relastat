@@ -216,27 +216,28 @@
                     <h2>Text functions</h2>
 
                     <h3><code>matrix_from_text</code></h3>
+                    <p>Create a matrix from a text data.</p>
+                    <p><strong>Parameters:</strong></p>
+                    <ul>
+                        <li><code>data</code>: pandas.DataFrame. The data to be used to create the matrix.</li>
+                        <li><code>column_name</code>: str. The name of the column containing the text data.</li>
+                        <li><code>remove_stopwords</code>: bool. Whether to remove stopwords.</li>
+                        <li><code>clean_text</code>: bool. Whether to clean the text data.</li>
+                        <li><code>remove_email_addresses</code>: bool. Whether to remove email addresses.</li>
+                        <li><code>update_stopwords</code>: Array&lt;string&gt;. The list of additional stopwords to be
+                            removed.</li>
+                        <li><code>kwargs</code>: Object. Other arguments to be passed to
+                            sklearn.feature_extraction.text.TfidfVectorizer.
+                        </li>
+                    </ul>
 
-                    <pre>
-                                <code>
-                                    /**
-                                    * Create a matrix from a column of text data.
-                                    *
-                                    * @param {pandas.DataFrame} data - The data to be used to create the matrix.
-                                    * @param {string} column_name - The name of the column containing the text data.
-                                    * @param {boolean} [remove_stopwords] - Whether to remove stopwords.
-                                    * @param {boolean} [clean_text] - Whether to clean the text data.
-                                    * @param {boolean} [remove_email_addresses] - Whether to remove email addresses.
-                                    * @param {Array<string>} [update_stopwords] - The list of additional stopwords to be removed.
-                                    * @param {Object} [kwargs] - Other arguments to be passed to sklearn.feature_extraction.text.TfidfVectorizer.
-                                    *
-                                    * @returns {numpy.ndarray} Y - The matrix created from the text data.
-                                    * @returns {Array<Array>} attributes - The attributes of the nodes. The first list contains the attributes
-                                    *                                      of the nodes in rows. The second list contains
-                                    *                                      the attributes of the nodes in the columns.
-                                    */
-                                </code>
-                            </pre>
+                    <p><strong>Returns:</strong></p>
+                    <ul>
+                        <li><code>Y</code>: numpy.ndarray. The matrix created from the text data.</li>
+                        <li><code>attributes</code>: list of lists. The attributes of the nodes. The first list contains
+                            the attributes of
+                            the nodes in rows. The second list contains the attributes of the nodes in the columns.</li>
+                    </ul>
 
 
 
