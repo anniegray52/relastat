@@ -10,7 +10,10 @@ Welcome to codebase's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-   functions
+   rela_py/preprocessing
+   rela_py/embedding
+   rela_py/analysis
+   rela_py/misc
 
 Indices and tables
 ==================
