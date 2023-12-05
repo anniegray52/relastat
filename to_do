@@ -53,3 +53,20 @@ Text Analysis Functions
 -- select
 -- truncate
 -- degree_correction
+
+
+    <h3><code>Function</code></h3>
+    <p>Function explanation</p>
+    <p><strong>Parameters:</strong></p>
+    <ul>
+        <li><code> </code>: </li>
+        <li><code> </code>: </li>
+    </ul>
+
+    <p><strong>Returns:</strong></p>
+    <ul>
+        <li><code> </code>: </li>
+        <li><code> </code>: </li>
+    </ul>
+
+

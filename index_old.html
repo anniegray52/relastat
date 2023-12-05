@@ -253,6 +253,28 @@
                     <section id="embedding">
                         <h1><u>Embedding Functions</u></h1>
 
+                        <h3><code>embed</code></h3>
+                        <p>Embed a matrix.</p>
+                        <p><strong>Parameters:</strong></p>
+                        <ul>
+                            <li><code>Y</code>: matrix. The matrix to be embedded.</li>
+                            <li><code>d</code>: int. The dimension of the embedding.</li>
+                            <li><code>right_embedding</code>: bool. Default = <tt> False</tt>. Whether to also return
+                                the embedding of the columns. </li>
+                            <li><code>make_laplacian</code>: Default = <tt> False</tt>. Whether to convert matrix to a
+                                laplacian matrix. This should only be used if an adjaceny matrix is given for Y.</li>
+                            <li><code>regulariser</code>: float. Default = 0. The regulariser to be added to the degrees
+                                of the nodes (if <tt>make_laplacian = 'laplacian'</tt> used).</li>
+                        </ul>
+
+                        <p><strong>Returns:</strong></p>
+                        <ul>
+                            <li><code>left_embedding</code>: numpy.ndarray. The left embedding of the graph.</li>
+                            <li><code>right_embedding</code>: numpy.ndarray. The right embedding of the graph (if
+                                <code>right_embedding=True</code>).</li>
+                        </ul>
+
+
 
                         <h3><code>symmetric_dilation</code></h3>
                         <p>Dilate a matrix to a symmetric matrix.</p>
@@ -292,6 +314,8 @@
                     <ul>
                         <li><code>A</code>: scipy.sparse.csr_matrix</li>
                 </section>
+
+
                 <section id="analysis">
                     <h1><u>Analysis Functions</u></h1>
                 </section>
