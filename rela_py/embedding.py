@@ -1,3 +1,10 @@
+"""
+Embedding 
+====================================
+To embed matrices.
+"""
+
+
 import pandas as pd
 import numpy as np
 from scipy import sparse
