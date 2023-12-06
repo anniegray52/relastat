@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>embedding module &mdash; RelaStat  documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b3ba4146"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="misc module" href="misc.html" />
+    <link rel="prev" title="analysis module" href="analysis.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            RelaStat
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">rela_py</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="graph_functions.html">graph_functions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="time_series_functions.html">time_series_functions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="text_analysis_functions.html">text_analysis_functions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="misc_functions.html">misc_functions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analysis.html">analysis module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">embedding module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#embedding">Embedding</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#embedding.degree_correction"><code class="docutils literal notranslate"><span class="pre">degree_correction()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#embedding.dim_select"><code class="docutils literal notranslate"><span class="pre">dim_select()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#embedding.embed"><code class="docutils literal notranslate"><span class="pre">embed()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#embedding.recover_subspaces"><code class="docutils literal notranslate"><span class="pre">recover_subspaces()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#embedding.safe_inv_sqrt"><code class="docutils literal notranslate"><span class="pre">safe_inv_sqrt()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#embedding.select"><code class="docutils literal notranslate"><span class="pre">select()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#embedding.symmetric_dilation"><code class="docutils literal notranslate"><span class="pre">symmetric_dilation()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#embedding.to_laplacian"><code class="docutils literal notranslate"><span class="pre">to_laplacian()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#embedding.truncate"><code class="docutils literal notranslate"><span class="pre">truncate()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#embedding.wasserstein_dim_select"><code class="docutils literal notranslate"><span class="pre">wasserstein_dim_select()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#embedding.zero_matrix"><code class="docutils literal notranslate"><span class="pre">zero_matrix()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="misc.html">misc module</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">RelaStat</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">rela_py</a></li>
+      <li class="breadcrumb-item active">embedding module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/embedding.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-embedding">
+<span id="embedding-module"></span><h1>embedding module<a class="headerlink" href="#module-embedding" title="Permalink to this heading"></a></h1>
+<section id="embedding">
+<h2>Embedding<a class="headerlink" href="#embedding" title="Permalink to this heading"></a></h2>
+<p>To embed matrices.</p>
+</section>
+<dl class="py function">
+<dt class="sig sig-object py" id="embedding.degree_correction">
+<span class="sig-prename descclassname"><span class="pre">embedding.</span></span><span class="sig-name descname"><span class="pre">degree_correction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#embedding.degree_correction" title="Permalink to this definition"></a></dt>
+<dd><p>Perform degree correction.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="embedding.dim_select">
+<span class="sig-prename descclassname"><span class="pre">embedding.</span></span><span class="sig-name descname"><span class="pre">dim_select</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plotrange</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#embedding.dim_select" title="Permalink to this definition"></a></dt>
+<dd><p>Select the number of dimensions for A.
+Finding a changepoint using the likelihood profile (Zhu, Ghodsi; 2006).</p>
+<section id="parameters">
+<h2>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading"></a></h2>
+<dl class="simple">
+<dt>As<span class="classifier">numpy.array</span></dt><dd><p>The array of matrices.</p>
+</dd>
+<dt>plot<span class="classifier">bool</span></dt><dd><p>Whether to plot the singular values and the likelihood profile.</p>
+</dd>
+<dt>plotrange<span class="classifier">int</span></dt><dd><p>The range of dimensions to be plotted.</p>
+</dd>
+</dl>
+</section>
+<section id="returns">
+<h2>Returns<a class="headerlink" href="#returns" title="Permalink to this heading"></a></h2>
+<dl class="simple">
+<dt>lq_best<span class="classifier">int</span></dt><dd><p>The number of dimensions selected.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="embedding.embed">
+<span class="sig-prename descclassname"><span class="pre">embedding.</span></span><span class="sig-name descname"><span class="pre">embed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right_embedding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">make_laplacian</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regulariser</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#embedding.embed" title="Permalink to this definition"></a></dt>
+<dd><p>Embed a graph using the Laplacian or adjacency matrix.</p>
+<section id="id1">
+<h2>Parameters<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h2>
+<dl class="simple">
+<dt>A<span class="classifier">scipy.sparse.csr_matrix  </span></dt><dd><p>The matrix.</p>
+</dd>
+<dt>d<span class="classifier">int </span></dt><dd><p>The dimension of the embedding.</p>
+</dd>
+<dt>matrix<span class="classifier">str    </span></dt><dd><p>The matrix to be used for embedding. Should be ‘adjacency’ or ‘laplacian’.</p>
+</dd>
+<dt>regulariser<span class="classifier">float </span></dt><dd><p>The regulariser to be added to the degrees of the nodes (if matrix = ‘laplacian’ used).</p>
+</dd>
+</dl>
+</section>
+<section id="id2">
+<h2>Returns<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h2>
+<dl class="simple">
+<dt>left_embedding<span class="classifier">numpy.ndarray </span></dt><dd><p>The left embedding of the graph.</p>
+</dd>
+<dt>right_embedding<span class="classifier">numpy.ndarray </span></dt><dd><p>The right embedding of the graph.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="embedding.recover_subspaces">
+<span class="sig-prename descclassname"><span class="pre">embedding.</span></span><span class="sig-name descname"><span class="pre">recover_subspaces</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">embedding</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attributes</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#embedding.recover_subspaces" title="Permalink to this definition"></a></dt>
+<dd><p>Recover the subspaces for each partition from an embedding.</p>
+<section id="id3">
+<h2>Parameters<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h2>
+<dl class="simple">
+<dt>embedding<span class="classifier">numpy.ndarray</span></dt><dd><p>The embedding of the graph.</p>
+</dd>
+<dt>attributes<span class="classifier">list of lists</span></dt><dd><p>The attributes of the nodes. The first list contains the attributes
+of the nodes in rows. The second list contains
+the attributes of the nodes in the columns.</p>
+</dd>
+</dl>
+</section>
+<section id="id4">
+<h2>Returns<a class="headerlink" href="#id4" title="Permalink to this heading"></a></h2>
+<dl class="simple">
+<dt>partition_embeddings<span class="classifier">dict</span></dt><dd><p>The embeddings of the partitions.</p>
+</dd>
+<dt>partition_attributes<span class="classifier">dict</span></dt><dd><p>The attributes of the nodes in the partitions.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="embedding.safe_inv_sqrt">
+<span class="sig-prename descclassname"><span class="pre">embedding.</span></span><span class="sig-name descname"><span class="pre">safe_inv_sqrt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-12</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#embedding.safe_inv_sqrt" title="Permalink to this definition"></a></dt>
+<dd><p>Compute the inverse square root of an array, ignoring division by zero.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="embedding.select">
+<span class="sig-prename descclassname"><span class="pre">embedding.</span></span><span class="sig-name descname"><span class="pre">select</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">embedding</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attributes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">select_attributes</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#embedding.select" title="Permalink to this definition"></a></dt>
+<dd><p>Select portion of embedding and attributes associated with a set of attributes.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="embedding.symmetric_dilation">
+<span class="sig-prename descclassname"><span class="pre">embedding.</span></span><span class="sig-name descname"><span class="pre">symmetric_dilation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">M</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#embedding.symmetric_dilation" title="Permalink to this definition"></a></dt>
+<dd><p>Dilate a matrix to a symmetric matrix.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="embedding.to_laplacian">
+<span class="sig-prename descclassname"><span class="pre">embedding.</span></span><span class="sig-name descname"><span class="pre">to_laplacian</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regulariser</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#embedding.to_laplacian" title="Permalink to this definition"></a></dt>
+<dd><p>Convert an adjacency matrix to a Laplacian matrix.</p>
+<section id="id5">
+<h2>Parameters<a class="headerlink" href="#id5" title="Permalink to this heading"></a></h2>
+<dl class="simple">
+<dt>A<span class="classifier">scipy.sparse.csr_matrix</span></dt><dd><p>The adjacency matrix.</p>
+</dd>
+<dt>regulariser<span class="classifier">float</span></dt><dd><p>The regulariser to be added to the degrees of the nodes.</p>
+</dd>
+</dl>
+</section>
+<section id="id6">
+<h2>Returns<a class="headerlink" href="#id6" title="Permalink to this heading"></a></h2>
+<dl class="simple">
+<dt>L<span class="classifier">scipy.sparse.csr_matrix</span></dt><dd><p>The Laplacian matrix.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="embedding.truncate">
+<span class="sig-prename descclassname"><span class="pre">embedding.</span></span><span class="sig-name descname"><span class="pre">truncate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#embedding.truncate" title="Permalink to this definition"></a></dt>
+<dd><p>Truncate an embedding to a lower dimension.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="embedding.wasserstein_dim_select">
+<span class="sig-prename descclassname"><span class="pre">embedding.</span></span><span class="sig-name descname"><span class="pre">wasserstein_dim_select</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rmin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#embedding.wasserstein_dim_select" title="Permalink to this definition"></a></dt>
+<dd><p>Select the number of dimensions for Y using Wasserstein distances.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="embedding.zero_matrix">
+<span class="sig-prename descclassname"><span class="pre">embedding.</span></span><span class="sig-name descname"><span class="pre">zero_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#embedding.zero_matrix" title="Permalink to this definition"></a></dt>
+<dd><p>Create a zero matrix.</p>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="analysis.html" class="btn btn-neutral float-left" title="analysis module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="misc.html" class="btn btn-neutral float-right" title="misc module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Annie Gray.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
