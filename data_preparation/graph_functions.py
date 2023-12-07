@@ -401,3 +401,21 @@ def to_networkx(A, attributes, symmetric=None):
         nx.set_node_attributes(
             G_nx, {i + n0: {'bipartite': 1} for i in range(n1)})
         return G_nx
+
+
+def zero_matrix(m, n=None):
+    if n == None:
+        n = m
+    M = sparse.coo_matrix(([], ([], [])), shape=(m, n))
+    return M
+
+
+def count_based_on_keys(list_of_dicts, selected_keys):
+    if isinstance(selected_keys, str):
+        counts = Counter(d[selected_keys] for d in list_of_dicts)
+    elif len(selected_keys) == 1:
+        counts = Counter(d[selected_keys[0]] for d in list_of_dicts)
+    else:
+        counts = Counter(tuple(d[key] for key in selected_keys)
+                         for d in list_of_dicts)
+    return counts
