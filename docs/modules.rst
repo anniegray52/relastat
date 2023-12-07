@@ -1,13 +1,10 @@
-rela_py
-=======
+Codebase
+========
 
 .. toctree::
    :maxdepth: 4
 
-   graph_functions
-   time_series_functions
-   text_analysis_functions
-   misc_functions
+   data_preparation
    embedding
    analysis
-   misc
+   utils
