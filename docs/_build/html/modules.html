@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>rela_py &mdash; RelaStat  documentation</title>
+  <title>Codebase &mdash; RelaStat  documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
 
@@ -21,7 +21,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="graph_functions module" href="graph_functions.html" />
+    <link rel="next" title="Data Preparation" href="data_preparation.html" />
     <link rel="prev" title="Welcome to RelaStat’s documentation!" href="index.html" /> 
 </head>
 
@@ -46,14 +46,11 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">rela_py</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="graph_functions.html">graph_functions module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="time_series_functions.html">time_series_functions module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="text_analysis_functions.html">text_analysis_functions module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="misc_functions.html">misc_functions module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="analysis.html">analysis module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="embedding.html">embedding module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="misc.html">misc module</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Codebase</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="data_preparation.html">Data Preparation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="embedding.html">Embedding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analysis.html">Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html">Misc</a></li>
 </ul>
 </li>
 </ul>
@@ -72,7 +69,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">rela_py</li>
+      <li class="breadcrumb-item active">Codebase</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/modules.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -82,46 +79,74 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="rela-py">
-<h1>rela_py<a class="headerlink" href="#rela-py" title="Permalink to this heading"></a></h1>
+  <section id="codebase">
+<h1>Codebase<a class="headerlink" href="#codebase" title="Permalink to this heading"></a></h1>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="graph_functions.html">graph_functions module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="time_series_functions.html">time_series_functions module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="text_analysis_functions.html">text_analysis_functions module</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="text_analysis_functions.html#text_analysis_functions.clean_text_"><code class="docutils literal notranslate"><span class="pre">clean_text_()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="text_analysis_functions.html#text_analysis_functions.del_email_address"><code class="docutils literal notranslate"><span class="pre">del_email_address()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="text_analysis_functions.html#text_analysis_functions.matrix_from_text"><code class="docutils literal notranslate"><span class="pre">matrix_from_text()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="text_analysis_functions.html#text_analysis_functions.remove_stopwords_"><code class="docutils literal notranslate"><span class="pre">remove_stopwords_()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_preparation.html">Data Preparation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="data_preparation.html#module-data_preparation.graph_functions">Graph functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="data_preparation.html#data_preparation.graph_functions.create_adjacency_matrix"><code class="docutils literal notranslate"><span class="pre">create_adjacency_matrix()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="data_preparation.html#data_preparation.graph_functions.create_edge_list"><code class="docutils literal notranslate"><span class="pre">create_edge_list()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="data_preparation.html#data_preparation.graph_functions.create_node_attributes"><code class="docutils literal notranslate"><span class="pre">create_node_attributes()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="data_preparation.html#data_preparation.graph_functions.extract_node_time_info"><code class="docutils literal notranslate"><span class="pre">extract_node_time_info()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="data_preparation.html#data_preparation.graph_functions.find_cc_containing_most"><code class="docutils literal notranslate"><span class="pre">find_cc_containing_most()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="data_preparation.html#data_preparation.graph_functions.find_connected_components"><code class="docutils literal notranslate"><span class="pre">find_connected_components()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="data_preparation.html#data_preparation.graph_functions.find_subgraph"><code class="docutils literal notranslate"><span class="pre">find_subgraph()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="data_preparation.html#data_preparation.graph_functions.matrix_from_tables"><code class="docutils literal notranslate"><span class="pre">matrix_from_tables()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="data_preparation.html#data_preparation.graph_functions.subgraph_idx"><code class="docutils literal notranslate"><span class="pre">subgraph_idx()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="data_preparation.html#data_preparation.graph_functions.symmetric_dilation"><code class="docutils literal notranslate"><span class="pre">symmetric_dilation()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="data_preparation.html#data_preparation.graph_functions.to_networkx"><code class="docutils literal notranslate"><span class="pre">to_networkx()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="data_preparation.html#data_preparation.graph_functions.transform_edge_data"><code class="docutils literal notranslate"><span class="pre">transform_edge_data()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="misc_functions.html">misc_functions module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="analysis.html">analysis module</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="analysis.html#analysis">Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data_preparation.html#module-data_preparation.text_analysis_functions">Text functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="data_preparation.html#data_preparation.text_analysis_functions.clean_text_"><code class="docutils literal notranslate"><span class="pre">clean_text_()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="data_preparation.html#data_preparation.text_analysis_functions.del_email_address"><code class="docutils literal notranslate"><span class="pre">del_email_address()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="data_preparation.html#data_preparation.text_analysis_functions.matrix_from_text"><code class="docutils literal notranslate"><span class="pre">matrix_from_text()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="data_preparation.html#data_preparation.text_analysis_functions.remove_stopwords_"><code class="docutils literal notranslate"><span class="pre">remove_stopwords_()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="embedding.html">embedding module</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="embedding.html#embedding">Embedding</a></li>
-<li class="toctree-l2"><a class="reference internal" href="embedding.html#embedding.degree_correction"><code class="docutils literal notranslate"><span class="pre">degree_correction()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="embedding.html#embedding.dim_select"><code class="docutils literal notranslate"><span class="pre">dim_select()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="embedding.html#embedding.embed"><code class="docutils literal notranslate"><span class="pre">embed()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="embedding.html#embedding.recover_subspaces"><code class="docutils literal notranslate"><span class="pre">recover_subspaces()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="embedding.html#embedding.safe_inv_sqrt"><code class="docutils literal notranslate"><span class="pre">safe_inv_sqrt()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="embedding.html#embedding.select"><code class="docutils literal notranslate"><span class="pre">select()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="embedding.html#embedding.symmetric_dilation"><code class="docutils literal notranslate"><span class="pre">symmetric_dilation()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="embedding.html#embedding.to_laplacian"><code class="docutils literal notranslate"><span class="pre">to_laplacian()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="embedding.html#embedding.truncate"><code class="docutils literal notranslate"><span class="pre">truncate()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="embedding.html#embedding.wasserstein_dim_select"><code class="docutils literal notranslate"><span class="pre">wasserstein_dim_select()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="embedding.html#embedding.zero_matrix"><code class="docutils literal notranslate"><span class="pre">zero_matrix()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="data_preparation.html#module-data_preparation.time_series_functions">Time series functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="data_preparation.html#data_preparation.time_series_functions.matrix_from_time_series"><code class="docutils literal notranslate"><span class="pre">matrix_from_time_series()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="misc.html">misc module</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="misc.html#misc">Misc.</a></li>
-<li class="toctree-l2"><a class="reference internal" href="misc.html#misc.intersection"><code class="docutils literal notranslate"><span class="pre">intersection()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="misc.html#misc.is_symmetric"><code class="docutils literal notranslate"><span class="pre">is_symmetric()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="misc.html#misc.safe_inv_sqrt"><code class="docutils literal notranslate"><span class="pre">safe_inv_sqrt()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="misc.html#misc.union"><code class="docutils literal notranslate"><span class="pre">union()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="misc.html#misc.zero_matrix"><code class="docutils literal notranslate"><span class="pre">zero_matrix()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="data_preparation.html#module-data_preparation.misc_functions">Misc functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="data_preparation.html#data_preparation.misc_functions.count_based_on_keys"><code class="docutils literal notranslate"><span class="pre">count_based_on_keys()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="data_preparation.html#data_preparation.misc_functions.zero_matrix"><code class="docutils literal notranslate"><span class="pre">zero_matrix()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="data_preparation.html#module-data_preparation">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="embedding.html">Embedding</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="embedding.html#id1">Embedding</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="embedding.html#embedding.embedding.degree_correction"><code class="docutils literal notranslate"><span class="pre">degree_correction()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="embedding.html#embedding.embedding.dim_select"><code class="docutils literal notranslate"><span class="pre">dim_select()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="embedding.html#embedding.embedding.embed"><code class="docutils literal notranslate"><span class="pre">embed()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="embedding.html#embedding.embedding.recover_subspaces"><code class="docutils literal notranslate"><span class="pre">recover_subspaces()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="embedding.html#embedding.embedding.safe_inv_sqrt"><code class="docutils literal notranslate"><span class="pre">safe_inv_sqrt()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="embedding.html#embedding.embedding.select"><code class="docutils literal notranslate"><span class="pre">select()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="embedding.html#embedding.embedding.symmetric_dilation"><code class="docutils literal notranslate"><span class="pre">symmetric_dilation()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="embedding.html#embedding.embedding.to_laplacian"><code class="docutils literal notranslate"><span class="pre">to_laplacian()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="embedding.html#embedding.embedding.truncate"><code class="docutils literal notranslate"><span class="pre">truncate()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="embedding.html#embedding.embedding.wasserstein_dim_select"><code class="docutils literal notranslate"><span class="pre">wasserstein_dim_select()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="embedding.html#embedding.embedding.zero_matrix"><code class="docutils literal notranslate"><span class="pre">zero_matrix()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="embedding.html#module-embedding">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="analysis.html">Analysis</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="analysis.html#module-analysis">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">Misc</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="utils.html#utils.misc.intersection"><code class="docutils literal notranslate"><span class="pre">intersection()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html#utils.misc.is_symmetric"><code class="docutils literal notranslate"><span class="pre">is_symmetric()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html#utils.misc.safe_inv_sqrt"><code class="docutils literal notranslate"><span class="pre">safe_inv_sqrt()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html#utils.misc.union"><code class="docutils literal notranslate"><span class="pre">union()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html#utils.misc.zero_matrix"><code class="docutils literal notranslate"><span class="pre">zero_matrix()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html#module-utils">Module contents</a></li>
 </ul>
 </li>
 </ul>
@@ -133,7 +158,7 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="index.html" class="btn btn-neutral float-left" title="Welcome to RelaStat’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="graph_functions.html" class="btn btn-neutral float-right" title="graph_functions module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="data_preparation.html" class="btn btn-neutral float-right" title="Data Preparation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

@@ -1,11 +1,8 @@
-Embedding
-=================
+Misc
+=============
 
 
-Embedding
---------------------------
-
-.. automodule:: embedding.embedding
+.. automodule:: utils.misc
    :members:
    :undoc-members:
    :show-inheritance:
@@ -13,7 +10,7 @@ Embedding
 Module contents
 ---------------
 
-.. automodule:: embedding
+.. automodule:: utils
    :members:
    :undoc-members:
    :show-inheritance:
