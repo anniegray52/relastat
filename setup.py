@@ -1,8 +1,7 @@
 from setuptools import setup
 
 setup(name='relastat',
-      version='0.1.4',
-      packages=['dga'],
+      version='0.1',
       install_requires=[
           'pandas>=1.3.4',
           'numpy>=1.21.4',
