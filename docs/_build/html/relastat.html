@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>relastat package &mdash; relastat  documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b3ba4146"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            relastat
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">relastat package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-relastat.analysis">relastat.analysis module</a></li>
+<li><a class="reference internal" href="#module-relastat.embedding">relastat.embedding module</a><ul>
+<li><a class="reference internal" href="#relastat.embedding.degree_correction"><code class="docutils literal notranslate"><span class="pre">degree_correction()</span></code></a></li>
+<li><a class="reference internal" href="#relastat.embedding.dim_select"><code class="docutils literal notranslate"><span class="pre">dim_select()</span></code></a></li>
+<li><a class="reference internal" href="#relastat.embedding.embed"><code class="docutils literal notranslate"><span class="pre">embed()</span></code></a></li>
+<li><a class="reference internal" href="#relastat.embedding.recover_subspaces"><code class="docutils literal notranslate"><span class="pre">recover_subspaces()</span></code></a></li>
+<li><a class="reference internal" href="#relastat.embedding.safe_inv_sqrt"><code class="docutils literal notranslate"><span class="pre">safe_inv_sqrt()</span></code></a></li>
+<li><a class="reference internal" href="#relastat.embedding.select"><code class="docutils literal notranslate"><span class="pre">select()</span></code></a></li>
+<li><a class="reference internal" href="#relastat.embedding.symmetric_dilation"><code class="docutils literal notranslate"><span class="pre">symmetric_dilation()</span></code></a></li>
+<li><a class="reference internal" href="#relastat.embedding.to_laplacian"><code class="docutils literal notranslate"><span class="pre">to_laplacian()</span></code></a></li>
+<li><a class="reference internal" href="#relastat.embedding.truncate"><code class="docutils literal notranslate"><span class="pre">truncate()</span></code></a></li>
+<li><a class="reference internal" href="#relastat.embedding.wasserstein_dim_select"><code class="docutils literal notranslate"><span class="pre">wasserstein_dim_select()</span></code></a></li>
+<li><a class="reference internal" href="#relastat.embedding.zero_matrix"><code class="docutils literal notranslate"><span class="pre">zero_matrix()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-relastat.misc">relastat.misc module</a><ul>
+<li><a class="reference internal" href="#relastat.misc.count_based_on_keys"><code class="docutils literal notranslate"><span class="pre">count_based_on_keys()</span></code></a></li>
+<li><a class="reference internal" href="#relastat.misc.intersection"><code class="docutils literal notranslate"><span class="pre">intersection()</span></code></a></li>
+<li><a class="reference internal" href="#relastat.misc.is_symmetric"><code class="docutils literal notranslate"><span class="pre">is_symmetric()</span></code></a></li>
+<li><a class="reference internal" href="#relastat.misc.safe_inv_sqrt"><code class="docutils literal notranslate"><span class="pre">safe_inv_sqrt()</span></code></a></li>
+<li><a class="reference internal" href="#relastat.misc.union"><code class="docutils literal notranslate"><span class="pre">union()</span></code></a></li>
+<li><a class="reference internal" href="#relastat.misc.zero_matrix"><code class="docutils literal notranslate"><span class="pre">zero_matrix()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-relastat.preprocessing">relastat.preprocessing module</a><ul>
+<li><a class="reference internal" href="#relastat.preprocessing.clean_text_"><code class="docutils literal notranslate"><span class="pre">clean_text_()</span></code></a></li>
+<li><a class="reference internal" href="#relastat.preprocessing.count_based_on_keys"><code class="docutils literal notranslate"><span class="pre">count_based_on_keys()</span></code></a></li>
+<li><a class="reference internal" href="#relastat.preprocessing.create_adjacency_matrix"><code class="docutils literal notranslate"><span class="pre">create_adjacency_matrix()</span></code></a></li>
+<li><a class="reference internal" href="#relastat.preprocessing.create_edge_list"><code class="docutils literal notranslate"><span class="pre">create_edge_list()</span></code></a></li>
+<li><a class="reference internal" href="#relastat.preprocessing.create_node_attributes"><code class="docutils literal notranslate"><span class="pre">create_node_attributes()</span></code></a></li>
+<li><a class="reference internal" href="#relastat.preprocessing.del_email_address"><code class="docutils literal notranslate"><span class="pre">del_email_address()</span></code></a></li>
+<li><a class="reference internal" href="#relastat.preprocessing.extract_node_time_info"><code class="docutils literal notranslate"><span class="pre">extract_node_time_info()</span></code></a></li>
+<li><a class="reference internal" href="#relastat.preprocessing.find_cc_containing_most"><code class="docutils literal notranslate"><span class="pre">find_cc_containing_most()</span></code></a></li>
+<li><a class="reference internal" href="#relastat.preprocessing.find_connected_components"><code class="docutils literal notranslate"><span class="pre">find_connected_components()</span></code></a></li>
+<li><a class="reference internal" href="#relastat.preprocessing.find_subgraph"><code class="docutils literal notranslate"><span class="pre">find_subgraph()</span></code></a></li>
+<li><a class="reference internal" href="#relastat.preprocessing.matrix_from_tables"><code class="docutils literal notranslate"><span class="pre">matrix_from_tables()</span></code></a></li>
+<li><a class="reference internal" href="#relastat.preprocessing.matrix_from_text"><code class="docutils literal notranslate"><span class="pre">matrix_from_text()</span></code></a></li>
+<li><a class="reference internal" href="#relastat.preprocessing.matrix_from_time_series"><code class="docutils literal notranslate"><span class="pre">matrix_from_time_series()</span></code></a></li>
+<li><a class="reference internal" href="#relastat.preprocessing.remove_stopwords_"><code class="docutils literal notranslate"><span class="pre">remove_stopwords_()</span></code></a></li>
+<li><a class="reference internal" href="#relastat.preprocessing.subgraph_idx"><code class="docutils literal notranslate"><span class="pre">subgraph_idx()</span></code></a></li>
+<li><a class="reference internal" href="#relastat.preprocessing.symmetric_dilation"><code class="docutils literal notranslate"><span class="pre">symmetric_dilation()</span></code></a></li>
+<li><a class="reference internal" href="#relastat.preprocessing.to_networkx"><code class="docutils literal notranslate"><span class="pre">to_networkx()</span></code></a></li>
+<li><a class="reference internal" href="#relastat.preprocessing.transform_edge_data"><code class="docutils literal notranslate"><span class="pre">transform_edge_data()</span></code></a></li>
+<li><a class="reference internal" href="#relastat.preprocessing.zero_matrix"><code class="docutils literal notranslate"><span class="pre">zero_matrix()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-relastat">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">relastat</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">relastat package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/relastat.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="relastat-package">
+<h1>relastat package<a class="headerlink" href="#relastat-package" title="Permalink to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
+</section>
+<section id="module-relastat.analysis">
+<span id="relastat-analysis-module"></span><h2>relastat.analysis module<a class="headerlink" href="#module-relastat.analysis" title="Permalink to this heading"></a></h2>
+</section>
+<section id="module-relastat.embedding">
+<span id="relastat-embedding-module"></span><h2>relastat.embedding module<a class="headerlink" href="#module-relastat.embedding" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="relastat.embedding.degree_correction">
+<span class="sig-prename descclassname"><span class="pre">relastat.embedding.</span></span><span class="sig-name descname"><span class="pre">degree_correction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/relastat/embedding.html#degree_correction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#relastat.embedding.degree_correction" title="Permalink to this definition"></a></dt>
+<dd><p>Perform degree correction.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>X</strong> (<em>numpy.ndarray</em>) – The embedding of the graph.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>Y</strong> – The degree-corrected embedding.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="relastat.embedding.dim_select">
+<span class="sig-prename descclassname"><span class="pre">relastat.embedding.</span></span><span class="sig-name descname"><span class="pre">dim_select</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plotrange</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/relastat/embedding.html#dim_select"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#relastat.embedding.dim_select" title="Permalink to this definition"></a></dt>
+<dd><p>Select the number of dimensions for A.
+Finding a changepoint using the likelihood profile (Zhu, Ghodsi; 2006). I’ve just lifted this from Ian so it might need updating.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>As</strong> (<em>numpy.array</em>) – The array of matrices.</p></li>
+<li><p><strong>plot</strong> (<em>bool</em>) – Whether to plot the singular values and the likelihood profile.</p></li>
+<li><p><strong>plotrange</strong> (<em>int</em>) – The range of dimensions to be plotted.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>lq_best</strong> – The number of dimensions selected.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="relastat.embedding.embed">
+<span class="sig-prename descclassname"><span class="pre">relastat.embedding.</span></span><span class="sig-name descname"><span class="pre">embed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right_embedding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">make_laplacian</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regulariser</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/relastat/embedding.html#embed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#relastat.embedding.embed" title="Permalink to this definition"></a></dt>
+<dd><p>Embed a matrix.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Y</strong> (<em>numpy.ndarray</em>) – The array of matrices.</p></li>
+<li><p><strong>d</strong> (<em>int</em>) – The number of dimensions to embed into.</p></li>
+<li><p><strong>right_embedding</strong> (<em>bool</em>) – Whether to return the right embedding.</p></li>
+<li><p><strong>make_laplacian</strong> (<em>bool</em>) – Whether to use the Laplacian matrix.</p></li>
+<li><p><strong>regulariser</strong> (<em>float</em>) – The regulariser to be added to the degrees of the nodes. (only used if make_laplacian=True)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>left_embedding</strong> (<em>numpy.ndarray</em>) – The left embedding.</p></li>
+<li><p><strong>right_embedding</strong> (<em>numpy.ndarray</em>) – The right embedding. (only returned if right_embedding=True)</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="relastat.embedding.recover_subspaces">
+<span class="sig-prename descclassname"><span class="pre">relastat.embedding.</span></span><span class="sig-name descname"><span class="pre">recover_subspaces</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">embedding</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attributes</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/relastat/embedding.html#recover_subspaces"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#relastat.embedding.recover_subspaces" title="Permalink to this definition"></a></dt>
+<dd><p>Recover the subspaces for each partition from an embedding.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>embedding</strong> (<em>numpy.ndarray</em>) – The embedding of the graph.</p></li>
+<li><p><strong>attributes</strong> (<em>list</em><em> of </em><em>lists</em>) – The attributes of the nodes. The first list contains the attributes
+of the nodes in rows. The second list contains
+the attributes of the nodes in the columns.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>partition_embeddings</strong> (<em>dict</em>) – The embeddings of the partitions.</p></li>
+<li><p><strong>partition_attributes</strong> (<em>dict</em>) – The attributes of the nodes in the partitions.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="relastat.embedding.safe_inv_sqrt">
+<span class="sig-prename descclassname"><span class="pre">relastat.embedding.</span></span><span class="sig-name descname"><span class="pre">safe_inv_sqrt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-12</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/relastat/embedding.html#safe_inv_sqrt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#relastat.embedding.safe_inv_sqrt" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="relastat.embedding.select">
+<span class="sig-prename descclassname"><span class="pre">relastat.embedding.</span></span><span class="sig-name descname"><span class="pre">select</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">embedding</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attributes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">select_attributes</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/relastat/embedding.html#select"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#relastat.embedding.select" title="Permalink to this definition"></a></dt>
+<dd><p>Select portion of embedding and attributes associated with a set of attributes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>embedding</strong> (<em>numpy.ndarray</em>) – The embedding of the graph.</p></li>
+<li><p><strong>attributes</strong> (<em>list</em><em> of </em><em>lists</em>) – The attributes of the nodes. The first list contains the attributes
+of the nodes in rows. The second list contains
+the attributes of the nodes in the columns.</p></li>
+<li><p><strong>select_attributes</strong> (<em>dict</em><em> or </em><em>list</em><em> of </em><em>dicts</em>) – The attributes to select by. If a list of dicts is provided, the intersection of the nodes
+satisfying each dict is selected.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>selected_X</strong> (<em>numpy.ndarray</em>) – The selected embedding.</p></li>
+<li><p><strong>selected_attributes</strong> (<em>list of lists</em>) – The attributes of the selected nodes.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="relastat.embedding.symmetric_dilation">
+<span class="sig-prename descclassname"><span class="pre">relastat.embedding.</span></span><span class="sig-name descname"><span class="pre">symmetric_dilation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">M</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/relastat/embedding.html#symmetric_dilation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#relastat.embedding.symmetric_dilation" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="relastat.embedding.to_laplacian">
+<span class="sig-prename descclassname"><span class="pre">relastat.embedding.</span></span><span class="sig-name descname"><span class="pre">to_laplacian</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regulariser</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/relastat/embedding.html#to_laplacian"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#relastat.embedding.to_laplacian" title="Permalink to this definition"></a></dt>
+<dd><p>Convert an adjacency matrix to a Laplacian matrix.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>A</strong> (<em>scipy.sparse.csr_matrix</em>) – The adjacency matrix.</p></li>
+<li><p><strong>regulariser</strong> (<em>float</em>) – The regulariser to be added to the degrees of the nodes.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>L</strong> – The Laplacian matrix.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>scipy.sparse.csr_matrix</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="relastat.embedding.truncate">
+<span class="sig-prename descclassname"><span class="pre">relastat.embedding.</span></span><span class="sig-name descname"><span class="pre">truncate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/relastat/embedding.html#truncate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#relastat.embedding.truncate" title="Permalink to this definition"></a></dt>
+<dd><p>Truncate an embedding to a lower dimension.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="relastat.embedding.wasserstein_dim_select">
+<span class="sig-prename descclassname"><span class="pre">relastat.embedding.</span></span><span class="sig-name descname"><span class="pre">wasserstein_dim_select</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rmin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/relastat/embedding.html#wasserstein_dim_select"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#relastat.embedding.wasserstein_dim_select" title="Permalink to this definition"></a></dt>
+<dd><p>Select the number of dimensions for Y using Wasserstein distances.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Y</strong> (<em>numpy.ndarray</em>) – The array of matrices.</p></li>
+<li><p><strong>split</strong> (<em>float</em>) – The proportion of the data to be used for training.</p></li>
+<li><p><strong>rmin</strong> (<em>int</em>) – The minimum number of dimensions to be considered.</p></li>
+<li><p><strong>rmax</strong> (<em>int</em>) – The maximum number of dimensions to be considered.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ws</strong> – The Wasserstein distances between the training and test data for each number of dimensions.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="relastat.embedding.zero_matrix">
+<span class="sig-prename descclassname"><span class="pre">relastat.embedding.</span></span><span class="sig-name descname"><span class="pre">zero_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/relastat/embedding.html#zero_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#relastat.embedding.zero_matrix" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-relastat.misc">
+<span id="relastat-misc-module"></span><h2>relastat.misc module<a class="headerlink" href="#module-relastat.misc" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="relastat.misc.count_based_on_keys">
+<span class="sig-prename descclassname"><span class="pre">relastat.misc.</span></span><span class="sig-name descname"><span class="pre">count_based_on_keys</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">list_of_dicts</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selected_keys</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/relastat/misc.html#count_based_on_keys"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#relastat.misc.count_based_on_keys" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="relastat.misc.intersection">
+<span class="sig-prename descclassname"><span class="pre">relastat.misc.</span></span><span class="sig-name descname"><span class="pre">intersection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lst1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lst2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/relastat/misc.html#intersection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#relastat.misc.intersection" title="Permalink to this definition"></a></dt>
+<dd><p>Find the intersection of two lists</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="relastat.misc.is_symmetric">
+<span class="sig-prename descclassname"><span class="pre">relastat.misc.</span></span><span class="sig-name descname"><span class="pre">is_symmetric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/relastat/misc.html#is_symmetric"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#relastat.misc.is_symmetric" title="Permalink to this definition"></a></dt>
+<dd><p>Check if a sparse matrix is symmetric</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>m</strong> (<em>array</em><em> or </em><em>sparse matrix</em>) – </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>check</strong> – The check result.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="relastat.misc.safe_inv_sqrt">
+<span class="sig-prename descclassname"><span class="pre">relastat.misc.</span></span><span class="sig-name descname"><span class="pre">safe_inv_sqrt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-12</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/relastat/misc.html#safe_inv_sqrt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#relastat.misc.safe_inv_sqrt" title="Permalink to this definition"></a></dt>
+<dd><p>Compute the inverse square root of an array, ignoring division by zero.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="relastat.misc.union">
+<span class="sig-prename descclassname"><span class="pre">relastat.misc.</span></span><span class="sig-name descname"><span class="pre">union</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lst1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lst2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/relastat/misc.html#union"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#relastat.misc.union" title="Permalink to this definition"></a></dt>
+<dd><p>Find the union of two lists</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="relastat.misc.zero_matrix">
+<span class="sig-prename descclassname"><span class="pre">relastat.misc.</span></span><span class="sig-name descname"><span class="pre">zero_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/relastat/misc.html#zero_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#relastat.misc.zero_matrix" title="Permalink to this definition"></a></dt>
+<dd><p>Create a zero matrix.</p>
+</dd></dl>
+
+</section>
+<section id="module-relastat.preprocessing">
+<span id="relastat-preprocessing-module"></span><h2>relastat.preprocessing module<a class="headerlink" href="#module-relastat.preprocessing" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="relastat.preprocessing.clean_text_">
+<span class="sig-prename descclassname"><span class="pre">relastat.preprocessing.</span></span><span class="sig-name descname"><span class="pre">clean_text_</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/relastat/preprocessing.html#clean_text_"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#relastat.preprocessing.clean_text_" title="Permalink to this definition"></a></dt>
+<dd><p>Not used by user.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="relastat.preprocessing.count_based_on_keys">
+<span class="sig-prename descclassname"><span class="pre">relastat.preprocessing.</span></span><span class="sig-name descname"><span class="pre">count_based_on_keys</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">list_of_dicts</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selected_keys</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/relastat/preprocessing.html#count_based_on_keys"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#relastat.preprocessing.count_based_on_keys" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="relastat.preprocessing.create_adjacency_matrix">
+<span class="sig-prename descclassname"><span class="pre">relastat.preprocessing.</span></span><span class="sig-name descname"><span class="pre">create_adjacency_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edge_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_nodes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_times</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight_col</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/relastat/preprocessing.html#create_adjacency_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#relastat.preprocessing.create_adjacency_matrix" title="Permalink to this definition"></a></dt>
+<dd><p>Not used by the user.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="relastat.preprocessing.create_edge_list">
+<span class="sig-prename descclassname"><span class="pre">relastat.preprocessing.</span></span><span class="sig-name descname"><span class="pre">create_edge_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tables</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relationships</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dynamic_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">join_token</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight_col</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/relastat/preprocessing.html#create_edge_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#relastat.preprocessing.create_edge_list" title="Permalink to this definition"></a></dt>
+<dd><p>Create an edge list from a list of tables and relationships.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tables</strong> (<em>list</em><em> of </em><em>pandas.DataFrame</em>) – The list of tables.</p></li>
+<li><p><strong>relationships</strong> (<em>list</em><em> of </em><em>lists</em>) – The list of relationships. Each relationship is a list of two lists,
+each of which contains the names of the columns in the corresponding table.</p></li>
+<li><p><strong>dynamic_col</strong> (<em>list</em><em> of </em><em>str</em>) – The list of dynamic columns.</p></li>
+<li><p><strong>join_token</strong> (<em>str</em>) – The token used to join the names of the partitions and the names of the nodes.</p></li>
+<li><p><strong>weight_col</strong> (<em>list</em><em> of </em><em>str</em>) – The list of weight columns.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>edge_list</strong> – The edge list.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="relastat.preprocessing.create_node_attributes">
+<span class="sig-prename descclassname"><span class="pre">relastat.preprocessing.</span></span><span class="sig-name descname"><span class="pre">create_node_attributes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nodes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">partitions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">times</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_nodes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_times</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/relastat/preprocessing.html#create_node_attributes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#relastat.preprocessing.create_node_attributes" title="Permalink to this definition"></a></dt>
+<dd><p>Not used by the user.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="relastat.preprocessing.del_email_address">
+<span class="sig-prename descclassname"><span class="pre">relastat.preprocessing.</span></span><span class="sig-name descname"><span class="pre">del_email_address</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/relastat/preprocessing.html#del_email_address"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#relastat.preprocessing.del_email_address" title="Permalink to this definition"></a></dt>
+<dd><p>Not used by user.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="relastat.preprocessing.extract_node_time_info">
+<span class="sig-prename descclassname"><span class="pre">relastat.preprocessing.</span></span><span class="sig-name descname"><span class="pre">extract_node_time_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edge_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">join_token</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/relastat/preprocessing.html#extract_node_time_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#relastat.preprocessing.extract_node_time_info" title="Permalink to this definition"></a></dt>
+<dd><p>Not used by the user.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="relastat.preprocessing.find_cc_containing_most">
+<span class="sig-prename descclassname"><span class="pre">relastat.preprocessing.</span></span><span class="sig-name descname"><span class="pre">find_cc_containing_most</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attributes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">partition</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dynamic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/relastat/preprocessing.html#find_cc_containing_most"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#relastat.preprocessing.find_cc_containing_most" title="Permalink to this definition"></a></dt>
+<dd><p>Find the connected component containing the most nodes from a partition.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>A</strong> (<em>scipy.sparse.csr_matrix</em>) – The adjacency matrix of the graph.</p></li>
+<li><p><strong>attributes</strong> (<em>list</em><em> of </em><em>lists</em>) – The attributes of the nodes. The first list contains the attributes
+of the nodes in rows. The second list contains
+the attributes of the nodes in the columns.</p></li>
+<li><p><strong>partition</strong> (<em>str</em>) – The partition to be searched.</p></li>
+<li><p><strong>dynamic</strong> (<em>bool</em>) – Whether we want the connected component containing the most nodes from dynamic part or not.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>cc_A</strong> (<em>scipy.sparse.csr_matrix</em>) – The adjacency matrix of the connected component.</p></li>
+<li><p><strong>cc_attributes</strong> (<em>list of lists</em>) – The attributes of the nodes of the connected component. The first list contains
+the attributes of the nodes in the rows. The second
+list contains the attributes of the nodes in the columns.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="relastat.preprocessing.find_connected_components">
+<span class="sig-prename descclassname"><span class="pre">relastat.preprocessing.</span></span><span class="sig-name descname"><span class="pre">find_connected_components</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attributes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_components</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/relastat/preprocessing.html#find_connected_components"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#relastat.preprocessing.find_connected_components" title="Permalink to this definition"></a></dt>
+<dd><p>Find connected components of a multipartite graph.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>A</strong> (<em>scipy.sparse.csr_matrix</em>) – The adjacency matrix of the graph.</p></li>
+<li><p><strong>attributes</strong> (<em>list</em><em> of </em><em>lists</em>) – The attributes of the nodes. The first list contains the attributes
+of the nodes in rows. The second list contains
+the attributes of the nodes in the columns.</p></li>
+<li><p><strong>n_components</strong> (<em>int</em>) – The number of components to be found.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>cc_As</strong> (<em>list of scipy.sparse.csr_matrix</em>) – The adjacency matrices of the connected components.</p></li>
+<li><p><strong>cc_attributes</strong> (<em>list of lists</em>) – The attributes of the nodes of the connected components. The first list contains
+the attributes of the nodes in the rows. The second
+list contains the attributes of the nodes in the columns.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="relastat.preprocessing.find_subgraph">
+<span class="sig-prename descclassname"><span class="pre">relastat.preprocessing.</span></span><span class="sig-name descname"><span class="pre">find_subgraph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attributes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subgraph_attributes</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/relastat/preprocessing.html#find_subgraph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#relastat.preprocessing.find_subgraph" title="Permalink to this definition"></a></dt>
+<dd><p>Find a subgraph of a multipartite graph.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>A</strong> (<em>scipy.sparse.csr_matrix</em>) – The adjacency matrix of the multipartite graph.</p></li>
+<li><p><strong>attributes</strong> (<em>list</em><em> of </em><em>lists</em>) – The attributes of the nodes. The first list contains the attributes
+of the nodes in rows. The second list contains
+the attributes of the nodes in the columns.</p></li>
+<li><p><strong>subgraph_attributes</strong> (<em>list</em><em> of </em><em>lists</em>) – The attributes of the nodes of the wanted in the subgraph. The first list contains
+the attributes of the nodes wanted in the rows. The second
+list contains the attributes of the nodes wanted in the column.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>subgraph_A</strong> (<em>scipy.sparse.csr_matrix</em>) – The adjacency matrix of the subgraph.</p></li>
+<li><p><strong>subgraph_attributes</strong> (<em>list of lists</em>) – The attributes of the nodes of the subgraph. The first list contains
+the attributes of the nodes in the rows. The second
+list contains the attributes of the nodes in the columns.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="relastat.preprocessing.matrix_from_tables">
+<span class="sig-prename descclassname"><span class="pre">relastat.preprocessing.</span></span><span class="sig-name descname"><span class="pre">matrix_from_tables</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tables</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relationships</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dynamic_col</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight_col</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">join_token</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'::'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/relastat/preprocessing.html#matrix_from_tables"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#relastat.preprocessing.matrix_from_tables" title="Permalink to this definition"></a></dt>
+<dd><p>Create a multipartite graph from a list of tables and relationships.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tables</strong> (<em>list</em><em> of </em><em>pandas.DataFrame</em>) – The list of tables.</p></li>
+<li><p><strong>relationships</strong> (<em>list</em><em> of </em><em>lists</em>) – The list of relationships. Either: Each relationship is a list of two lists,
+each of which contains the names of the columns in the corresponding table. Or, a list of lists and each pair is looked for in each table.</p></li>
+<li><p><strong>dynamic_col</strong> (<em>list</em><em> of </em><em>str</em>) – The list of dynamic columns.</p></li>
+<li><p><strong>weight_col</strong> (<em>list</em><em> of </em><em>str</em>) – The list of weight columns.</p></li>
+<li><p><strong>join_token</strong> (<em>str</em>) – The token used to join the names of the partitions and the names of the nodes.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>A</strong> (<em>scipy.sparse.csr_matrix</em>) – The adjacency matrix of the graph.</p></li>
+<li><p><strong>attributes</strong> (<em>list of lists</em>) – The attributes of the nodes. The first list contains the attributes
+of the nodes in the rows. The second list contains
+the attributes of the nodes in the columns.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="relastat.preprocessing.matrix_from_text">
+<span class="sig-prename descclassname"><span class="pre">relastat.preprocessing.</span></span><span class="sig-name descname"><span class="pre">matrix_from_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remove_stopwords</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clean_text</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remove_email_addresses</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">update_stopwords</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/relastat/preprocessing.html#matrix_from_text"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#relastat.preprocessing.matrix_from_text" title="Permalink to this definition"></a></dt>
+<dd><p>Create a matrix from a column of text data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>pandas.DataFrame</em>) – The data to be used to create the matrix.</p></li>
+<li><p><strong>column_name</strong> (<em>str</em>) – The name of the column containing the text data.</p></li>
+<li><p><strong>remove_stopwords</strong> (<em>bool</em>) – Whether to remove stopwords.</p></li>
+<li><p><strong>clean_text</strong> (<em>bool</em>) – Whether to clean the text data.</p></li>
+<li><p><strong>remove_email_addresses</strong> (<em>bool</em>) – Whether to remove email addresses.</p></li>
+<li><p><strong>update_stopwords</strong> (<em>list</em><em> of </em><em>str</em>) – The list of additional stopwords to be removed.</p></li>
+<li><p><strong>kwargs</strong> (<em>dict</em>) – Other arguments to be passed to sklearn.feature_extraction.text.TfidfVectorizer.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>Y</strong> (<em>numpy.ndarray</em>) – The matrix created from the text data.</p></li>
+<li><p><strong>attributes</strong> (<em>list of lists</em>) – The attributes of the nodes. The first list contains the attributes
+of the nodes in rows. The second list contains
+the attributes of the nodes in the columns.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="relastat.preprocessing.matrix_from_time_series">
+<span class="sig-prename descclassname"><span class="pre">relastat.preprocessing.</span></span><span class="sig-name descname"><span class="pre">matrix_from_time_series</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drop_nas</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/relastat/preprocessing.html#matrix_from_time_series"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#relastat.preprocessing.matrix_from_time_series" title="Permalink to this definition"></a></dt>
+<dd><p>Create a matrix from a time series.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>pandas.DataFrame</em>) – The data to be used to create the matrix.</p></li>
+<li><p><strong>time_col</strong> (<em>str</em>) – The name of the column containing the time information.</p></li>
+<li><p><strong>drop_nas</strong> (<em>bool</em>) – Whether to drop rows with missing values.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>Y</strong> (<em>numpy.ndarray</em>) – The matrix created from the time series.</p></li>
+<li><p><strong>attributes</strong> (<em>list of lists</em>) – The attributes of the nodes. The first list contains the attributes
+of the nodes in rows. The second list contains
+the attributes of the nodes in the columns.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="relastat.preprocessing.remove_stopwords_">
+<span class="sig-prename descclassname"><span class="pre">relastat.preprocessing.</span></span><span class="sig-name descname"><span class="pre">remove_stopwords_</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stopwords</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/relastat/preprocessing.html#remove_stopwords_"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#relastat.preprocessing.remove_stopwords_" title="Permalink to this definition"></a></dt>
+<dd><p>Not used by user.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="relastat.preprocessing.subgraph_idx">
+<span class="sig-prename descclassname"><span class="pre">relastat.preprocessing.</span></span><span class="sig-name descname"><span class="pre">subgraph_idx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attributes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">idx0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">idx1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/relastat/preprocessing.html#subgraph_idx"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#relastat.preprocessing.subgraph_idx" title="Permalink to this definition"></a></dt>
+<dd><p>Find a subgraph of a multipartite graph by indices.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="relastat.preprocessing.symmetric_dilation">
+<span class="sig-prename descclassname"><span class="pre">relastat.preprocessing.</span></span><span class="sig-name descname"><span class="pre">symmetric_dilation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">M</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/relastat/preprocessing.html#symmetric_dilation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#relastat.preprocessing.symmetric_dilation" title="Permalink to this definition"></a></dt>
+<dd><p>Dilate a matrix to a symmetric matrix.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="relastat.preprocessing.to_networkx">
+<span class="sig-prename descclassname"><span class="pre">relastat.preprocessing.</span></span><span class="sig-name descname"><span class="pre">to_networkx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attributes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symmetric</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/relastat/preprocessing.html#to_networkx"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#relastat.preprocessing.to_networkx" title="Permalink to this definition"></a></dt>
+<dd><p>Convert a multipartite graph to a networkx graph.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="relastat.preprocessing.transform_edge_data">
+<span class="sig-prename descclassname"><span class="pre">relastat.preprocessing.</span></span><span class="sig-name descname"><span class="pre">transform_edge_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edge_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_ids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_ids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_nodes</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/relastat/preprocessing.html#transform_edge_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#relastat.preprocessing.transform_edge_data" title="Permalink to this definition"></a></dt>
+<dd><p>Not used by the user.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="relastat.preprocessing.zero_matrix">
+<span class="sig-prename descclassname"><span class="pre">relastat.preprocessing.</span></span><span class="sig-name descname"><span class="pre">zero_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/relastat/preprocessing.html#zero_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#relastat.preprocessing.zero_matrix" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-relastat">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-relastat" title="Permalink to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Annie.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

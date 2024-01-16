@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>relastat.embedding &mdash; relastat  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=b3ba4146"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            relastat
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">relastat</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">relastat.embedding</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for relastat.embedding</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">sparse</span>
+<span class="kn">from</span> <span class="nn">scipy.sparse.csgraph</span> <span class="kn">import</span> <span class="n">connected_components</span>
+<span class="kn">from</span> <span class="nn">scipy.sparse.linalg</span> <span class="kn">import</span> <span class="n">svds</span>
+<span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
+<span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">linalg</span>
+<span class="kn">import</span> <span class="nn">scipy.stats</span> <span class="k">as</span> <span class="nn">stats</span>
+<span class="kn">import</span> <span class="nn">scipy</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+
+
+<span class="c1">## ==================== ## misc functions ## ==================== ##</span>
+
+<div class="viewcode-block" id="symmetric_dilation"><a class="viewcode-back" href="../../relastat.html#relastat.embedding.symmetric_dilation">[docs]</a><span class="k">def</span> <span class="nf">symmetric_dilation</span><span class="p">(</span><span class="n">M</span><span class="p">):</span>
+    <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">M</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">D</span> <span class="o">=</span> <span class="n">sparse</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">sparse</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">zero_matrix</span><span class="p">(</span><span class="n">m</span><span class="p">),</span> <span class="n">M</span><span class="p">]),</span>
+                      <span class="n">sparse</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">M</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">zero_matrix</span><span class="p">(</span><span class="n">n</span><span class="p">)])])</span>
+    <span class="k">return</span> <span class="n">D</span></div>
+
+
+<div class="viewcode-block" id="zero_matrix"><a class="viewcode-back" href="../../relastat.html#relastat.embedding.zero_matrix">[docs]</a><span class="k">def</span> <span class="nf">zero_matrix</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="n">m</span>
+    <span class="n">M</span> <span class="o">=</span> <span class="n">sparse</span><span class="o">.</span><span class="n">coo_matrix</span><span class="p">(([],</span> <span class="p">([],</span> <span class="p">[])),</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">M</span></div>
+
+
+<div class="viewcode-block" id="safe_inv_sqrt"><a class="viewcode-back" href="../../relastat.html#relastat.embedding.safe_inv_sqrt">[docs]</a><span class="k">def</span> <span class="nf">safe_inv_sqrt</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-12</span><span class="p">):</span>
+    <span class="c1"># Compute the inverse square root of an array, ignoring division by zero.</span>
+    <span class="k">with</span> <span class="n">np</span><span class="o">.</span><span class="n">errstate</span><span class="p">(</span><span class="n">divide</span><span class="o">=</span><span class="s2">&quot;ignore&quot;</span><span class="p">):</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+    <span class="n">b</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">isinf</span><span class="p">(</span><span class="n">b</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">b</span><span class="p">[</span><span class="n">a</span> <span class="o">&lt;</span> <span class="n">tol</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">return</span> <span class="n">b</span></div>
+
+
+<div class="viewcode-block" id="to_laplacian"><a class="viewcode-back" href="../../relastat.html#relastat.embedding.to_laplacian">[docs]</a><span class="k">def</span> <span class="nf">to_laplacian</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">regulariser</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert an adjacency matrix to a Laplacian matrix.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    A : scipy.sparse.csr_matrix</span>
+<span class="sd">        The adjacency matrix.</span>
+<span class="sd">    regulariser : float</span>
+<span class="sd">        The regulariser to be added to the degrees of the nodes.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    L : scipy.sparse.csr_matrix</span>
+<span class="sd">        The Laplacian matrix.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">left_degrees</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)),</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,))</span>
+    <span class="n">right_degrees</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)),</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,))</span>
+    <span class="k">if</span> <span class="n">regulariser</span> <span class="o">==</span> <span class="s1">&#39;auto&#39;</span><span class="p">:</span>
+        <span class="n">regulariser</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">left_degrees</span><span class="p">,</span> <span class="n">right_degrees</span><span class="p">)))</span>
+    <span class="n">left_degrees_inv_sqrt</span> <span class="o">=</span> <span class="n">safe_inv_sqrt</span><span class="p">(</span><span class="n">left_degrees</span> <span class="o">+</span> <span class="n">regulariser</span><span class="p">)</span>
+    <span class="n">right_degrees_inv_sqrt</span> <span class="o">=</span> <span class="n">safe_inv_sqrt</span><span class="p">(</span><span class="n">right_degrees</span> <span class="o">+</span> <span class="n">regulariser</span><span class="p">)</span>
+    <span class="n">L</span> <span class="o">=</span> <span class="n">sparse</span><span class="o">.</span><span class="n">diags</span><span class="p">(</span>
+        <span class="n">left_degrees_inv_sqrt</span><span class="p">)</span> <span class="o">@</span> <span class="n">A</span> <span class="o">@</span> <span class="n">sparse</span><span class="o">.</span><span class="n">diags</span><span class="p">(</span><span class="n">right_degrees_inv_sqrt</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">L</span></div>
+
+
+<span class="c1">## ==================== ## dimension selection functions ## ==================== ##</span>
+
+
+<div class="viewcode-block" id="dim_select"><a class="viewcode-back" href="../../relastat.html#relastat.embedding.dim_select">[docs]</a><span class="k">def</span> <span class="nf">dim_select</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">plot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">plotrange</span><span class="o">=</span><span class="mi">50</span><span class="p">):</span>
+    <span class="c1">## IAN - NEEDS UPDATING FOR DILATED MATRIX ##</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; </span>
+<span class="sd">    Select the number of dimensions for A.</span>
+<span class="sd">    Finding a changepoint using the likelihood profile (Zhu, Ghodsi; 2006). I&#39;ve just lifted this from Ian so it might need updating.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------  </span>
+<span class="sd">    As : numpy.array</span>
+<span class="sd">        The array of matrices.</span>
+<span class="sd">    plot : bool</span>
+<span class="sd">        Whether to plot the singular values and the likelihood profile.</span>
+<span class="sd">    plotrange : int</span>
+<span class="sd">        The range of dimensions to be plotted.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    lq_best : int</span>
+<span class="sd">        The number of dimensions selected.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">issparse</span><span class="p">(</span><span class="n">A</span><span class="p">):</span>
+        <span class="n">A</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">todense</span><span class="p">()</span>
+
+    <span class="n">UA</span><span class="p">,</span> <span class="n">SA</span><span class="p">,</span> <span class="n">VAt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+
+    <span class="c1"># Compute likelihood profile</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">SA</span><span class="p">)</span>
+    <span class="n">lq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    <span class="n">lq</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;nan&#39;</span>
+    <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="n">theta_0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">SA</span><span class="p">[:</span><span class="n">q</span><span class="p">])</span>
+        <span class="n">theta_1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">SA</span><span class="p">[</span><span class="n">q</span><span class="p">:])</span>
+        <span class="n">sigma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span>
+            <span class="p">((</span><span class="n">q</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">SA</span><span class="p">[:</span><span class="n">q</span><span class="p">])</span> <span class="o">+</span> <span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="n">q</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">SA</span><span class="p">[</span><span class="n">q</span><span class="p">:]))</span> <span class="o">/</span> <span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">2</span><span class="p">))</span>
+        <span class="n">lq_0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">SA</span><span class="p">[:</span><span class="n">q</span><span class="p">],</span> <span class="n">theta_0</span><span class="p">,</span> <span class="n">sigma</span><span class="p">)))</span>
+        <span class="n">lq_1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">SA</span><span class="p">[</span><span class="n">q</span><span class="p">:],</span> <span class="n">theta_1</span><span class="p">,</span> <span class="n">sigma</span><span class="p">)))</span>
+        <span class="n">lq</span><span class="p">[</span><span class="n">q</span><span class="p">]</span> <span class="o">=</span> <span class="n">lq_0</span> <span class="o">+</span> <span class="n">lq_1</span>
+    <span class="n">lq_best</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanargmax</span><span class="p">(</span><span class="n">lq</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">plot</span><span class="p">:</span>
+        <span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">12.0</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">))</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">hspace</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+
+        <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">plotrange</span><span class="p">),</span> <span class="n">SA</span><span class="p">[:</span><span class="n">plotrange</span><span class="p">],</span> <span class="s1">&#39;.-&#39;</span><span class="p">)</span>
+        <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Singular values&#39;</span><span class="p">)</span>
+        <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Number of dimensions&#39;</span><span class="p">)</span>
+        <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">lq_best</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
+
+        <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">plotrange</span><span class="p">),</span> <span class="n">lq</span><span class="p">[:</span><span class="n">plotrange</span><span class="p">],</span> <span class="s1">&#39;.-&#39;</span><span class="p">)</span>
+        <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Log likelihood&#39;</span><span class="p">)</span>
+        <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Number of dimensions&#39;</span><span class="p">)</span>
+        <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">lq_best</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">lq_best</span></div>
+
+
+<div class="viewcode-block" id="wasserstein_dim_select"><a class="viewcode-back" href="../../relastat.html#relastat.embedding.wasserstein_dim_select">[docs]</a><span class="k">def</span> <span class="nf">wasserstein_dim_select</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">split</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">rmin</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">rmax</span><span class="o">=</span><span class="mi">50</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; </span>
+<span class="sd">    Select the number of dimensions for Y using Wasserstein distances.</span>
+
+<span class="sd">    Parameters  </span>
+<span class="sd">    ----------  </span>
+<span class="sd">    Y : numpy.ndarray</span>
+<span class="sd">        The array of matrices.  </span>
+<span class="sd">    split : float   </span>
+<span class="sd">        The proportion of the data to be used for training.</span>
+<span class="sd">    rmin : int  </span>
+<span class="sd">        The minimum number of dimensions to be considered.</span>
+<span class="sd">    rmax : int  </span>
+<span class="sd">        The maximum number of dimensions to be considered.</span>
+
+<span class="sd">    Returns </span>
+<span class="sd">    ------- </span>
+<span class="sd">    ws : list of numpy.ndarray</span>
+<span class="sd">        The Wasserstein distances between the training and test data for each number of dimensions.     </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">Y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">train</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">n</span> <span class="o">*</span> <span class="n">split</span><span class="p">)</span>
+    <span class="n">rtry</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">((</span><span class="n">train</span><span class="p">,</span> <span class="n">rmax</span><span class="p">)))</span>
+    <span class="k">if</span> <span class="n">sparse</span><span class="o">.</span><span class="n">issparse</span><span class="p">(</span><span class="n">Y</span><span class="p">):</span>
+        <span class="n">Y</span> <span class="o">=</span> <span class="n">Y</span><span class="o">.</span><span class="n">todense</span><span class="p">()</span>
+    <span class="n">Ytrain</span> <span class="o">=</span> <span class="n">Y</span><span class="p">[:</span><span class="n">train</span><span class="p">,</span> <span class="p">:]</span>
+    <span class="n">Ytest</span> <span class="o">=</span> <span class="n">Y</span><span class="p">[</span><span class="n">train</span><span class="p">:</span><span class="n">n</span><span class="p">,</span> <span class="p">:]</span>
+    <span class="n">U</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">Vh</span> <span class="o">=</span> <span class="n">sparse</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svds</span><span class="p">(</span><span class="n">Ytrain</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">rtry</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">idx</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">argsort</span><span class="p">()[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+    <span class="n">Vh</span> <span class="o">=</span> <span class="n">Vh</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="p">:]</span>
+    <span class="n">ws</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">rmin</span><span class="p">,</span> <span class="n">rtry</span><span class="o">+</span><span class="mi">1</span><span class="p">)):</span>
+        <span class="n">P</span> <span class="o">=</span> <span class="n">Vh</span><span class="o">.</span><span class="n">T</span><span class="p">[:,</span> <span class="p">:</span><span class="n">r</span><span class="p">]</span> <span class="o">@</span> <span class="n">Vh</span><span class="p">[:</span><span class="n">r</span><span class="p">,</span> <span class="p">:]</span>
+        <span class="n">Yproj</span> <span class="o">=</span> <span class="n">Ytrain</span> <span class="o">@</span> <span class="n">P</span><span class="o">.</span><span class="n">T</span>
+        <span class="n">n1</span> <span class="o">=</span> <span class="n">Yproj</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">n2</span> <span class="o">=</span> <span class="n">Ytest</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">M</span> <span class="o">=</span> <span class="n">ot</span><span class="o">.</span><span class="n">dist</span><span class="p">(</span><span class="n">Yproj</span><span class="p">,</span> <span class="n">Ytest</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="s1">&#39;euclidean&#39;</span><span class="p">)</span>
+        <span class="n">W1</span> <span class="o">=</span> <span class="n">ot</span><span class="o">.</span><span class="n">emd2</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">n1</span><span class="p">,</span> <span class="n">n1</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">n2</span><span class="p">,</span> <span class="n">n2</span><span class="p">),</span> <span class="n">M</span><span class="p">)</span>
+        <span class="n">ws</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">W1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ws</span></div>
+
+<span class="c1">## ==================== ## embedding functions ## ==================== ##</span>
+
+
+<div class="viewcode-block" id="embed"><a class="viewcode-back" href="../../relastat.html#relastat.embedding.embed">[docs]</a><span class="k">def</span> <span class="nf">embed</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">right_embedding</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">make_laplacian</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">regulariser</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; </span>
+<span class="sd">    Embed a matrix.   </span>
+
+<span class="sd">    Parameters  </span>
+<span class="sd">    ----------  </span>
+<span class="sd">    Y : numpy.ndarray</span>
+<span class="sd">        The array of matrices.  </span>
+<span class="sd">    d : int </span>
+<span class="sd">        The number of dimensions to embed into. </span>
+<span class="sd">    right_embedding : bool  </span>
+<span class="sd">        Whether to return the right embedding.</span>
+<span class="sd">    make_laplacian : bool   </span>
+<span class="sd">        Whether to use the Laplacian matrix.</span>
+<span class="sd">    regulariser : float </span>
+<span class="sd">        The regulariser to be added to the degrees of the nodes. (only used if make_laplacian=True) </span>
+
+<span class="sd">    Returns </span>
+<span class="sd">    ------- </span>
+<span class="sd">    left_embedding : numpy.ndarray</span>
+<span class="sd">        The left embedding. </span>
+<span class="sd">    right_embedding : numpy.ndarray </span>
+<span class="sd">        The right embedding. (only returned if right_embedding=True)    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Check if there is more than one connected component</span>
+    <span class="n">num_components</span> <span class="o">=</span> <span class="n">connected_components</span><span class="p">(</span>
+        <span class="n">symmetric_dilation</span><span class="p">(</span><span class="n">Y</span><span class="p">),</span> <span class="n">directed</span><span class="o">=</span><span class="kc">False</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">num_components</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+            <span class="s1">&#39;Warning: More than one connected component in the graph.&#39;</span><span class="p">)</span>
+    <span class="c1"># if matrix not in [&#39;adjacency&#39;, &#39;laplacian&#39;]:</span>
+    <span class="c1">#     raise ValueError(</span>
+    <span class="c1">#         &quot;Invalid matrix type. Use &#39;adjacency&#39; or &#39;laplacian&#39;.&quot;)</span>
+
+    <span class="k">if</span> <span class="n">make_laplacian</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">L</span> <span class="o">=</span> <span class="n">to_laplacian</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">regulariser</span><span class="p">)</span>
+        <span class="n">u</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">vT</span> <span class="o">=</span> <span class="n">svds</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">u</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">vT</span> <span class="o">=</span> <span class="n">svds</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+
+    <span class="n">o</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">s</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">left_embedding</span> <span class="o">=</span> <span class="n">u</span><span class="p">[:,</span> <span class="n">o</span><span class="p">]</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="n">o</span><span class="p">]))</span>
+
+    <span class="k">if</span> <span class="n">right_embedding</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">right_embedding</span> <span class="o">=</span> <span class="n">vT</span><span class="o">.</span><span class="n">T</span><span class="p">[:,</span> <span class="n">o</span><span class="p">]</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="n">o</span><span class="p">]))</span>
+        <span class="k">return</span> <span class="n">left_embedding</span><span class="p">,</span> <span class="n">right_embedding</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">left_embedding</span></div>
+
+
+<div class="viewcode-block" id="recover_subspaces"><a class="viewcode-back" href="../../relastat.html#relastat.embedding.recover_subspaces">[docs]</a><span class="k">def</span> <span class="nf">recover_subspaces</span><span class="p">(</span><span class="n">embedding</span><span class="p">,</span> <span class="n">attributes</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Recover the subspaces for each partition from an embedding.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    embedding : numpy.ndarray</span>
+<span class="sd">        The embedding of the graph.</span>
+<span class="sd">    attributes : list of lists</span>
+<span class="sd">        The attributes of the nodes. The first list contains the attributes</span>
+<span class="sd">        of the nodes in rows. The second list contains</span>
+<span class="sd">        the attributes of the nodes in the columns.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    partition_embeddings : dict</span>
+<span class="sd">        The embeddings of the partitions.</span>
+<span class="sd">    partition_attributes : dict</span>
+<span class="sd">        The attributes of the nodes in the partitions.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">partitions</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="s1">&#39;partition&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">attributes</span><span class="p">]))</span>
+    <span class="n">partition_embeddings</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">partition_attributes</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">partitions</span><span class="p">:</span>
+        <span class="n">p_embedding</span><span class="p">,</span> <span class="n">p_attributes</span> <span class="o">=</span> <span class="n">select</span><span class="p">(</span>
+            <span class="n">embedding</span><span class="p">,</span> <span class="n">attributes</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;partition&#39;</span><span class="p">:</span> <span class="n">p</span><span class="p">})</span>
+        <span class="n">Y</span> <span class="o">=</span> <span class="n">p_embedding</span>
+        <span class="n">u</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">vT</span> <span class="o">=</span> <span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">full_matrices</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">o</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">s</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">Y</span> <span class="o">=</span> <span class="n">Y</span> <span class="o">@</span> <span class="n">vT</span><span class="o">.</span><span class="n">T</span><span class="p">[:,</span> <span class="n">o</span><span class="p">]</span>
+        <span class="n">partition_embeddings</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">=</span> <span class="n">Y</span>
+        <span class="n">partition_attributes</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">=</span> <span class="n">p_attributes</span>
+    <span class="k">return</span> <span class="n">partition_embeddings</span><span class="p">,</span> <span class="n">partition_attributes</span></div>
+
+
+<div class="viewcode-block" id="select"><a class="viewcode-back" href="../../relastat.html#relastat.embedding.select">[docs]</a><span class="k">def</span> <span class="nf">select</span><span class="p">(</span><span class="n">embedding</span><span class="p">,</span> <span class="n">attributes</span><span class="p">,</span> <span class="n">select_attributes</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Select portion of embedding and attributes associated with a set of attributes. </span>
+
+<span class="sd">    Parameters  </span>
+<span class="sd">    ----------  </span>
+<span class="sd">    embedding : numpy.ndarray   </span>
+<span class="sd">        The embedding of the graph.</span>
+<span class="sd">    attributes : list of lists  </span>
+<span class="sd">        The attributes of the nodes. The first list contains the attributes</span>
+<span class="sd">        of the nodes in rows. The second list contains</span>
+<span class="sd">        the attributes of the nodes in the columns. </span>
+<span class="sd">    select_attributes : dict or list of dicts   </span>
+<span class="sd">        The attributes to select by. If a list of dicts is provided, the intersection of the nodes</span>
+<span class="sd">        satisfying each dict is selected.</span>
+
+<span class="sd">    Returns </span>
+<span class="sd">    ------- </span>
+<span class="sd">    selected_X : numpy.ndarray   </span>
+<span class="sd">        The selected embedding. </span>
+<span class="sd">    selected_attributes : list of lists </span>
+<span class="sd">        The attributes of the selected nodes.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">select_attributes</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">select_attributes</span> <span class="o">=</span> <span class="p">[</span><span class="n">select_attributes</span><span class="p">]</span>
+    <span class="n">which_nodes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">attributes_dict</span> <span class="ow">in</span> <span class="n">select_attributes</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">attributes_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                <span class="n">v</span> <span class="o">=</span> <span class="p">[</span><span class="n">v</span><span class="p">]</span>
+        <span class="n">which_nodes_by_attribute</span> <span class="o">=</span> <span class="p">[[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span>
+            <span class="n">attributes</span><span class="p">)</span> <span class="k">if</span> <span class="n">y</span><span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="ow">in</span> <span class="n">v</span><span class="p">]</span> <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">attributes_dict</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span>
+        <span class="n">which_nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span>
+            <span class="o">*</span><span class="nb">map</span><span class="p">(</span><span class="nb">set</span><span class="p">,</span> <span class="n">which_nodes_by_attribute</span><span class="p">))))</span>
+    <span class="n">which_nodes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">()</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="o">*</span><span class="n">which_nodes</span><span class="p">))</span>
+    <span class="n">selected_X</span> <span class="o">=</span> <span class="n">embedding</span><span class="p">[</span><span class="n">which_nodes</span><span class="p">,</span> <span class="p">:]</span>
+    <span class="n">selected_attributes</span> <span class="o">=</span> <span class="p">[</span><span class="n">attributes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">which_nodes</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">selected_X</span><span class="p">,</span> <span class="n">selected_attributes</span></div>
+
+
+<div class="viewcode-block" id="truncate"><a class="viewcode-back" href="../../relastat.html#relastat.embedding.truncate">[docs]</a><span class="k">def</span> <span class="nf">truncate</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Truncate an embedding to a lower dimension.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">Y</span> <span class="o">=</span> <span class="n">X</span><span class="p">[:,</span> <span class="p">:</span><span class="n">d</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">Y</span></div>
+
+
+<div class="viewcode-block" id="degree_correction"><a class="viewcode-back" href="../../relastat.html#relastat.embedding.degree_correction">[docs]</a><span class="k">def</span> <span class="nf">degree_correction</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Perform degree correction.  </span>
+
+<span class="sd">    Parameters  </span>
+<span class="sd">    ----------  </span>
+<span class="sd">    X : numpy.ndarray   </span>
+<span class="sd">        The embedding of the graph. </span>
+
+<span class="sd">    Returns </span>
+<span class="sd">    ------- </span>
+<span class="sd">    Y : numpy.ndarray   </span>
+<span class="sd">        The degree-corrected embedding. </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">tol</span> <span class="o">=</span> <span class="mf">1e-12</span>
+    <span class="n">Y</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+    <span class="n">norms</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">norms</span> <span class="o">&gt;</span> <span class="n">tol</span><span class="p">)</span>
+    <span class="n">Y</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="n">norms</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="kc">None</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">Y</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Annie.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
