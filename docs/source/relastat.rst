@@ -1,18 +1,15 @@
-relastat package
+How to use
 ================
 
-Submodules
-----------
+Preprocessing
+-----------------------------
 
-relastat.analysis module
-------------------------
-
-.. automodule:: relastat.analysis
+.. automodule:: relastat.preprocessing
    :members:
    :undoc-members:
    :show-inheritance:
 
-relastat.embedding module
+Embedding
 -------------------------
 
 .. automodule:: relastat.embedding
@@ -20,7 +17,15 @@ relastat.embedding module
    :undoc-members:
    :show-inheritance:
 
-relastat.misc module
+Analysis
+------------------------
+
+.. automodule:: relastat.analysis
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Other
 --------------------
 
 .. automodule:: relastat.misc
@@ -28,13 +33,6 @@ relastat.misc module
    :undoc-members:
    :show-inheritance:
 
-relastat.preprocessing module
------------------------------
-
-.. automodule:: relastat.preprocessing
-   :members:
-   :undoc-members:
-   :show-inheritance:
 
 Module contents
 ---------------

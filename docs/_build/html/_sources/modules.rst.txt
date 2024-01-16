@@ -1,8 +1,0 @@
-codebase
-========
-
-.. toctree::
-   :maxdepth: 4
-
-   relastat
-   setup
