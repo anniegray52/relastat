@@ -10,6 +10,12 @@ import scipy.stats as stats
 import scipy
 import matplotlib.pyplot as plt
 
+from textblob import Word
+from nltk.corpus import stopwords
+import nltk
+import re
+from sklearn.feature_extraction.text import TfidfVectorizer
+
 # from rela_py.data_preparation.misc_functions import *
 
 from collections import Counter
