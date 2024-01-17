@@ -7,34 +7,12 @@ import networkx as nx
 from copy import deepcopy
 from scipy import linalg
 import scipy.stats as stats
-import scipy
 import matplotlib.pyplot as plt
 import warnings
 
+from relastat.utils import zero_matrix, symmetric_dilation, safe_inv_sqrt
 
 ## ==================== ## misc functions ## ==================== ##
-
-def symmetric_dilation(M):
-    m, n = M.shape
-    D = sparse.vstack([sparse.hstack([zero_matrix(m), M]),
-                      sparse.hstack([M.T, zero_matrix(n)])])
-    return D
-
-
-def zero_matrix(m, n=None):
-    if n == None:
-        n = m
-    M = sparse.coo_matrix(([], ([], [])), shape=(m, n))
-    return M
-
-
-def safe_inv_sqrt(a, tol=1e-12):
-    # Compute the inverse square root of an array, ignoring division by zero.
-    with np.errstate(divide="ignore"):
-        b = 1 / np.sqrt(a)
-    b[np.isinf(b)] = 0
-    b[a < tol] = 0
-    return b
 
 
 def to_laplacian(A, regulariser=0):
@@ -295,14 +273,6 @@ def select(embedding, attributes, select_attributes):
     selected_X = embedding[which_nodes, :]
     selected_attributes = [attributes[i] for i in which_nodes]
     return selected_X, selected_attributes
-
-
-def truncate(X, d):
-    """
-    Truncate an embedding to a lower dimension.
-    """
-    Y = X[:, :d]
-    return Y
 
 
 def degree_correction(X):
