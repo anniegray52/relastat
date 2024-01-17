@@ -6,8 +6,6 @@ from scipy.sparse.linalg import svds
 import networkx as nx
 from copy import deepcopy
 from scipy import linalg
-import scipy.stats as stats
-import scipy
 import matplotlib.pyplot as plt
 
 from textblob import Word
@@ -16,9 +14,10 @@ import nltk
 import re
 from sklearn.feature_extraction.text import TfidfVectorizer
 
-# from rela_py.data_preparation.misc_functions import *
 
 from collections import Counter
+
+from relastat.utils import zero_matrix, is_symmetric, symmetric_dilation
 
 
 def matrix_from_tables(tables, relationships, dynamic_col=None, weight_col=None, join_token='::'):
@@ -270,16 +269,6 @@ def find_subgraph(A, attributes, subgraph_attributes):
     return subgraph_A, subgraph_attributes
 
 
-def symmetric_dilation(M):
-    """
-    Dilate a matrix to a symmetric matrix.
-    """
-    m, n = M.shape
-    D = sparse.vstack([sparse.hstack([zero_matrix(m), M]),
-                      sparse.hstack([M.T, zero_matrix(n)])])
-    return D
-
-
 def subgraph_idx(A, attributes, idx0, idx1):
     """
     Find a subgraph of a multipartite graph by indices.
@@ -407,24 +396,6 @@ def to_networkx(A, attributes, symmetric=None):
         nx.set_node_attributes(
             G_nx, {i + n0: {'bipartite': 1} for i in range(n1)})
         return G_nx
-
-
-def zero_matrix(m, n=None):
-    if n == None:
-        n = m
-    M = sparse.coo_matrix(([], ([], [])), shape=(m, n))
-    return M
-
-
-def count_based_on_keys(list_of_dicts, selected_keys):
-    if isinstance(selected_keys, str):
-        counts = Counter(d[selected_keys] for d in list_of_dicts)
-    elif len(selected_keys) == 1:
-        counts = Counter(d[selected_keys[0]] for d in list_of_dicts)
-    else:
-        counts = Counter(tuple(d[key] for key in selected_keys)
-                         for d in list_of_dicts)
-    return counts
 
 
 def matrix_from_time_series(data, time_col, drop_nas=True):

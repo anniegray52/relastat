@@ -24,14 +24,10 @@ def safe_inv_sqrt(a, tol=1e-12):
     b[a < tol] = 0
     return b
 
-# find the intersection of two lists
-
 
 def intersection(lst1, lst2):
     """Find the intersection of two lists"""
     return list(set(lst1) & set(lst2))
-
-# find the union of two lists
 
 
 def union(lst1, lst2):
@@ -102,3 +98,21 @@ def count_based_on_keys(list_of_dicts, selected_keys):
         counts = Counter(tuple(d[key] for key in selected_keys)
                          for d in list_of_dicts)
     return counts
+
+
+def symmetric_dilation(M):
+    """
+    Dilate a matrix to a symmetric matrix.
+    """
+    m, n = M.shape
+    D = sparse.vstack([sparse.hstack([zero_matrix(m), M]),
+                      sparse.hstack([M.T, zero_matrix(n)])])
+    return D
+
+
+def truncate(X, d):
+    """
+    Truncate an embedding to a lower dimension.
+    """
+    Y = X[:, :d]
+    return Y
