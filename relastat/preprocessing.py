@@ -17,7 +17,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 
 from collections import Counter
 
-from relastat.utils import zero_matrix, is_symmetric, symmetric_dilation
+from relastat.utils import zero_matrix, is_symmetric, symmetric_dilation, count_based_on_keys
 
 
 def matrix_from_tables(tables, relationships, dynamic_col=None, weight_col=None, join_token='::'):
