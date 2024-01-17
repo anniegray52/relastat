@@ -11,7 +11,7 @@ Relastat - Statisitcs for relational data
    :caption: Contents:
 
    installation
-   relastat
+   api/index
 
 Indices and tables
 ==================
