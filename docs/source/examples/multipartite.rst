@@ -11,14 +11,14 @@ Multipartite graph - Public procurement data
 
     import relastat as rs
 
-The data contains information about the procurement process in Brazil.
-Each row contains information about a tender with information: 
-- Tender: tender id 
-- Period: time 
-- Buyer: who is funding 
-- Item: what the tender is about 
-- Company: who has bid for the tender 
-- bidder_win: whether the bid was won or not
+The dataset provides details about the procurement process in Brazil. Each row includes information about a tender, including:
+
+- **Tender:** Tender ID
+- **Period:** Time duration
+- **Buyer:** Funding entity
+- **Item:** Description of the tender
+- **Company:** Bidding company
+- **Bidder Win:** Indicates whether the bid was successful or not
 
 .. code:: ipython3
 
