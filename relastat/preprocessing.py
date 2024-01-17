@@ -15,8 +15,6 @@ import re
 from sklearn.feature_extraction.text import TfidfVectorizer
 
 
-from collections import Counter
-
 from relastat.utils import zero_matrix, is_symmetric, symmetric_dilation, count_based_on_keys
 
 
