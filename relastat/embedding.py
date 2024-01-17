@@ -10,7 +10,7 @@ import scipy.stats as stats
 import matplotlib.pyplot as plt
 import warnings
 
-from relastat.utils import zero_matrix, symmetric_dilation, safe_inv_sqrt
+from relastat.utils import zero_matrix, symmetric_dilation, safe_inv_sqrt, count_based_on_keys
 
 ## ==================== ## misc functions ## ==================== ##
 
