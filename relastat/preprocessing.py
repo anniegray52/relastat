@@ -11,7 +11,8 @@ import matplotlib.pyplot as plt
 from textblob import Word
 from nltk.corpus import stopwords
 import nltk
-import re
+# import re
+from re import compile
 from sklearn.feature_extraction.text import TfidfVectorizer
 
 
@@ -495,7 +496,7 @@ def del_email_address(text):
     """
     Not used by user."""
     e = '\S*@\S*\s?'
-    pattern = re.compile(e)
+    pattern = compile(e)
     return pattern.sub('', text)
 
 
