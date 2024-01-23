@@ -12,7 +12,7 @@ from textblob import Word
 from nltk.corpus import stopwords
 import nltk
 # import re
-from re import compile
+from re import compile, sub
 from sklearn.feature_extraction.text import TfidfVectorizer
 
 
@@ -504,7 +504,7 @@ def del_email_address(text):
 def clean_text_(text):
     """
     Not used by user."""
-    return " ".join([Word(word).lemmatize() for word in re.sub("[^A-Za-z0-9]+", " ", text).lower().split()])
+    return " ".join([Word(word).lemmatize() for word in sub("[^A-Za-z0-9]+", " ", text).lower().split()])
 
 
 def remove_stopwords_(text, stopwords):
