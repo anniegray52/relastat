@@ -4,6 +4,7 @@ Simple graph - Toy data
 .. code:: ipython3
 
     import relastat as rs
+    import pandas as pd
 
 .. code:: ipython3
 
