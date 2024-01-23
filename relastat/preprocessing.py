@@ -496,6 +496,7 @@ def del_email_address(text):
     """
     Not used by user."""
     e = '\S*@\S*\s?'
+    print('working')
     pattern = compile(e)
     return pattern.sub('', text)
 
