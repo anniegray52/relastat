@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='relastat',
-      version='0.2',
+      version='0.3',
       install_requires=[
           'pandas>=1.3.4',
           'numpy>=1.21.4',
