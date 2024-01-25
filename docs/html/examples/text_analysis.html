@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Text analysis - 20newsgroup &mdash; relastat  documentation</title>
+  <title>Text analysis - 20Newsgroup &mdash; relastat  documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
 
@@ -53,7 +53,7 @@
 <li class="toctree-l2"><a class="reference internal" href="multipartite.html">Multipartite graph - Public procurement data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="weighted.html">Weighted graph - Harry Potter</a></li>
 <li class="toctree-l2"><a class="reference internal" href="time_series.html">Time series - Stocks</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Text analysis - 20newsgroup</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Text analysis - 20Newsgroup</a></li>
 </ul>
 </li>
 </ul>
@@ -73,7 +73,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="index.html">Examples</a></li>
-      <li class="breadcrumb-item active">Text analysis - 20newsgroup</li>
+      <li class="breadcrumb-item active">Text analysis - 20Newsgroup</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/examples/text_analysis.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -84,7 +84,7 @@
            <div itemprop="articleBody">
              
   <section id="text-analysis-20newsgroup">
-<h1>Text analysis - 20newsgroup<a class="headerlink" href="#text-analysis-20newsgroup" title="Permalink to this heading"></a></h1>
+<h1>Text analysis - 20Newsgroup<a class="headerlink" href="#text-analysis-20newsgroup" title="Permalink to this heading"></a></h1>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">fetch_20newsgroups</span>
 </pre></div>
@@ -92,32 +92,23 @@
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">relastat</span> <span class="k">as</span> <span class="nn">rs</span>
 </pre></div>
 </div>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># replace with own path to data folder:</span>
-<span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;/home/ag16115/Documents/phd/codebase_data/&#39;</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># pip install git+ssh://git@github.com/anniegray52/relastat.git</span>
 </pre></div>
 </div>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">newsgroups</span> <span class="o">=</span> <span class="n">fetch_20newsgroups</span><span class="p">()</span>  <span class="c1"># remove=(&#39;headers&#39;, &#39;footers&#39;, &#39;quotes&#39;)</span>
-<span class="c1"># # pprint(list(newsgroups.target_names))</span>
+<p>Import data and create dataframe</p>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">newsgroups</span> <span class="o">=</span> <span class="n">fetch_20newsgroups</span><span class="p">()</span>
 
-<span class="c1"># create dataframe from newsgroup data</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
 <span class="n">df</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">newsgroups</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]</span>
 </pre></div>
 </div>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Y</span><span class="p">,</span><span class="n">attributes</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">matrix_from_text</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="n">remove_stopwords</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">clean_text</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-                     <span class="n">remove_email_addresses</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">update_stopwords</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">],</span>
-                     <span class="n">min_df</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="n">max_df</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="o">-</span><span class="mi">1000</span><span class="p">)</span>
+<p>Create td-idf features</p>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">relastat</span> <span class="k">as</span> <span class="nn">rs</span>
 </pre></div>
 </div>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">attributes</span><span class="p">[</span><span class="mi">1</span><span class="p">])):</span>
-    <span class="n">attributes</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
-        <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="n">newsgroups</span><span class="p">[</span><span class="s2">&quot;target_names&quot;</span><span class="p">][</span><span class="n">newsgroups</span><span class="p">[</span><span class="s2">&quot;target&quot;</span><span class="p">][</span><span class="n">i</span><span class="p">]]})</span>
-</pre></div>
-</div>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
-    <span class="p">[</span><span class="s1">&#39;This is a test sentence&#39;</span><span class="p">,</span> <span class="s1">&#39;This is another test sentence&#39;</span><span class="p">,</span> <span class="s1">&#39;This contains an email address: email_address@email.com&#39;</span><span class="p">],</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">])</span>
-
-<span class="n">Y1</span><span class="p">,</span> <span class="n">attributes1</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">matrix_from_text</span><span class="p">(</span><span class="n">df1</span><span class="p">,</span> <span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="n">remove_email_addresses</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Y</span><span class="p">,</span> <span class="n">attributes</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">matrix_from_text</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="n">remove_stopwords</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">clean_text</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                    <span class="n">remove_email_addresses</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">update_stopwords</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">],</span>
+                                    <span class="n">min_df</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">max_df</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="o">-</span><span class="mi">1000</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>

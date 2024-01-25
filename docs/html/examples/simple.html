@@ -54,7 +54,7 @@
 <li class="toctree-l2"><a class="reference internal" href="multipartite.html">Multipartite graph - Public procurement data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="weighted.html">Weighted graph - Harry Potter</a></li>
 <li class="toctree-l2"><a class="reference internal" href="time_series.html">Time series - Stocks</a></li>
-<li class="toctree-l2"><a class="reference internal" href="text_analysis.html">Text analysis - 20newsgroup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="text_analysis.html">Text analysis - 20Newsgroup</a></li>
 </ul>
 </li>
 </ul>
@@ -87,6 +87,7 @@
   <section id="simple-graph-toy-data">
 <h1>Simple graph - Toy data<a class="headerlink" href="#simple-graph-toy-data" title="Permalink to this heading"></a></h1>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">relastat</span> <span class="k">as</span> <span class="nn">rs</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 </pre></div>
 </div>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
@@ -96,15 +97,33 @@
 <span class="n">relationships</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">]</span>
 <span class="n">time_col</span> <span class="o">=</span> <span class="s1">&#39;ID&#39;</span>
 <span class="n">A1</span><span class="p">,</span> <span class="n">attributes1</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">matrix_from_tables</span><span class="p">(</span>
+    <span class="n">df</span><span class="p">,</span> <span class="n">relationships</span><span class="p">,</span> <span class="n">dynamic_col</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">join_token</span><span class="o">=</span><span class="s1">&#39;::&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="n">B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">],</span>
+            <span class="p">[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">],</span>
+            <span class="p">[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">],</span>
+            <span class="p">[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">]])</span>
+</pre></div>
+</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rs</span><span class="o">.</span><span class="n">embed</span><span class="p">(</span><span class="n">B</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">array</span><span class="p">([[</span><span class="o">-</span><span class="mf">0.60150096</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.76512103</span><span class="p">],</span>
+       <span class="p">[</span><span class="o">-</span><span class="mf">0.97324899</span><span class="p">,</span>  <span class="mf">0.4728708</span> <span class="p">],</span>
+       <span class="p">[</span><span class="o">-</span><span class="mf">0.97324899</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.4728708</span> <span class="p">],</span>
+       <span class="p">[</span><span class="o">-</span><span class="mf">0.60150096</span><span class="p">,</span>  <span class="mf">0.76512103</span><span class="p">]])</span>
+</pre></div>
+</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A1</span><span class="p">,</span> <span class="n">attributes1</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">matrix_from_tables</span><span class="p">(</span>
     <span class="n">df</span><span class="p">,</span> <span class="n">relationships</span><span class="p">,</span> <span class="n">dynamic_col</span><span class="o">=</span><span class="n">time_col</span><span class="p">,</span> <span class="n">join_token</span><span class="o">=</span><span class="s1">&#39;::&#39;</span><span class="p">)</span>
 
 <span class="n">c0</span><span class="p">,</span> <span class="n">att0</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">find_cc_containing_most</span><span class="p">(</span><span class="n">A1</span><span class="p">,</span> <span class="n">attributes1</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="n">dynamic</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">c1</span><span class="p">,</span> <span class="n">att1</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">find_cc_containing_most</span><span class="p">(</span><span class="n">A1</span><span class="p">,</span> <span class="n">attributes1</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="n">dynamic</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">]</span>
-<span class="n">Number</span> <span class="n">of</span> <span class="n">connected</span> <span class="n">components</span><span class="p">:</span> <span class="mi">2</span>
-<span class="n">Number</span> <span class="n">of</span> <span class="n">connected</span> <span class="n">components</span><span class="p">:</span> <span class="mi">2</span>
 </pre></div>
 </div>
 </section>
