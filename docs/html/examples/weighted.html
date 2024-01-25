@@ -54,7 +54,7 @@
 <li class="toctree-l2"><a class="reference internal" href="multipartite.html">Multipartite graph - Public procurement data</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Weighted graph - Harry Potter</a></li>
 <li class="toctree-l2"><a class="reference internal" href="time_series.html">Time series - Stocks</a></li>
-<li class="toctree-l2"><a class="reference internal" href="text_analysis.html">Text analysis - 20newsgroup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="text_analysis.html">Text analysis - 20Newsgroup</a></li>
 </ul>
 </li>
 </ul>
@@ -86,26 +86,29 @@
              
   <section id="weighted-graph-harry-potter">
 <h1>Weighted graph - Harry Potter<a class="headerlink" href="#weighted-graph-harry-potter" title="Permalink to this heading"></a></h1>
-<p>NEEDS DOING - haven’t finished.</p>
+<p>For this to you’ll need to download the data and set your own data path.</p>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;/home/ag16115/Documents/phd/codebase_data/&#39;</span>
+</pre></div>
+</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># path = &#39;&#39;</span>
+</pre></div>
+</div>
+<p>NEEDS DOING - haven’t finished</p>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 </pre></div>
 </div>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">relastat</span> <span class="k">as</span> <span class="nn">rs</span>
 </pre></div>
 </div>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># replace with own path to data folder:</span>
-<span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;/home/ag16115/Documents/phd/codebase_data/&#39;</span>
-</pre></div>
-</div>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path</span> <span class="o">+</span> <span class="s1">&#39;/harry_potter.csv&#39;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
 <span class="n">attributes</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path</span> <span class="o">+</span> <span class="s1">&#39;/HP-characters.csv&#39;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## replace - in type column to -1 and + to 1</span>
-<span class="n">data</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span> <span class="k">if</span> <span class="n">t</span> <span class="o">==</span> <span class="s1">&#39;+&#39;</span> <span class="k">else</span> <span class="o">-</span><span class="mi">1</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">])]</span>
+<p>Replace - in type column to -1 and + to 1</p>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span> <span class="k">if</span> <span class="n">t</span> <span class="o">==</span> <span class="s1">&#39;+&#39;</span> <span class="k">else</span> <span class="o">-</span><span class="mi">1</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">])]</span>
 </pre></div>
 </div>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span><span class="p">,</span> <span class="n">attributes</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">matrix_from_tables</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;source&#39;</span><span class="p">,</span><span class="s1">&#39;target&#39;</span><span class="p">],</span> <span class="n">weight_col</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span><span class="p">,</span> <span class="n">attributes</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">matrix_from_tables</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;source&#39;</span><span class="p">,</span> <span class="s1">&#39;target&#39;</span><span class="p">],</span> <span class="n">weight_col</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="s1">&#39;source&#39;</span><span class="p">,</span> <span class="s1">&#39;target&#39;</span><span class="p">]</span>

@@ -21,7 +21,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Text analysis - 20newsgroup" href="text_analysis.html" />
+    <link rel="next" title="Text analysis - 20Newsgroup" href="text_analysis.html" />
     <link rel="prev" title="Weighted graph - Harry Potter" href="weighted.html" /> 
 </head>
 
@@ -54,7 +54,7 @@
 <li class="toctree-l2"><a class="reference internal" href="multipartite.html">Multipartite graph - Public procurement data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="weighted.html">Weighted graph - Harry Potter</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Time series - Stocks</a></li>
-<li class="toctree-l2"><a class="reference internal" href="text_analysis.html">Text analysis - 20newsgroup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="text_analysis.html">Text analysis - 20Newsgroup</a></li>
 </ul>
 </li>
 </ul>
@@ -86,14 +86,17 @@
              
   <section id="time-series-stocks">
 <h1>Time series - Stocks<a class="headerlink" href="#time-series-stocks" title="Permalink to this heading"></a></h1>
+<p>For this to you’ll need to download the data and set your own data path.</p>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;/home/ag16115/Documents/phd/codebase_data/&#39;</span>
+</pre></div>
+</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># path = &#39;&#39;</span>
+</pre></div>
+</div>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 </pre></div>
 </div>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">relastat</span> <span class="k">as</span> <span class="nn">rs</span>
-</pre></div>
-</div>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># replace with own path to data folder:</span>
-<span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;/home/ag16115/Documents/phd/codebase_data/&#39;</span>
 </pre></div>
 </div>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path</span> <span class="o">+</span> <span class="s1">&#39;/sp500_data.csv&#39;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
@@ -102,7 +105,25 @@
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Y</span><span class="p">,</span> <span class="n">attributes</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">matrix_from_time_series</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="s1">&#39;date&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">p</span><span class="p">)</span> <span class="o">=</span> <span class="n">Y</span><span class="o">.</span><span class="n">shape</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span> <span class="o">=</span> <span class="n">Y</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Y</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">array</span><span class="p">([[</span><span class="o">-</span><span class="mf">1.09947356</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.48955518</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.6515604</span> <span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.20470748</span><span class="p">,</span>
+         <span class="mf">1.90858336</span><span class="p">,</span>  <span class="mf">0.47525663</span><span class="p">],</span>
+       <span class="p">[</span> <span class="mf">0.16260559</span><span class="p">,</span>  <span class="mf">0.59510885</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.05268816</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.39452167</span><span class="p">,</span>
+         <span class="mf">4.45271374</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.84401406</span><span class="p">],</span>
+       <span class="p">[</span> <span class="mf">0.50901386</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.23915824</span><span class="p">,</span>  <span class="mf">0.18915015</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.02202849</span><span class="p">,</span>
+         <span class="mf">2.5883366</span> <span class="p">,</span> <span class="o">-</span><span class="mf">1.38168959</span><span class="p">],</span>
+       <span class="o">...</span><span class="p">,</span>
+       <span class="p">[</span> <span class="mf">0.98037899</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.19029762</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.32791901</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.28513025</span><span class="p">,</span>
+         <span class="mf">0.95013665</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.74156719</span><span class="p">],</span>
+       <span class="p">[</span> <span class="mf">0.29704411</span><span class="p">,</span>  <span class="mf">0.17612785</span><span class="p">,</span>  <span class="mf">0.59045864</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.57681779</span><span class="p">,</span>
+         <span class="mf">2.98359571</span><span class="p">,</span>  <span class="mf">2.43695645</span><span class="p">],</span>
+       <span class="p">[</span> <span class="mf">1.75101968</span><span class="p">,</span>  <span class="mf">0.45417894</span><span class="p">,</span>  <span class="mf">0.77197585</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.83260922</span><span class="p">,</span>
+         <span class="mf">0.54933395</span><span class="p">,</span>  <span class="mf">1.21645255</span><span class="p">]])</span>
 </pre></div>
 </div>
 </section>
@@ -112,7 +133,7 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="weighted.html" class="btn btn-neutral float-left" title="Weighted graph - Harry Potter" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="text_analysis.html" class="btn btn-neutral float-right" title="Text analysis - 20newsgroup" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="text_analysis.html" class="btn btn-neutral float-right" title="Text analysis - 20Newsgroup" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

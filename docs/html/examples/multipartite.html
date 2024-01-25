@@ -54,7 +54,7 @@
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Multipartite graph - Public procurement data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="weighted.html">Weighted graph - Harry Potter</a></li>
 <li class="toctree-l2"><a class="reference internal" href="time_series.html">Time series - Stocks</a></li>
-<li class="toctree-l2"><a class="reference internal" href="text_analysis.html">Text analysis - 20newsgroup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="text_analysis.html">Text analysis - 20Newsgroup</a></li>
 </ul>
 </li>
 </ul>
@@ -86,14 +86,15 @@
              
   <section id="multipartite-graph-public-procurement-data">
 <h1>Multipartite graph - Public procurement data<a class="headerlink" href="#multipartite-graph-public-procurement-data" title="Permalink to this heading"></a></h1>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<p>For this to you’ll need to download the data and set your own data path.</p>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;/home/ag16115/Documents/phd/codebase_data/&#39;</span>
 </pre></div>
 </div>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">relastat</span> <span class="k">as</span> <span class="nn">rs</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># path = &#39;&#39;</span>
 </pre></div>
 </div>
-<p>The dataset provides details about the procurement process in Brazil. Each row includes information about a tender, including:</p>
+<p>The dataset provides details about the procurement process in Brazil.
+Each row includes information about a tender, including:</p>
 <ul class="simple">
 <li><p><strong>Tender:</strong> Tender ID</p></li>
 <li><p><strong>Period:</strong> Time duration</p></li>
@@ -102,32 +103,31 @@
 <li><p><strong>Company:</strong> Bidding company</p></li>
 <li><p><strong>Bidder Win:</strong> Indicates whether the bid was successful or not</p></li>
 </ul>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># replace with own path to data folder:</span>
-<span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;/home/ag16115/Documents/phd/codebase_data/&#39;</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 </pre></div>
 </div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">relastat</span> <span class="k">as</span> <span class="nn">rs</span>
+</pre></div>
+</div>
+<p>Import data</p>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path</span> <span class="o">+</span> <span class="s1">&#39;brazil/activity_data.csv&#39;</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">on_bad_lines</span><span class="o">=</span><span class="s1">&#39;skip&#39;</span><span class="p">)</span>
 <span class="n">A</span><span class="p">,</span> <span class="n">attributes</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">matrix_from_tables</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="p">[[</span><span class="s1">&#39;Company&#39;</span><span class="p">,</span> <span class="s1">&#39;Tender&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;Company&#39;</span><span class="p">,</span> <span class="s1">&#39;Buyer&#39;</span><span class="p">],[</span><span class="s1">&#39;Company&#39;</span><span class="p">,</span> <span class="s1">&#39;Item&#39;</span><span class="p">]],</span><span class="n">dynamic_col</span> <span class="o">=</span> <span class="s1">&#39;Period&#39;</span><span class="p">,</span> <span class="n">join_token</span><span class="o">=</span><span class="s1">&#39;::&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<pre class="literal-block">/tmp/ipykernel_50906/2869677282.py:1: DtypeWarning: Columns (13,16) have mixed types. Specify dtype option on import or set low_memory=False.
+<pre class="literal-block">/tmp/ipykernel_77543/2122082400.py:1: DtypeWarning: Columns (13,16) have mixed types. Specify dtype option on import or set low_memory=False.
   data = pd.read_csv(path + 'brazil/activity_data.csv', sep = 't', on_bad_lines='skip')</pre>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="s1">&#39;Company&#39;</span><span class="p">,</span> <span class="s1">&#39;Tender&#39;</span><span class="p">]</span>
 <span class="p">[</span><span class="s1">&#39;Company&#39;</span><span class="p">,</span> <span class="s1">&#39;Buyer&#39;</span><span class="p">]</span>
 <span class="p">[</span><span class="s1">&#39;Company&#39;</span><span class="p">,</span> <span class="s1">&#39;Item&#39;</span><span class="p">]</span>
 </pre></div>
 </div>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># find subgraph wanted</span>
-
-<span class="n">subgraph_attributes</span> <span class="o">=</span> <span class="p">[</span>
+<p>We can find a subgraph of A based on attributes using
+<code class="docutils literal notranslate"><span class="pre">rs.find_subgraph</span></code></p>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">subgraph_attributes</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">[{</span><span class="s1">&#39;partition&#39;</span><span class="p">:</span> <span class="s1">&#39;Company&#39;</span><span class="p">},{</span><span class="s1">&#39;partition&#39;</span><span class="p">:</span> <span class="s1">&#39;Tender&#39;</span><span class="p">}],</span>
     <span class="p">{</span><span class="s1">&#39;partition&#39;</span><span class="p">:</span> <span class="s1">&#39;Buyer&#39;</span><span class="p">}</span>
 <span class="p">]</span>
-
-<span class="c1"># subgraph_attributes = [</span>
-<span class="c1">#     {&#39;partition&#39;: &#39;Company&#39;},</span>
-<span class="c1">#     {&#39;partition&#39;: &#39;Buyer&#39;}</span>
-<span class="c1"># ]</span>
 <span class="n">subgraph_A</span><span class="p">,</span> <span class="n">subgraph_attributes</span>  <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">find_subgraph</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">attributes</span><span class="p">,</span><span class="n">subgraph_attributes</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -135,18 +135,19 @@
 <span class="c1"># is_symmetric(A_dilation)</span>
 </pre></div>
 </div>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># take the largest connected component</span>
-<span class="n">cc_A</span><span class="p">,</span> <span class="n">cc_attributes</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">find_connected_components</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">attributes</span><span class="p">,</span><span class="n">n_components</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+<p>Find the largest connected component of the graph</p>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cc_A</span><span class="p">,</span> <span class="n">cc_attributes</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">find_connected_components</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">attributes</span><span class="p">,</span> <span class="n">n_components</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Number</span> <span class="n">of</span> <span class="n">connected</span> <span class="n">components</span><span class="p">:</span> <span class="mi">217748</span>
 </pre></div>
 </div>
+<p>Embedding</p>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">d</span> <span class="o">=</span> <span class="mi">10</span>
 <span class="n">embedding</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">embed</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="n">d</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">ag16115</span><span class="o">/</span><span class="n">Documents</span><span class="o">/</span><span class="n">phd</span><span class="o">/</span><span class="n">codebase</span><span class="o">/</span><span class="n">relastat</span><span class="o">/</span><span class="n">embedding</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">180</span><span class="p">:</span> <span class="ne">UserWarning</span><span class="p">:</span> <span class="ne">Warning</span><span class="p">:</span> <span class="n">More</span> <span class="n">than</span> <span class="n">one</span> <span class="n">connected</span> <span class="n">component</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">graph</span><span class="o">.</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">ag16115</span><span class="o">/.</span><span class="n">local</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.8</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">relastat</span><span class="o">/</span><span class="n">embedding</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">202</span><span class="p">:</span> <span class="ne">UserWarning</span><span class="p">:</span> <span class="ne">Warning</span><span class="p">:</span> <span class="n">More</span> <span class="n">than</span> <span class="n">one</span> <span class="n">connected</span> <span class="n">component</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">graph</span><span class="o">.</span>
   <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
 </pre></div>
 </div>
