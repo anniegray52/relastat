@@ -130,7 +130,7 @@ def wasserstein_dim_select(Y, split=0.5, rmin=1, rmax=50):
         Y = Y.todense()
     Ytrain = Y[:train, :]
     Ytest = Y[train:n, :]
-    U, s, Vh = sparse.linalg.svds(Ytrain, k=rtry-1)
+    U, s, Vh = svds(Ytrain, k=rtry-1)
     idx = s.argsort()[::-1]
     s = s[idx]
     Vh = Vh[idx, :]
