@@ -9,6 +9,7 @@ from scipy import linalg
 import scipy.stats as stats
 import matplotlib.pyplot as plt
 import warnings
+from tqdm import tqdm
 
 from relastat.utils import zero_matrix, symmetric_dilation, safe_inv_sqrt
 
