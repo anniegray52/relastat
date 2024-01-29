@@ -135,6 +135,7 @@ def wasserstein_dim_select(Y, split=0.5, rmin=1, rmax=50):
     s = s[idx]
     Vh = Vh[idx, :]
     ws = []
+    print('working')
     for r in tqdm(range(rmin, rtry+1)):
         P = Vh.T[:, :r] @ Vh[:r, :]
         Yproj = Ytrain @ P.T
