@@ -16,7 +16,6 @@ Text analysis - 20Newsgroup
     import relastat as rs
 
 
-
 Import data and create dataframe
 
 .. code:: ipython3

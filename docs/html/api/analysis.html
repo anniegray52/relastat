@@ -50,7 +50,14 @@
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">How to use</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="preprocessing.html">Preprocessing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="embed.html">Embedding</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Analysis</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Analysis</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#relastat.analysis.find_ancestors"><code class="docutils literal notranslate"><span class="pre">find_ancestors()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#relastat.analysis.find_descendents"><code class="docutils literal notranslate"><span class="pre">find_descendents()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#relastat.analysis.get_ranking"><code class="docutils literal notranslate"><span class="pre">get_ranking()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#relastat.analysis.kendalltau_similarity"><code class="docutils literal notranslate"><span class="pre">kendalltau_similarity()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#relastat.analysis.plot_dendrogram"><code class="docutils literal notranslate"><span class="pre">plot_dendrogram()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="misc.html">Misc</a></li>
 </ul>
 </li>
@@ -84,6 +91,114 @@
              
   <section id="module-relastat.analysis">
 <span id="analysis"></span><h1>Analysis<a class="headerlink" href="#module-relastat.analysis" title="Permalink to this heading"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="relastat.analysis.find_ancestors">
+<span class="sig-prename descclassname"><span class="pre">relastat.analysis.</span></span><span class="sig-name descname"><span class="pre">find_ancestors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#relastat.analysis.find_ancestors" title="Permalink to this definition"></a></dt>
+<dd><p>Find the ancestors of a target node in the dendrogram.</p>
+<section id="parameters">
+<h2>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading"></a></h2>
+<dl class="simple">
+<dt>model<span class="classifier">AgglomerativeClustering </span></dt><dd><p>The fitted model.</p>
+</dd>
+<dt>target<span class="classifier">int    </span></dt><dd><p>The target node.</p>
+</dd>
+</dl>
+</section>
+<section id="returns">
+<h2>Returns<a class="headerlink" href="#returns" title="Permalink to this heading"></a></h2>
+<dl class="simple">
+<dt>list    </dt><dd><p>The list of ancestors of the target node.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="relastat.analysis.find_descendents">
+<span class="sig-prename descclassname"><span class="pre">relastat.analysis.</span></span><span class="sig-name descname"><span class="pre">find_descendents</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#relastat.analysis.find_descendents" title="Permalink to this definition"></a></dt>
+<dd><p>Find the descendents of a node in the dendrogram.</p>
+<section id="id1">
+<h2>Parameters<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h2>
+<dl class="simple">
+<dt>model<span class="classifier">AgglomerativeClustering </span></dt><dd><p>The fitted model.</p>
+</dd>
+<dt>node<span class="classifier">int  </span></dt><dd><p>The target node.</p>
+</dd>
+</dl>
+</section>
+<section id="id2">
+<h2>Returns<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h2>
+<dl class="simple">
+<dt>list    </dt><dd><p>The list of descendents of the target node.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="relastat.analysis.get_ranking">
+<span class="sig-prename descclassname"><span class="pre">relastat.analysis.</span></span><span class="sig-name descname"><span class="pre">get_ranking</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#relastat.analysis.get_ranking" title="Permalink to this definition"></a></dt>
+<dd><p>Get the ranking of order of merges to other nodes.</p>
+<section id="id3">
+<h2>Parameters<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h2>
+<dl class="simple">
+<dt>model<span class="classifier">AgglomerativeClustering </span></dt><dd><p>The fitted model.</p>
+</dd>
+<dt>target<span class="classifier">int    </span></dt><dd><p>The target node.</p>
+</dd>
+</dl>
+</section>
+<section id="id4">
+<h2>Returns<a class="headerlink" href="#id4" title="Permalink to this heading"></a></h2>
+<dl class="simple">
+<dt>list    </dt><dd><p>The list of rankings of the other nodes.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="relastat.analysis.kendalltau_similarity">
+<span class="sig-prename descclassname"><span class="pre">relastat.analysis.</span></span><span class="sig-name descname"><span class="pre">kendalltau_similarity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">true_ranking</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#relastat.analysis.kendalltau_similarity" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate the Kendall’s tau similarity between the model and true ranking.</p>
+<p>NEEDS TESTING (does global work?)</p>
+<section id="id5">
+<h2>Parameters<a class="headerlink" href="#id5" title="Permalink to this heading"></a></h2>
+<dl class="simple">
+<dt>model<span class="classifier">AgglomerativeClustering </span></dt><dd><p>The fitted model.</p>
+</dd>
+<dt>true_ranking<span class="classifier">array-like, shape (n_samples, n_samples) </span></dt><dd><p>The true ranking of the samples.</p>
+</dd>
+</dl>
+</section>
+<section id="id6">
+<h2>Returns<a class="headerlink" href="#id6" title="Permalink to this heading"></a></h2>
+<dl class="simple">
+<dt>float   </dt><dd><p>The mean Kendall’s tau similarity between the model and true ranking.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="relastat.analysis.plot_dendrogram">
+<span class="sig-prename descclassname"><span class="pre">relastat.analysis.</span></span><span class="sig-name descname"><span class="pre">plot_dendrogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#relastat.analysis.plot_dendrogram" title="Permalink to this definition"></a></dt>
+<dd><p>Create linkage matrix and then plot the dendrogram</p>
+<section id="id7">
+<h2>Parameters<a class="headerlink" href="#id7" title="Permalink to this heading"></a></h2>
+<dl class="simple">
+<dt>model<span class="classifier">AgglomerativeClustering </span></dt><dd><p>The fitted model to plot.</p>
+</dd>
+<dt><a href="#id8"><span class="problematic" id="id9">**</span></a>kwargs<span class="classifier">dict </span></dt><dd><p>Keyword arguments for dendrogram function.</p>
+</dd>
+</dl>
+</section>
+<section id="id10">
+<h2>Returns<a class="headerlink" href="#id10" title="Permalink to this heading"></a></h2>
+<p>None</p>
+</section>
+</dd></dl>
+
 </section>
 
 
