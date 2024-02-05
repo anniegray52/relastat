@@ -1,5 +1,7 @@
 from scipy.stats import kendalltau
 from scipy.cluster.hierarchy import dendrogram
+import numpy as np
+
 
 # ========== Plot dendrogram ==========
 
