@@ -150,6 +150,7 @@ def wasserstein_dim_select(Y, split=0.5, rmin=1, rmax=50):
 
 
 def embed(Y, d=10, right_embedding=False, make_laplacian=False, regulariser=0):
+    ## FIX - when to sqrt the singular values? ##
     """ 
     Embed a matrix.   
 
