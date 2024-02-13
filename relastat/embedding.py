@@ -202,6 +202,42 @@ def embed(Y, d=10, right_embedding=False, make_laplacian=False, regulariser=0):
         return left_embedding
 
 
+def eigen_decomp(A, dim=None):
+    """ 
+    Perform eigenvalue decomposition of a matrix.   
+
+    Parameters  
+    ----------  
+    A : numpy.ndarray   
+        The matrix to be decomposed.
+    dim : int   
+        The number of dimensions to be returned.    
+
+    Returns 
+    ------- 
+    eigenvalues : numpy.ndarray 
+        The eigenvalues.    
+    eigenvectors : numpy.ndarray    
+        The eigenvectors.   
+    """
+
+    eigenvalues, eigenvectors = np.linalg.eig(A)
+    # find nonzero eigenvalues and their corresponding eigenvectors
+    idx = np.where(np.round(eigenvalues, 4) != 0)[0]
+    eigenvalues = eigenvalues[idx]
+    eigenvectors = eigenvectors[:, idx]
+
+    idx = eigenvalues.argsort()[::-1]
+    eigenvalues = eigenvalues[idx]
+    eigenvectors = eigenvectors[:, idx]
+
+    if dim is not None:
+        eigenvalues = eigenvalues[:dim]
+        eigenvectors = eigenvectors[:, :dim]
+
+    return eigenvalues, eigenvectors
+
+
 def recover_subspaces(embedding, attributes):
     """
     Recover the subspaces for each partition from an embedding.

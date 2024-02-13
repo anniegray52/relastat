@@ -156,3 +156,19 @@ def kendalltau_similarity(model, true_ranking):
     kt = [kendalltau(ranking[i], true_ranking[i]
                      ).correlation for i in range(ranking.shape[0])]
     return np.mean(kt)
+
+
+def varimax(Phi, gamma=1, q=20, tol=1e-6):
+    p, k = Phi.shape
+    R = np.eye(k)
+    d = 0
+    for i in range(q):
+        d_old = d
+        Lambda = np.dot(Phi, R)
+        u, s, vh = np.linalg.svd(np.dot(Phi.T, np.asarray(Lambda)**3 - (gamma/p)
+                                        * np.dot(Lambda, np.diag(np.diag(np.dot(Lambda.T, Lambda))))))
+        R = np.dot(u, vh)
+        d = np.sum(s)
+        if d/d_old < tol:
+            break
+    return np.dot(Phi, R)
