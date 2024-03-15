@@ -486,8 +486,8 @@ def matrix_from_text(data, column_name, remove_stopwords=True, clean_text=True,
     # create tfidf matrix
     vectorizer = TfidfVectorizer(**kwargs)
     Y = vectorizer.fit_transform(data[column_name])
-    attr0 = [{'name': i} for i in vectorizer.get_feature_names_out()]
-    attr1 = [{'name': 'document_' + str(i)} for i in list(data.index)]
+    attr1 = [{'name': i} for i in vectorizer.get_feature_names_out()]
+    attr0 = [{'name': 'document_' + str(i)} for i in list(data.index)]
     attributes = [attr0, attr1]
     return Y, attributes
 
