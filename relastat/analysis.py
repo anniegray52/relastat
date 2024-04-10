@@ -42,9 +42,91 @@ def plot_dendrogram(model, **kwargs):
 
 # ========== Rankings ==========
 
-def find_ancestors(model, target):
+# def find_ancestors(model, target):
+#     """
+#     Find the ancestors of a target node in the dendrogram.
+
+#     Parameters
+#     ----------
+#     model : AgglomerativeClustering
+#         The fitted model.
+#     target : int
+#         The target node.
+
+#     Returns
+#     -------
+#     list
+#         The list of ancestors of the target node.
+#     """
+#     n_samples = len(model.labels_)
+#     global ances
+#     for ind, merge in enumerate(model.children_):
+#         if target in merge:
+#             if n_samples+ind in ances:
+#                 return [target] + ances[n_samples+ind]
+#             ances[n_samples+ind] = find_ancestors(model, n_samples+ind)
+#             return [target]+ances[n_samples+ind]
+#     return [ind+n_samples]
+
+
+# def find_descendents(model, node):
+#     """
+#     Find the descendents of a node in the dendrogram.
+
+#     Parameters
+#     ----------
+#     model : AgglomerativeClustering
+#         The fitted model.
+#     node : int
+#         The target node.
+
+#     Returns
+#     -------
+#     list
+#         The list of descendents of the target node.
+#     """
+#     n_samples = len(model.labels_)
+#     global desc
+#     if node in desc:
+#         return desc[node]
+#     if node < n_samples:
+#         return [node]
+#     pair = model.children_[node-n_samples]
+#     desc[node] = find_descendents(
+#         model, pair[0])+find_descendents(model, pair[1])
+#     return desc[node]
+
+
+# def get_ranking(model, target):
+#     """
+#     Get the ranking of order of merges to other nodes.
+
+#     Parameters
+#     ----------
+#     model : AgglomerativeClustering
+#         The fitted model.
+#     target : int
+#         The target node.
+
+#     Returns
+#     -------
+#     list
+#         The list of rankings of the other nodes.
+#     """
+#     rank = np.zeros(len(model.labels_))
+#     to_root = [find_descendents(model, cl)
+#                for cl in find_ancestors(model, target)]
+#     to_rank = [list(set(to_root[i+1]) - set(to_root[i]))
+#                for i in range(len(to_root)-1)]
+#     for i in range(1, len(to_rank)+1):
+#         rank[to_rank[i-1]] = i
+#     return rank
+
+def find_ancestors(model, target, ances=None):
     """
     Find the ancestors of a target node in the dendrogram.  
+
+    NEEDS CHECKING
 
     Parameters  
     ----------  
@@ -52,26 +134,32 @@ def find_ancestors(model, target):
         The fitted model.   
     target : int    
         The target node.
+    ances : dict, optional
+        Dictionary to store ancestors. Default is None.
 
     Returns 
     ------- 
     list    
         The list of ancestors of the target node.
     """
+    if ances is None:
+        ances = {}
     n_samples = len(model.labels_)
-    global ances
     for ind, merge in enumerate(model.children_):
         if target in merge:
-            if n_samples+ind in ances:
-                return [target] + ances[n_samples+ind]
-            ances[n_samples+ind] = find_ancestors(model, n_samples+ind)
-            return [target]+ances[n_samples+ind]
-    return [ind+n_samples]
+            if n_samples + ind in ances:
+                return [target] + ances[n_samples + ind]
+            ances[n_samples +
+                  ind] = find_ancestors(model, n_samples + ind, ances)
+            return [target] + ances[n_samples + ind]
+    return [ind + n_samples]
 
 
-def find_descendents(model, node):
+def find_descendents(model, node, desc=None):
     """ 
     Find the descendents of a node in the dendrogram.   
+
+    NEEDS CHECKING
 
     Parameters  
     ----------  
@@ -79,21 +167,24 @@ def find_descendents(model, node):
         The fitted model.   
     node : int  
         The target node.
+    desc : dict, optional
+        Dictionary to store descendants. Default is None.
 
     Returns 
     ------- 
     list    
         The list of descendents of the target node.
     """
+    if desc is None:
+        desc = {}
     n_samples = len(model.labels_)
-    global desc
     if node in desc:
         return desc[node]
     if node < n_samples:
         return [node]
-    pair = model.children_[node-n_samples]
+    pair = model.children_[node - n_samples]
     desc[node] = find_descendents(
-        model, pair[0])+find_descendents(model, pair[1])
+        model, pair[0], desc) + find_descendents(model, pair[1], desc)
     return desc[node]
 
 
@@ -101,6 +192,8 @@ def get_ranking(model, target):
     """ 
     Get the ranking of order of merges to other nodes.
 
+    NEEDS CHECKING 
+[]o-0i9u8
     Parameters  
     ----------  
     model : AgglomerativeClustering 
@@ -114,12 +207,14 @@ def get_ranking(model, target):
         The list of rankings of the other nodes.
     """
     rank = np.zeros(len(model.labels_))
-    to_root = [find_descendents(model, cl)
-               for cl in find_ancestors(model, target)]
-    to_rank = [list(set(to_root[i+1]) - set(to_root[i]))
-               for i in range(len(to_root)-1)]
-    for i in range(1, len(to_rank)+1):
-        rank[to_rank[i-1]] = i
+    ances = {}
+    desc = {}
+    to_root = [find_descendents(model, cl, desc)
+               for cl in find_ancestors(model, target, ances)]
+    to_rank = [list(set(to_root[i + 1]) - set(to_root[i]))
+               for i in range(len(to_root) - 1)]
+    for i in range(1, len(to_rank) + 1):
+        rank[to_rank[i - 1]] = i
     return rank
 
 
