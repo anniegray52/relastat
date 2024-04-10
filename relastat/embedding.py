@@ -10,7 +10,7 @@ import scipy.stats as stats
 import matplotlib.pyplot as plt
 import warnings
 from tqdm import tqdm
-import ot
+# import ot
 
 from relastat.utils import zero_matrix, symmetric_dilation, safe_inv_sqrt
 
@@ -124,6 +124,11 @@ def wasserstein_dim_select(Y, split=0.5, rmin=1, rmax=50):
     ws : list of numpy.ndarray
         The Wasserstein distances between the training and test data for each number of dimensions.     
     """
+
+    try:
+        import ot
+    except ModuleNotFoundError:
+        logging.error("ot not found, pip install pot")
     n = Y.shape[0]
     train = round(n * split)
     rtry = int(np.min((train, rmax)))
