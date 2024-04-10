@@ -129,6 +129,7 @@ def wasserstein_dim_select(Y, split=0.5, rmin=1, rmax=50):
         import ot
     except ModuleNotFoundError:
         logging.error("ot not found, pip install pot")
+    print('tensorflow warnings are seemingly a bug in ot, ignore them')
     n = Y.shape[0]
     train = round(n * split)
     rtry = int(np.min((train, rmax)))
