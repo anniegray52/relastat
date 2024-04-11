@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Multipartite graph - Public procurement data &mdash; relastat  documentation</title>
+  <title>Multipartite graph &mdash; relastat  documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
 
@@ -47,11 +47,11 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../api/index.html">Function documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">Functions</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Tutorials</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="basics.html">Basics</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dynamic.html">Dynamic graph - Lyon school data</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Multipartite graph - Public procurement data</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Multipartite graph</a></li>
 <li class="toctree-l2"><a class="reference internal" href="weighted.html">Weighted graph - Harry Potter</a></li>
 <li class="toctree-l2"><a class="reference internal" href="time_series.html">Time series - Stocks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="text_analysis.html">Text analysis - 20Newsgroup</a></li>
@@ -74,7 +74,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="index.html">Tutorials</a></li>
-      <li class="breadcrumb-item active">Multipartite graph - Public procurement data</li>
+      <li class="breadcrumb-item active">Multipartite graph</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/tutorials/multipartite.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -84,13 +84,11 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="multipartite-graph-public-procurement-data">
-<h1>Multipartite graph - Public procurement data<a class="headerlink" href="#multipartite-graph-public-procurement-data" title="Permalink to this heading"></a></h1>
+  <section id="multipartite-graph">
+<h1>Multipartite graph<a class="headerlink" href="#multipartite-graph" title="Permalink to this heading"></a></h1>
+<p>Demonstrating how to construct a graph with multiple partitions.</p>
 <p>For this to you’ll need to download the data and set your own data path.</p>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;/home/ag16115/Documents/phd/codebase_data/&#39;</span>
-</pre></div>
-</div>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># path = &#39;&#39;</span>
 </pre></div>
 </div>
 <p>The dataset provides details about the procurement process in Brazil.
@@ -103,19 +101,21 @@ Each row includes information about a tender, including:</p>
 <li><p><strong>Company:</strong> Bidding company</p></li>
 <li><p><strong>Bidder Win:</strong> Indicates whether the bid was successful or not</p></li>
 </ul>
+<p>Import data</p>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">relastat</span> <span class="k">as</span> <span class="nn">rs</span>
 </pre></div>
 </div>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">relastat</span> <span class="k">as</span> <span class="nn">rs</span>
-</pre></div>
-</div>
-<p>Import data</p>
+<p>In the <code class="docutils literal notranslate"><span class="pre">relationships</span></code> input to <code class="docutils literal notranslate"><span class="pre">rs.matrix_from_tables()</span></code>, we input
+which partitions we want relationships between.</p>
+<p>Here, we specfiy links between, - Company – Tender - Company – Buyer -
+Company – Item</p>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path</span> <span class="o">+</span> <span class="s1">&#39;brazil/activity_data.csv&#39;</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">on_bad_lines</span><span class="o">=</span><span class="s1">&#39;skip&#39;</span><span class="p">)</span>
 <span class="n">A</span><span class="p">,</span> <span class="n">attributes</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">matrix_from_tables</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="p">[[</span><span class="s1">&#39;Company&#39;</span><span class="p">,</span> <span class="s1">&#39;Tender&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;Company&#39;</span><span class="p">,</span> <span class="s1">&#39;Buyer&#39;</span><span class="p">],[</span><span class="s1">&#39;Company&#39;</span><span class="p">,</span> <span class="s1">&#39;Item&#39;</span><span class="p">]],</span><span class="n">dynamic_col</span> <span class="o">=</span> <span class="s1">&#39;Period&#39;</span><span class="p">,</span> <span class="n">join_token</span><span class="o">=</span><span class="s1">&#39;::&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<pre class="literal-block">/tmp/ipykernel_77543/2122082400.py:1: DtypeWarning: Columns (13,16) have mixed types. Specify dtype option on import or set low_memory=False.
+<pre class="literal-block">/tmp/ipykernel_396116/2869677282.py:1: DtypeWarning: Columns (13,16) have mixed types. Specify dtype option on import or set low_memory=False.
   data = pd.read_csv(path + 'brazil/activity_data.csv', sep = 't', on_bad_lines='skip')</pre>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="s1">&#39;Company&#39;</span><span class="p">,</span> <span class="s1">&#39;Tender&#39;</span><span class="p">]</span>
 <span class="p">[</span><span class="s1">&#39;Company&#39;</span><span class="p">,</span> <span class="s1">&#39;Buyer&#39;</span><span class="p">]</span>
@@ -132,7 +132,7 @@ Each row includes information about a tender, including:</p>
 </pre></div>
 </div>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># A_dilation = symmetric_dilation(subgraph_A)</span>
-<span class="c1"># is_symmetric(A_dilation)</span>
+<span class="c1"># is_symmetric(A_dilation)s</span>
 </pre></div>
 </div>
 <p>Find the largest connected component of the graph</p>
