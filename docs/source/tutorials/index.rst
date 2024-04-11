@@ -1,4 +1,4 @@
-Examples
+Tutorials
 ==========
 
 Here are a few examples of how to use the library. 
@@ -6,7 +6,7 @@ Here are a few examples of how to use the library.
 .. toctree::
    :maxdepth: 2
 
-   simple
+   basics
    dynamic
    multipartite
    weighted

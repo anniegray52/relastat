@@ -7,7 +7,7 @@ Relastat - Statisitcs for relational data
 
    installation
    api/index
-   examples/index
+   tutorials/index
 
 Indices and tables
 ==================
