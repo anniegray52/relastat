@@ -1,5 +1,5 @@
-How to use
-================
+Function documentation
+======================
 
 .. code-block:: python
 
