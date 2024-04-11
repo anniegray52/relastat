@@ -1,4 +1,4 @@
-Function documentation
+Functions
 ======================
 
 .. code-block:: python

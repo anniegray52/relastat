@@ -1,15 +1,13 @@
-Multipartite graph - Public procurement data
-============================================
+Multipartite graph
+==================
+
+Demonstrating how to construct a graph with multiple partitions.
 
 For this to you’ll need to download the data and set your own data path.
 
 .. code:: ipython3
 
     path = '/home/ag16115/Documents/phd/codebase_data/'
-
-.. code:: ipython3
-
-    # path = '' 
 
 The dataset provides details about the procurement process in Brazil.
 Each row includes information about a tender, including:
@@ -21,16 +19,19 @@ Each row includes information about a tender, including:
 -  **Company:** Bidding company
 -  **Bidder Win:** Indicates whether the bid was successful or not
 
+Import data
+
 .. code:: ipython3
 
     import pandas as pd
     import matplotlib.pyplot as plt
-
-.. code:: ipython3
-
     import relastat as rs
 
-Import data
+In the ``relationships`` input to ``rs.matrix_from_tables()``, we input
+which partitions we want relationships between.
+
+Here, we specfiy links between, - Company – Tender - Company – Buyer -
+Company – Item
 
 .. code:: ipython3
 
@@ -40,7 +41,7 @@ Import data
 
 .. parsed-literal::
 
-    /tmp/ipykernel_77543/2122082400.py:1: DtypeWarning: Columns (13,16) have mixed types. Specify dtype option on import or set low_memory=False.
+    /tmp/ipykernel_396116/2869677282.py:1: DtypeWarning: Columns (13,16) have mixed types. Specify dtype option on import or set low_memory=False.
       data = pd.read_csv(path + 'brazil/activity_data.csv', sep = '\t', on_bad_lines='skip')
 
 
@@ -65,7 +66,7 @@ We can find a subgraph of A based on attributes using
 .. code:: ipython3
 
     # A_dilation = symmetric_dilation(subgraph_A)
-    # is_symmetric(A_dilation)
+    # is_symmetric(A_dilation)s
 
 Find the largest connected component of the graph
 
