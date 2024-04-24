@@ -218,6 +218,8 @@ def embed(Y, d=10, version='sqrt', right_embedding=False, make_laplacian=False, 
         The array of matrices.  
     d : int 
         The number of dimensions to embed into. 
+    version : str   
+        The version of the embedding. Options are 'full' or 'sqrt' (default).   
     right_embedding : bool  
         Whether to return the right embedding.
     make_laplacian : bool   
