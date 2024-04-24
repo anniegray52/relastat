@@ -193,7 +193,7 @@ def get_ranking(model, target):
     Get the ranking of order of merges to other nodes.
 
     NEEDS CHECKING 
-[]o-0i9u8
+
     Parameters  
     ----------  
     model : AgglomerativeClustering 
@@ -242,11 +242,11 @@ def kendalltau_similarity(model, true_ranking):
             "The number of samples in the model and true_ranking must be the same.")
     n = model.labels_.shape[0]
 
-    global ances
-    global desc
+    # global ances
+    # global desc
 
-    ances = {}
-    desc = {}
+    # ances = {}
+    # desc = {}
     ranking = np.array([get_ranking(model, t) for t in range(n)])
     kt = [kendalltau(ranking[i], true_ranking[i]
                      ).correlation for i in range(ranking.shape[0])]
