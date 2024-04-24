@@ -155,8 +155,60 @@ def wasserstein_dim_select(Y, split=0.5, rmin=1, rmax=50):
 ## ==================== ## embedding functions ## ==================== ##
 
 
-def embed(Y, d=10, right_embedding=False, make_laplacian=False, regulariser=0):
-    ## FIX - when to sqrt the singular values? ##
+# def embed(Y, d=10, right_embedding=False, make_laplacian=False, regulariser=0):
+#     ## FIX - when to sqrt the singular values? ##
+#     """
+#     Embed a matrix.
+
+#     Parameters
+#     ----------
+#     Y : numpy.ndarray
+#         The array of matrices.
+#     d : int
+#         The number of dimensions to embed into.
+#     right_embedding : bool
+#         Whether to return the right embedding.
+#     make_laplacian : bool
+#         Whether to use the Laplacian matrix.
+#     regulariser : float
+#         The regulariser to be added to the degrees of the nodes. (only used if make_laplacian=True)
+
+#     Returns
+#     -------
+#     left_embedding : numpy.ndarray
+#         The left embedding.
+#     right_embedding : numpy.ndarray
+#         The right embedding. (only returned if right_embedding=True)
+#     """
+
+#     # Check if there is more than one connected component
+#     num_components = connected_components(
+#         symmetric_dilation(Y), directed=False)[0]
+
+#     if num_components > 1:
+#         warnings.warn(
+#             'Warning: More than one connected component in the graph.')
+#     # if matrix not in ['adjacency', 'laplacian']:
+#     #     raise ValueError(
+#     #         "Invalid matrix type. Use 'adjacency' or 'laplacian'.")
+
+#     if make_laplacian == True:
+#         L = to_laplacian(Y, regulariser)
+#         u, s, vT = svds(L, d)
+#     else:
+#         u, s, vT = svds(Y, d)
+
+#     o = np.argsort(s[::-1])
+#     left_embedding = u[:, o] @ np.diag(np.sqrt(s[o]))
+
+#     if right_embedding == True:
+#         right_embedding = vT.T[:, o] @ np.diag(np.sqrt(s[o]))
+#         return left_embedding, right_embedding
+#     else:
+#         return left_embedding
+
+
+def embed(Y, d=10, version='sqrt', right_embedding=False, make_laplacian=False, regulariser=0):
     """ 
     Embed a matrix.   
 
@@ -188,6 +240,9 @@ def embed(Y, d=10, right_embedding=False, make_laplacian=False, regulariser=0):
     if num_components > 1:
         warnings.warn(
             'Warning: More than one connected component in the graph.')
+
+    if version not in ['full', 'sqrt']:
+        raise ValueError('version must be full or sqrt (default)')
     # if matrix not in ['adjacency', 'laplacian']:
     #     raise ValueError(
     #         "Invalid matrix type. Use 'adjacency' or 'laplacian'.")
@@ -198,11 +253,18 @@ def embed(Y, d=10, right_embedding=False, make_laplacian=False, regulariser=0):
     else:
         u, s, vT = svds(Y, d)
 
+    if version == 'sqrt':
+        o = np.argsort(s[::-1])
+        S = np.sqrt(s[o])
+    if version == 'full':
+        o = np.argsort(s[::-1])
+        S = s[o]
+
     o = np.argsort(s[::-1])
-    left_embedding = u[:, o] @ np.diag(np.sqrt(s[o]))
+    left_embedding = u[:, o] @ np.diag(S)
 
     if right_embedding == True:
-        right_embedding = vT.T[:, o] @ np.diag(np.sqrt(s[o]))
+        right_embedding = vT.T[:, o] @ np.diag(S)
         return left_embedding, right_embedding
     else:
         return left_embedding
