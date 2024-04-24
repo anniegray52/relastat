@@ -245,9 +245,6 @@ def embed(Y, d=10, version='sqrt', right_embedding=False, make_laplacian=False, 
 
     if version not in ['full', 'sqrt']:
         raise ValueError('version must be full or sqrt (default)')
-    # if matrix not in ['adjacency', 'laplacian']:
-    #     raise ValueError(
-    #         "Invalid matrix type. Use 'adjacency' or 'laplacian'.")
 
     if make_laplacian == True:
         L = to_laplacian(Y, regulariser)
