@@ -15,8 +15,18 @@ import nltk
 from re import compile, sub
 from sklearn.feature_extraction.text import TfidfVectorizer
 
-
 from relastat.utils import zero_matrix, is_symmetric, symmetric_dilation, count_based_on_keys
+
+
+## THE  FOLLOWING NEEDS FIXING AT SOME POINT
+                # if len(list(set(pair_data['V1']) & set(pair_data['V2']))) != 0:
+                #     pair_data['V1'] = [
+                #         f"{partition_pair[0]}{join_token}{x}" for x in pair_data['V1']]
+                #     pair_data['V2'] = [
+                #         f"{partition_pair[0]}{join_token}{x}" for x in pair_data['V2']]
+                #     pair_data['P1'] = partition_pair[0]
+                #     pair_data['P2'] = partition_pair[1]
+## THE DREAM IS TO BE ABLE TO TELL IF TWO COLUMNS ARE THE SAME PARTIITON OR NOT ?? 
 
 
 def matrix_from_tables(tables, relationships, dynamic_col=None, weight_col=None, join_token='::'):
@@ -132,7 +142,7 @@ def create_edge_list(tables, relationships, dynamic_col, join_token, weight_col)
                     pair_data['V1'] = [
                         f"{partition_pair[0]}{join_token}{x}" for x in pair_data['V1']]
                     pair_data['V2'] = [
-                        f"{partition_pair[0]}{join_token}{x}" for x in pair_data['V2']]
+                        f"{partition_pair[1]}{join_token}{x}" for x in pair_data['V2']]
                     pair_data['P1'] = partition_pair[0]
                     pair_data['P2'] = partition_pair[1]
 
