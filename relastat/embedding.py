@@ -104,53 +104,90 @@ def dim_select(A, plot=True, plotrange=50):
     return lq_best
 
 
-def wasserstein_dim_select(Y, split=0.5, rmin=1, rmax=50):
+# def wasserstein_dim_select(Y, split=0.5, rmin=1, rmax=50):
+#     """
+#     Select the number of dimensions for Y using Wasserstein distances.
+
+#     Parameters
+#     ----------
+#     Y : numpy.ndarray
+#         The array of matrices.
+#     split : float
+#         The proportion of the data to be used for training.
+#     rmin : int
+#         The minimum number of dimensions to be considered.
+#     rmax : int
+#         The maximum number of dimensions to be considered.
+
+#     Returns
+#     -------
+#     ws : list of numpy.ndarray
+#         The Wasserstein distances between the training and test data for each number of dimensions.
+#     """
+
+#     try:
+#         import ot
+#     except ModuleNotFoundError:
+#         logging.error("ot not found, pip install pot")
+#     print('tensorflow warnings are seemingly a bug in ot, ignore them')
+#     n = Y.shape[0]
+#     train = round(n * split)
+#     rtry = int(np.min((train, rmax)))
+#     if sparse.issparse(Y):
+#         Y = Y.todense()
+#     Ytrain = Y[:train, :]
+#     Ytest = Y[train:n, :]
+#     U, s, Vh = svds(Ytrain, k=rtry-1)
+#     idx = s.argsort()[::-1]
+#     s = s[idx]
+#     Vh = Vh[idx, :]
+#     ws = []
+#     for r in tqdm(range(rmin, rtry+1)):
+#         P = Vh.T[:, :r] @ Vh[:r, :]
+#         Yproj = Ytrain @ P.T
+#         n1 = Yproj.shape[0]
+#         n2 = Ytest.shape[0]
+#         M = ot.dist(Yproj, Ytest, metric='euclidean')
+#         W1 = ot.emd2(np.repeat(1/n1, n1), np.repeat(1/n2, n2), M)
+#         ws.append(W1)
+#     return ws
+
+def WassersteinDimensionSelect(Y, dims, split=0.5):
     """ 
-    Select the number of dimensions for Y using Wasserstein distances.
+    Select the number of dimensions for Y using Wasserstein distances.  
 
     Parameters  
     ----------  
-    Y : numpy.ndarray
+    Y : numpy.ndarray   
         The array of matrices.  
+    dims : list of int  
+        The dimensions to be considered.    
     split : float   
-        The proportion of the data to be used for training.
-    rmin : int  
-        The minimum number of dimensions to be considered.
-    rmax : int  
-        The maximum number of dimensions to be considered.
+        The proportion of the data to be used for training. 
 
     Returns 
     ------- 
-    ws : list of numpy.ndarray
-        The Wasserstein distances between the training and test data for each number of dimensions.     
+    ws : list of numpy.ndarray   
+        The Wasserstein distances between the training and test data for each number of dimensions.    
     """
-
-    try:
-        import ot
-    except ModuleNotFoundError:
-        logging.error("ot not found, pip install pot")
-    print('tensorflow warnings are seemingly a bug in ot, ignore them')
     n = Y.shape[0]
-    train = round(n * split)
-    rtry = int(np.min((train, rmax)))
-    if sparse.issparse(Y):
-        Y = Y.todense()
-    Ytrain = Y[:train, :]
-    Ytest = Y[train:n, :]
-    U, s, Vh = svds(Ytrain, k=rtry-1)
-    idx = s.argsort()[::-1]
-    s = s[idx]
-    Vh = Vh[idx, :]
-    ws = []
-    for r in tqdm(range(rmin, rtry+1)):
-        P = Vh.T[:, :r] @ Vh[:r, :]
-        Yproj = Ytrain @ P.T
-        n1 = Yproj.shape[0]
-        n2 = Ytest.shape[0]
-        M = ot.dist(Yproj, Ytest, metric='euclidean')
-        W1 = ot.emd2(np.repeat(1/n1, n1), np.repeat(1/n2, n2), M)
-        ws.append(W1)
-    return ws
+    idx = np.random.choice(range(n), int(n*split), replace=False)
+    Y1 = Y[idx]
+    Y2 = Y[-idx]
+    n1 = Y1.shape[0]
+    n2 = Y2.shape[0]
+    max_dim = np.max(dims)
+    U, S, Vt = sparse.linalg.svds(Y1, k=max_dim)
+    S = np.flip(S)
+    Vt = np.flip(Vt, axis=0)
+    Ws = []
+    for dim in tqdm(dims):
+        M = ot.dist((Y1 @ Vt.T[:, :dim]) @ Vt[:dim, :],
+                    Y2.todense(), metric='euclidean')
+        Ws.append(ot.emd2(np.repeat(1/n1, n1), np.repeat(1/n2, n2), M))
+        print(
+            f'Number of dimensions: {dim:d}, Wasserstein distance {Ws[-1]:.5f}')
+    return Ws
 
 ## ==================== ## embedding functions ## ==================== ##
 
