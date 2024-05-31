@@ -151,7 +151,6 @@ def dim_select(A, plot=True, plotrange=50):
 #         W1 = ot.emd2(np.repeat(1/n1, n1), np.repeat(1/n2, n2), M)
 #         ws.append(W1)
 #     return ws
-
 def WassersteinDimensionSelect(Y, dims, split=0.5):
     """ 
     Select the number of dimensions for Y using Wasserstein distances.  
@@ -181,6 +180,8 @@ def WassersteinDimensionSelect(Y, dims, split=0.5):
     idx = np.random.choice(range(n), int(n*split), replace=False)
     Y1 = Y[idx]
     Y2 = Y[-idx]
+    if sparse.issparse(Y2):
+        Y2 = Y2.toarray()
     n1 = Y1.shape[0]
     n2 = Y2.shape[0]
     max_dim = np.max(dims)
@@ -190,7 +191,7 @@ def WassersteinDimensionSelect(Y, dims, split=0.5):
     Ws = []
     for dim in tqdm(dims):
         M = ot.dist((Y1 @ Vt.T[:, :dim]) @ Vt[:dim, :],
-                    Y2.todense(), metric='euclidean')
+                    Y2, metric='euclidean')
         Ws.append(ot.emd2(np.repeat(1/n1, n1), np.repeat(1/n2, n2), M))
         print(
             f'Number of dimensions: {dim:d}, Wasserstein distance {Ws[-1]:.5f}')
