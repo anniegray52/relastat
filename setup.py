@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='relastat',
-      version='0.1.1rc3',
+      version='0.1.1rc4',
       install_requires=[
           'matplotlib',
           'networkx',

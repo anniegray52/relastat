@@ -170,6 +170,13 @@ def WassersteinDimensionSelect(Y, dims, split=0.5):
     ws : list of numpy.ndarray   
         The Wasserstein distances between the training and test data for each number of dimensions.    
     """
+
+    try:
+        import ot
+    except ModuleNotFoundError:
+        logging.error("ot not found, pip install pot")
+    print('tensorflow warnings are seemingly a bug in ot, ignore them')
+
     n = Y.shape[0]
     idx = np.random.choice(range(n), int(n*split), replace=False)
     Y1 = Y[idx]
