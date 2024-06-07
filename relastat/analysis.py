@@ -8,6 +8,8 @@ from tqdm import tqdm
 from scipy.stats import kendalltau
 from scipy.cluster.hierarchy import dendrogram
 import numpy as np
+import matplotlib.pyplot as plt
+import networkx as nx
 
 
 # ========== Plot dendrogram ==========
@@ -105,8 +107,8 @@ def varimax(Phi, gamma=1, q=20, tol=1e-6):
     return np.dot(Phi, R)
 
 
-def draw_clustering(model, node_colours=None, no_merges=None, labels=None, plot_labels=None, internal_node_colour='black',
-                    linewidths=None, edgecolors=None, leaf_node_size=20, fontsize=10, internal_node_size=1, figsize=(10, 10)):
+def plot_HC_clustering(model, node_colours=None, no_merges=None, labels=None, plot_labels=None, internal_node_colour='black',
+                       linewidths=None, edgecolors=None, leaf_node_size=20, fontsize=10, internal_node_size=1, figsize=(10, 10)):
 
     if no_merges is None:
         no_merges = model.children_.shape[0]
@@ -132,12 +134,10 @@ def draw_clustering(model, node_colours=None, no_merges=None, labels=None, plot_
     for node in G.nodes():
         if node < n:
             node_colours_[node] = node_colours[node]
-            # node_colours_.append(node_colours[node])
             node_sizes[node] = leaf_node_size
             node_names[node] = labels[node]
         else:
             node_colours_[node] = internal_node_colour
-            # node_colours_.append(internal_node_colour)
             node_sizes[node] = internal_node_size
             node_names[node] = ''
 
