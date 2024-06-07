@@ -47,15 +47,18 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">Function documentation</a><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Functions</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="preprocessing.html">Preprocessing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="embed.html">Embedding</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Analysis</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#relastat.analysis.find_ancestors"><code class="docutils literal notranslate"><span class="pre">find_ancestors()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#relastat.analysis.find_descendents"><code class="docutils literal notranslate"><span class="pre">find_descendents()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#relastat.analysis.get_ranking"><code class="docutils literal notranslate"><span class="pre">get_ranking()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#relastat.analysis.get_triu"><code class="docutils literal notranslate"><span class="pre">get_triu()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#relastat.analysis.kendalltau_similarity"><code class="docutils literal notranslate"><span class="pre">kendalltau_similarity()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#relastat.analysis.linkage_matrix"><code class="docutils literal notranslate"><span class="pre">linkage_matrix()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#relastat.analysis.plot_HC_clustering"><code class="docutils literal notranslate"><span class="pre">plot_HC_clustering()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#relastat.analysis.plot_dendrogram"><code class="docutils literal notranslate"><span class="pre">plot_dendrogram()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#relastat.analysis.sample_hyperbolicity"><code class="docutils literal notranslate"><span class="pre">sample_hyperbolicity()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#relastat.analysis.utri2mat"><code class="docutils literal notranslate"><span class="pre">utri2mat()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#relastat.analysis.varimax"><code class="docutils literal notranslate"><span class="pre">varimax()</span></code></a></li>
 </ul>
 </li>
@@ -79,7 +82,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="index.html">Function documentation</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Functions</a></li>
       <li class="breadcrumb-item active">Analysis</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/api/analysis.rst.txt" rel="nofollow"> View page source</a>
@@ -93,84 +96,22 @@
   <section id="module-relastat.analysis">
 <span id="analysis"></span><h1>Analysis<a class="headerlink" href="#module-relastat.analysis" title="Permalink to this heading"></a></h1>
 <dl class="py function">
-<dt class="sig sig-object py" id="relastat.analysis.find_ancestors">
-<span class="sig-prename descclassname"><span class="pre">relastat.analysis.</span></span><span class="sig-name descname"><span class="pre">find_ancestors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ances</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#relastat.analysis.find_ancestors" title="Permalink to this definition"></a></dt>
-<dd><p>Find the ancestors of a target node in the dendrogram.</p>
-<p>NEEDS CHECKING</p>
-<section id="parameters">
-<h2>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading"></a></h2>
-<dl class="simple">
-<dt>model<span class="classifier">AgglomerativeClustering </span></dt><dd><p>The fitted model.</p>
-</dd>
-<dt>target<span class="classifier">int    </span></dt><dd><p>The target node.</p>
-</dd>
-<dt>ances<span class="classifier">dict, optional</span></dt><dd><p>Dictionary to store ancestors. Default is None.</p>
-</dd>
-</dl>
-</section>
-<section id="returns">
-<h2>Returns<a class="headerlink" href="#returns" title="Permalink to this heading"></a></h2>
-<dl class="simple">
-<dt>list    </dt><dd><p>The list of ancestors of the target node.</p>
-</dd>
-</dl>
-</section>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="relastat.analysis.find_descendents">
-<span class="sig-prename descclassname"><span class="pre">relastat.analysis.</span></span><span class="sig-name descname"><span class="pre">find_descendents</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">desc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#relastat.analysis.find_descendents" title="Permalink to this definition"></a></dt>
-<dd><p>Find the descendents of a node in the dendrogram.</p>
-<p>NEEDS CHECKING</p>
-<section id="id1">
-<h2>Parameters<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h2>
-<dl class="simple">
-<dt>model<span class="classifier">AgglomerativeClustering </span></dt><dd><p>The fitted model.</p>
-</dd>
-<dt>node<span class="classifier">int  </span></dt><dd><p>The target node.</p>
-</dd>
-<dt>desc<span class="classifier">dict, optional</span></dt><dd><p>Dictionary to store descendants. Default is None.</p>
-</dd>
-</dl>
-</section>
-<section id="id2">
-<h2>Returns<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h2>
-<dl class="simple">
-<dt>list    </dt><dd><p>The list of descendents of the target node.</p>
-</dd>
-</dl>
-</section>
-</dd></dl>
-
-<dl class="py function">
 <dt class="sig sig-object py" id="relastat.analysis.get_ranking">
-<span class="sig-prename descclassname"><span class="pre">relastat.analysis.</span></span><span class="sig-name descname"><span class="pre">get_ranking</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#relastat.analysis.get_ranking" title="Permalink to this definition"></a></dt>
-<dd><blockquote>
-<div><p>Get the ranking of order of merges to other nodes.</p>
-<p>NEEDS CHECKING</p>
-</div></blockquote>
-<dl>
-<dt>[]o-0i9u8</dt><dd><dl class="simple">
-<dt>model<span class="classifier">AgglomerativeClustering </span></dt><dd><p>The fitted model.</p>
-</dd>
-<dt>target<span class="classifier">int    </span></dt><dd><p>The target node.</p>
-</dd>
-</dl>
-<dl class="simple">
-<dt>list    </dt><dd><p>The list of rankings of the other nodes.</p>
-</dd>
-</dl>
-</dd>
-</dl>
-</dd></dl>
+<span class="sig-prename descclassname"><span class="pre">relastat.analysis.</span></span><span class="sig-name descname"><span class="pre">get_ranking</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#relastat.analysis.get_ranking" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="relastat.analysis.get_triu">
+<span class="sig-prename descclassname"><span class="pre">relastat.analysis.</span></span><span class="sig-name descname"><span class="pre">get_triu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">matrix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#relastat.analysis.get_triu" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="relastat.analysis.kendalltau_similarity">
 <span class="sig-prename descclassname"><span class="pre">relastat.analysis.</span></span><span class="sig-name descname"><span class="pre">kendalltau_similarity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">true_ranking</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#relastat.analysis.kendalltau_similarity" title="Permalink to this definition"></a></dt>
 <dd><p>Calculate the Kendall’s tau similarity between the model and true ranking.</p>
 <p>NEEDS TESTING (does global work?)</p>
-<section id="id3">
-<h2>Parameters<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h2>
+<section id="parameters">
+<h2>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading"></a></h2>
 <dl class="simple">
 <dt>model<span class="classifier">AgglomerativeClustering </span></dt><dd><p>The fitted model.</p>
 </dd>
@@ -178,8 +119,8 @@
 </dd>
 </dl>
 </section>
-<section id="id4">
-<h2>Returns<a class="headerlink" href="#id4" title="Permalink to this heading"></a></h2>
+<section id="returns">
+<h2>Returns<a class="headerlink" href="#returns" title="Permalink to this heading"></a></h2>
 <dl class="simple">
 <dt>float   </dt><dd><p>The mean Kendall’s tau similarity between the model and true ranking.</p>
 </dd>
@@ -188,23 +129,43 @@
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="relastat.analysis.linkage_matrix">
+<span class="sig-prename descclassname"><span class="pre">relastat.analysis.</span></span><span class="sig-name descname"><span class="pre">linkage_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rescale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#relastat.analysis.linkage_matrix" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="relastat.analysis.plot_HC_clustering">
+<span class="sig-prename descclassname"><span class="pre">relastat.analysis.</span></span><span class="sig-name descname"><span class="pre">plot_HC_clustering</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_colours</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_merges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">internal_node_colour</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'black'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">linewidths</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edgecolors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">leaf_node_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fontsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">internal_node_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">figsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(10,</span> <span class="pre">10)</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#relastat.analysis.plot_HC_clustering" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="relastat.analysis.plot_dendrogram">
 <span class="sig-prename descclassname"><span class="pre">relastat.analysis.</span></span><span class="sig-name descname"><span class="pre">plot_dendrogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#relastat.analysis.plot_dendrogram" title="Permalink to this definition"></a></dt>
 <dd><p>Create linkage matrix and then plot the dendrogram</p>
-<section id="id5">
-<h2>Parameters<a class="headerlink" href="#id5" title="Permalink to this heading"></a></h2>
+<section id="id1">
+<h2>Parameters<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h2>
 <dl class="simple">
 <dt>model<span class="classifier">AgglomerativeClustering </span></dt><dd><p>The fitted model to plot.</p>
 </dd>
-<dt><a href="#id6"><span class="problematic" id="id7">**</span></a>kwargs<span class="classifier">dict </span></dt><dd><p>Keyword arguments for dendrogram function.</p>
+<dt><a href="#id2"><span class="problematic" id="id3">**</span></a>kwargs<span class="classifier">dict </span></dt><dd><p>Keyword arguments for dendrogram function.</p>
 </dd>
 </dl>
 </section>
-<section id="id8">
-<h2>Returns<a class="headerlink" href="#id8" title="Permalink to this heading"></a></h2>
+<section id="id4">
+<h2>Returns<a class="headerlink" href="#id4" title="Permalink to this heading"></a></h2>
 <p>None</p>
 </section>
 </dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="relastat.analysis.sample_hyperbolicity">
+<span class="sig-prename descclassname"><span class="pre">relastat.analysis.</span></span><span class="sig-name descname"><span class="pre">sample_hyperbolicity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'dot_products'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_samples</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5000</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#relastat.analysis.sample_hyperbolicity" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="relastat.analysis.utri2mat">
+<span class="sig-prename descclassname"><span class="pre">relastat.analysis.</span></span><span class="sig-name descname"><span class="pre">utri2mat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">utri</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#relastat.analysis.utri2mat" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="relastat.analysis.varimax">

@@ -47,9 +47,10 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">Function documentation</a><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Functions</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="preprocessing.html">Preprocessing</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Embedding</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#relastat.embedding.WassersteinDimensionSelect"><code class="docutils literal notranslate"><span class="pre">WassersteinDimensionSelect()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#relastat.embedding.degree_correction"><code class="docutils literal notranslate"><span class="pre">degree_correction()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#relastat.embedding.dim_select"><code class="docutils literal notranslate"><span class="pre">dim_select()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#relastat.embedding.eigen_decomp"><code class="docutils literal notranslate"><span class="pre">eigen_decomp()</span></code></a></li>
@@ -57,7 +58,6 @@
 <li class="toctree-l3"><a class="reference internal" href="#relastat.embedding.recover_subspaces"><code class="docutils literal notranslate"><span class="pre">recover_subspaces()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#relastat.embedding.select"><code class="docutils literal notranslate"><span class="pre">select()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#relastat.embedding.to_laplacian"><code class="docutils literal notranslate"><span class="pre">to_laplacian()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#relastat.embedding.wasserstein_dim_select"><code class="docutils literal notranslate"><span class="pre">wasserstein_dim_select()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="analysis.html">Analysis</a></li>
@@ -81,7 +81,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="index.html">Function documentation</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Functions</a></li>
       <li class="breadcrumb-item active">Embedding</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/api/embed.rst.txt" rel="nofollow"> View page source</a>
@@ -95,18 +95,42 @@
   <section id="module-relastat.embedding">
 <span id="embedding"></span><h1>Embedding<a class="headerlink" href="#module-relastat.embedding" title="Permalink to this heading"></a></h1>
 <dl class="py function">
-<dt class="sig sig-object py" id="relastat.embedding.degree_correction">
-<span class="sig-prename descclassname"><span class="pre">relastat.embedding.</span></span><span class="sig-name descname"><span class="pre">degree_correction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#relastat.embedding.degree_correction" title="Permalink to this definition"></a></dt>
-<dd><p>Perform degree correction.</p>
+<dt class="sig sig-object py" id="relastat.embedding.WassersteinDimensionSelect">
+<span class="sig-prename descclassname"><span class="pre">relastat.embedding.</span></span><span class="sig-name descname"><span class="pre">WassersteinDimensionSelect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dims</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#relastat.embedding.WassersteinDimensionSelect" title="Permalink to this definition"></a></dt>
+<dd><p>Select the number of dimensions for Y using Wasserstein distances.</p>
 <section id="parameters">
 <h2>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading"></a></h2>
 <dl class="simple">
-<dt>X<span class="classifier">numpy.ndarray   </span></dt><dd><p>The embedding of the graph.</p>
+<dt>Y<span class="classifier">numpy.ndarray   </span></dt><dd><p>The array of matrices.</p>
+</dd>
+<dt>dims<span class="classifier">list of int  </span></dt><dd><p>The dimensions to be considered.</p>
+</dd>
+<dt>split<span class="classifier">float   </span></dt><dd><p>The proportion of the data to be used for training.</p>
 </dd>
 </dl>
 </section>
 <section id="returns">
 <h2>Returns<a class="headerlink" href="#returns" title="Permalink to this heading"></a></h2>
+<dl class="simple">
+<dt>ws<span class="classifier">list of numpy.ndarray   </span></dt><dd><p>The Wasserstein distances between the training and test data for each number of dimensions.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="relastat.embedding.degree_correction">
+<span class="sig-prename descclassname"><span class="pre">relastat.embedding.</span></span><span class="sig-name descname"><span class="pre">degree_correction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#relastat.embedding.degree_correction" title="Permalink to this definition"></a></dt>
+<dd><p>Perform degree correction.</p>
+<section id="id1">
+<h2>Parameters<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h2>
+<dl class="simple">
+<dt>X<span class="classifier">numpy.ndarray   </span></dt><dd><p>The embedding of the graph.</p>
+</dd>
+</dl>
+</section>
+<section id="id2">
+<h2>Returns<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h2>
 <dl class="simple">
 <dt>Y<span class="classifier">numpy.ndarray   </span></dt><dd><p>The degree-corrected embedding.</p>
 </dd>
@@ -119,8 +143,8 @@
 <span class="sig-prename descclassname"><span class="pre">relastat.embedding.</span></span><span class="sig-name descname"><span class="pre">dim_select</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plotrange</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#relastat.embedding.dim_select" title="Permalink to this definition"></a></dt>
 <dd><p>Select the number of dimensions for A.
 Finding a changepoint using the likelihood profile (Zhu, Ghodsi; 2006). I’ve just lifted this from Ian so it might need updating.</p>
-<section id="id1">
-<h2>Parameters<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h2>
+<section id="id3">
+<h2>Parameters<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h2>
 <dl class="simple">
 <dt>As<span class="classifier">numpy.array</span></dt><dd><p>The array of matrices.</p>
 </dd>
@@ -130,8 +154,8 @@ Finding a changepoint using the likelihood profile (Zhu, Ghodsi; 2006). I’ve j
 </dd>
 </dl>
 </section>
-<section id="id2">
-<h2>Returns<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h2>
+<section id="id4">
+<h2>Returns<a class="headerlink" href="#id4" title="Permalink to this heading"></a></h2>
 <dl class="simple">
 <dt>lq_best<span class="classifier">int</span></dt><dd><p>The number of dimensions selected.</p>
 </dd>
@@ -143,8 +167,8 @@ Finding a changepoint using the likelihood profile (Zhu, Ghodsi; 2006). I’ve j
 <dt class="sig sig-object py" id="relastat.embedding.eigen_decomp">
 <span class="sig-prename descclassname"><span class="pre">relastat.embedding.</span></span><span class="sig-name descname"><span class="pre">eigen_decomp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#relastat.embedding.eigen_decomp" title="Permalink to this definition"></a></dt>
 <dd><p>Perform eigenvalue decomposition of a matrix.</p>
-<section id="id3">
-<h2>Parameters<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h2>
+<section id="id5">
+<h2>Parameters<a class="headerlink" href="#id5" title="Permalink to this heading"></a></h2>
 <dl class="simple">
 <dt>A<span class="classifier">numpy.ndarray   </span></dt><dd><p>The matrix to be decomposed.</p>
 </dd>
@@ -152,8 +176,8 @@ Finding a changepoint using the likelihood profile (Zhu, Ghodsi; 2006). I’ve j
 </dd>
 </dl>
 </section>
-<section id="id4">
-<h2>Returns<a class="headerlink" href="#id4" title="Permalink to this heading"></a></h2>
+<section id="id6">
+<h2>Returns<a class="headerlink" href="#id6" title="Permalink to this heading"></a></h2>
 <dl class="simple">
 <dt>eigenvalues<span class="classifier">numpy.ndarray </span></dt><dd><p>The eigenvalues.</p>
 </dd>
@@ -165,14 +189,16 @@ Finding a changepoint using the likelihood profile (Zhu, Ghodsi; 2006). I’ve j
 
 <dl class="py function">
 <dt class="sig sig-object py" id="relastat.embedding.embed">
-<span class="sig-prename descclassname"><span class="pre">relastat.embedding.</span></span><span class="sig-name descname"><span class="pre">embed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right_embedding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">make_laplacian</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regulariser</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#relastat.embedding.embed" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">relastat.embedding.</span></span><span class="sig-name descname"><span class="pre">embed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">version</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'sqrt'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right_embedding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">make_laplacian</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regulariser</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#relastat.embedding.embed" title="Permalink to this definition"></a></dt>
 <dd><p>Embed a matrix.</p>
-<section id="id5">
-<h2>Parameters<a class="headerlink" href="#id5" title="Permalink to this heading"></a></h2>
+<section id="id7">
+<h2>Parameters<a class="headerlink" href="#id7" title="Permalink to this heading"></a></h2>
 <dl class="simple">
 <dt>Y<span class="classifier">numpy.ndarray</span></dt><dd><p>The array of matrices.</p>
 </dd>
 <dt>d<span class="classifier">int </span></dt><dd><p>The number of dimensions to embed into.</p>
+</dd>
+<dt>version<span class="classifier">str   </span></dt><dd><p>The version of the embedding. Options are ‘full’ or ‘sqrt’ (default).</p>
 </dd>
 <dt>right_embedding<span class="classifier">bool  </span></dt><dd><p>Whether to return the right embedding.</p>
 </dd>
@@ -182,8 +208,8 @@ Finding a changepoint using the likelihood profile (Zhu, Ghodsi; 2006). I’ve j
 </dd>
 </dl>
 </section>
-<section id="id6">
-<h2>Returns<a class="headerlink" href="#id6" title="Permalink to this heading"></a></h2>
+<section id="id8">
+<h2>Returns<a class="headerlink" href="#id8" title="Permalink to this heading"></a></h2>
 <dl class="simple">
 <dt>left_embedding<span class="classifier">numpy.ndarray</span></dt><dd><p>The left embedding.</p>
 </dd>
@@ -197,8 +223,8 @@ Finding a changepoint using the likelihood profile (Zhu, Ghodsi; 2006). I’ve j
 <dt class="sig sig-object py" id="relastat.embedding.recover_subspaces">
 <span class="sig-prename descclassname"><span class="pre">relastat.embedding.</span></span><span class="sig-name descname"><span class="pre">recover_subspaces</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">embedding</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attributes</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#relastat.embedding.recover_subspaces" title="Permalink to this definition"></a></dt>
 <dd><p>Recover the subspaces for each partition from an embedding.</p>
-<section id="id7">
-<h2>Parameters<a class="headerlink" href="#id7" title="Permalink to this heading"></a></h2>
+<section id="id9">
+<h2>Parameters<a class="headerlink" href="#id9" title="Permalink to this heading"></a></h2>
 <dl class="simple">
 <dt>embedding<span class="classifier">numpy.ndarray</span></dt><dd><p>The embedding of the graph.</p>
 </dd>
@@ -208,8 +234,8 @@ the attributes of the nodes in the columns.</p>
 </dd>
 </dl>
 </section>
-<section id="id8">
-<h2>Returns<a class="headerlink" href="#id8" title="Permalink to this heading"></a></h2>
+<section id="id10">
+<h2>Returns<a class="headerlink" href="#id10" title="Permalink to this heading"></a></h2>
 <dl class="simple">
 <dt>partition_embeddings<span class="classifier">dict</span></dt><dd><p>The embeddings of the partitions.</p>
 </dd>
@@ -223,8 +249,8 @@ the attributes of the nodes in the columns.</p>
 <dt class="sig sig-object py" id="relastat.embedding.select">
 <span class="sig-prename descclassname"><span class="pre">relastat.embedding.</span></span><span class="sig-name descname"><span class="pre">select</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">embedding</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attributes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">select_attributes</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#relastat.embedding.select" title="Permalink to this definition"></a></dt>
 <dd><p>Select portion of embedding and attributes associated with a set of attributes.</p>
-<section id="id9">
-<h2>Parameters<a class="headerlink" href="#id9" title="Permalink to this heading"></a></h2>
+<section id="id11">
+<h2>Parameters<a class="headerlink" href="#id11" title="Permalink to this heading"></a></h2>
 <dl class="simple">
 <dt>embedding<span class="classifier">numpy.ndarray   </span></dt><dd><p>The embedding of the graph.</p>
 </dd>
@@ -237,8 +263,8 @@ satisfying each dict is selected.</p>
 </dd>
 </dl>
 </section>
-<section id="id10">
-<h2>Returns<a class="headerlink" href="#id10" title="Permalink to this heading"></a></h2>
+<section id="id12">
+<h2>Returns<a class="headerlink" href="#id12" title="Permalink to this heading"></a></h2>
 <dl class="simple">
 <dt>selected_X<span class="classifier">numpy.ndarray   </span></dt><dd><p>The selected embedding.</p>
 </dd>
@@ -252,8 +278,8 @@ satisfying each dict is selected.</p>
 <dt class="sig sig-object py" id="relastat.embedding.to_laplacian">
 <span class="sig-prename descclassname"><span class="pre">relastat.embedding.</span></span><span class="sig-name descname"><span class="pre">to_laplacian</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regulariser</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#relastat.embedding.to_laplacian" title="Permalink to this definition"></a></dt>
 <dd><p>Convert an adjacency matrix to a Laplacian matrix.</p>
-<section id="id11">
-<h2>Parameters<a class="headerlink" href="#id11" title="Permalink to this heading"></a></h2>
+<section id="id13">
+<h2>Parameters<a class="headerlink" href="#id13" title="Permalink to this heading"></a></h2>
 <dl class="simple">
 <dt>A<span class="classifier">scipy.sparse.csr_matrix</span></dt><dd><p>The adjacency matrix.</p>
 </dd>
@@ -261,36 +287,10 @@ satisfying each dict is selected.</p>
 </dd>
 </dl>
 </section>
-<section id="id12">
-<h2>Returns<a class="headerlink" href="#id12" title="Permalink to this heading"></a></h2>
-<dl class="simple">
-<dt>L<span class="classifier">scipy.sparse.csr_matrix</span></dt><dd><p>The Laplacian matrix.</p>
-</dd>
-</dl>
-</section>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="relastat.embedding.wasserstein_dim_select">
-<span class="sig-prename descclassname"><span class="pre">relastat.embedding.</span></span><span class="sig-name descname"><span class="pre">wasserstein_dim_select</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rmin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#relastat.embedding.wasserstein_dim_select" title="Permalink to this definition"></a></dt>
-<dd><p>Select the number of dimensions for Y using Wasserstein distances.</p>
-<section id="id13">
-<h2>Parameters<a class="headerlink" href="#id13" title="Permalink to this heading"></a></h2>
-<dl class="simple">
-<dt>Y<span class="classifier">numpy.ndarray</span></dt><dd><p>The array of matrices.</p>
-</dd>
-<dt>split<span class="classifier">float   </span></dt><dd><p>The proportion of the data to be used for training.</p>
-</dd>
-<dt>rmin<span class="classifier">int  </span></dt><dd><p>The minimum number of dimensions to be considered.</p>
-</dd>
-<dt>rmax<span class="classifier">int  </span></dt><dd><p>The maximum number of dimensions to be considered.</p>
-</dd>
-</dl>
-</section>
 <section id="id14">
 <h2>Returns<a class="headerlink" href="#id14" title="Permalink to this heading"></a></h2>
 <dl class="simple">
-<dt>ws<span class="classifier">list of numpy.ndarray</span></dt><dd><p>The Wasserstein distances between the training and test data for each number of dimensions.</p>
+<dt>L<span class="classifier">scipy.sparse.csr_matrix</span></dt><dd><p>The Laplacian matrix.</p>
 </dd>
 </dl>
 </section>
