@@ -109,6 +109,40 @@ def varimax(Phi, gamma=1, q=20, tol=1e-6):
 
 def plot_HC_clustering(model, node_colours=None, no_merges=None, labels=None, plot_labels=None, internal_node_colour='black',
                        linewidths=None, edgecolors=None, leaf_node_size=20, fontsize=10, internal_node_size=1, figsize=(10, 10)):
+    """ 
+    Plot the hierarchical clustering tree.    
+
+    Parameters  
+    ----------  
+    model : AgglomerativeClustering 
+        The fitted model.   
+    node_colours : array-like, shape (n_samples,)   
+        The colour of the nodes.
+    no_merges : int, optional
+        The number of merges to plot. If None, plot all merges.
+    labels : array-like, shape (n_samples,) 
+        The labels of the samples.
+    plot_labels : bool, optional    
+        Whether to plot the labels.
+    internal_node_colour : str, optional    
+        The colour of the internal nodes.   
+    linewidths : float, optional    
+        The width of the lines. 
+    edgecolors : str, optional  
+        The colour of the edges.
+    leaf_node_size : int, optional  
+        The size of the leaf nodes. 
+    fontsize : int, optional
+        The size of the font.
+    internal_node_size : int, optional  
+        The size of the internal nodes.
+    figsize : tuple, optional   
+        The size of the figure.
+
+    Returns 
+    ------- 
+    None    
+    """
 
     if no_merges is None:
         no_merges = model.children_.shape[0]

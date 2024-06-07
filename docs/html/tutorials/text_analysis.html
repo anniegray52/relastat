@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Text analysis - 20Newsgroup &mdash; relastat  documentation</title>
+  <title>20Newsgroup data &mdash; relastat  documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
 
@@ -46,16 +46,19 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../api/index.html">Function documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">Functions</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Tutorials</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="basics.html">Basics</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dynamic.html">Dynamic graph - Lyon school data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="multipartite.html">Multipartite graph - Public procurement data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multipartite.html">Multipartite graph</a></li>
 <li class="toctree-l2"><a class="reference internal" href="weighted.html">Weighted graph - Harry Potter</a></li>
 <li class="toctree-l2"><a class="reference internal" href="time_series.html">Time series - Stocks</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Text analysis - 20Newsgroup</a><ul>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">20Newsgroup data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#data-load">Data load</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pca-and-tsne">PCA and tSNE</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#hierarchical-clustering">Hierarchical clustering</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#references">References</a></li>
 </ul>
 </li>
 </ul>
@@ -77,7 +80,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="index.html">Tutorials</a></li>
-      <li class="breadcrumb-item active">Text analysis - 20Newsgroup</li>
+      <li class="breadcrumb-item active">20Newsgroup data</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/tutorials/text_analysis.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -87,20 +90,29 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="text-analysis-20newsgroup">
-<h1>Text analysis - 20Newsgroup<a class="headerlink" href="#text-analysis-20newsgroup" title="Permalink to this heading"></a></h1>
+  <section id="newsgroup-data">
+<h1>20Newsgroup data<a class="headerlink" href="#newsgroup-data" title="Permalink to this heading"></a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading"></a></h2>
+<p>In this notebook, we will demonstrate how to use the following functions
+on the 20Newsgroup data - <code class="docutils literal notranslate"><span class="pre">matrix_from_text()</span></code> -
+<code class="docutils literal notranslate"><span class="pre">WassersteinDimensionSelect()</span></code> - <code class="docutils literal notranslate"><span class="pre">embed()</span></code> - <code class="docutils literal notranslate"><span class="pre">plot_dendrogram()</span></code> -
+<code class="docutils literal notranslate"><span class="pre">plot_HC_clustering()</span></code></p>
+<p>Each document is associated with 1 of 20 newsgroup topics, organized at
+two hierarchical levels.</p>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">fetch_20newsgroups</span>
+<span class="kn">import</span> <span class="nn">relastat</span> <span class="k">as</span> <span class="nn">rs</span>
 </pre></div>
 </div>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># pip install git+ssh://git@github.com/anniegray52/relastat.git</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># pip install git+ssh://git@github.com/anniegray52/relastat.git --upgrade</span>
 </pre></div>
 </div>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">relastat</span> <span class="k">as</span> <span class="nn">rs</span>
-</pre></div>
-</div>
-<p>Import data and create dataframe</p>
+</section>
+<section id="data-load">
+<h2>Data load<a class="headerlink" href="#data-load" title="Permalink to this heading"></a></h2>
+<p>Import data and create dataframe.</p>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">newsgroups</span> <span class="o">=</span> <span class="n">fetch_20newsgroups</span><span class="p">()</span>
 
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
@@ -111,12 +123,88 @@
 <span class="n">df</span><span class="p">[[</span><span class="s1">&#39;layer1&#39;</span><span class="p">,</span> <span class="s1">&#39;layer2&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;target_names&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Create td-idf features</p>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ## use random sample of data</span>
-<span class="n">n</span> <span class="o">=</span> <span class="mi">5000</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>data</th>
+      <th>target</th>
+      <th>target_names</th>
+      <th>layer1</th>
+      <th>layer2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>From: lerxst@wam.umd.edu (where's my thing)\nS...</td>
+      <td>7</td>
+      <td>rec.autos</td>
+      <td>rec</td>
+      <td>autos</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>From: guykuo@carson.u.washington.edu (Guy Kuo)...</td>
+      <td>4</td>
+      <td>comp.sys.mac.hardware</td>
+      <td>comp</td>
+      <td>sys.mac.hardware</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>From: twillis@ec.ecn.purdue.edu (Thomas E Will...</td>
+      <td>4</td>
+      <td>comp.sys.mac.hardware</td>
+      <td>comp</td>
+      <td>sys.mac.hardware</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>From: jgreen@amber (Joe Green)\nSubject: Re: W...</td>
+      <td>1</td>
+      <td>comp.graphics</td>
+      <td>comp</td>
+      <td>graphics</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>From: jcm@head-cfa.harvard.edu (Jonathan McDow...</td>
+      <td>14</td>
+      <td>sci.space</td>
+      <td>sci</td>
+      <td>space</td>
+    </tr>
+  </tbody>
+</table>
+</div><p>For a random sample of the data, create tf-idf features.</p>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span> <span class="o">=</span> <span class="mi">5000</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">22</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
+<p>`rs.’matrix_from_text’ - creates a Y matrix of tf-idf features. It
+takes in a dataframe and the column which contains the data. Further
+functionality includes: removing general stopwords, adding stopwords,
+removing email addresses, cleaning (lemmatize and remove symbol,
+lowercase letters) and a threshold for the min/max number of documents a
+word needs to appear in to be included.</p>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Y</span><span class="p">,</span> <span class="n">attributes</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">matrix_from_text</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="n">remove_stopwords</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">clean_text</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                                     <span class="n">remove_email_addresses</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">update_stopwords</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">],</span>
                                     <span class="n">min_df</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">max_df</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="o">-</span><span class="mi">1000</span><span class="p">)</span>
@@ -129,25 +217,72 @@
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">n</span> <span class="o">=</span> <span class="mi">5000</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="mi">12804</span>
 </pre></div>
 </div>
-<p>Perform dimension selection using Wasserstein distances</p>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rmin</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="n">rmax</span> <span class="o">=</span> <span class="mi">20</span>
-<span class="n">ws</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">wasserstein_dim_select</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span><span class="n">rmin</span> <span class="o">=</span> <span class="n">rmin</span><span class="p">,</span> <span class="n">rmax</span> <span class="o">=</span> <span class="n">rmax</span><span class="p">)</span>
-<span class="n">dim</span> <span class="o">=</span> <span class="n">rmin</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">ws</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Dimension selected: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">ws</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">rmin</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="n">dim</span> <span class="o">=</span><span class="mi">19</span>
+<p>Perform dimension selection using Wasserstein distances, see [^1] for
+details</p>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ws</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">WassersteinDimensionSelect</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="mi">40</span><span class="p">),</span> <span class="n">split</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">dim</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">ws</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>100%|██████████| 20/20 [07:43&lt;00:00, 23.18s/it]
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">2024</span><span class="o">-</span><span class="mi">06</span><span class="o">-</span><span class="mi">07</span> <span class="mi">15</span><span class="p">:</span><span class="mi">24</span><span class="p">:</span><span class="mf">36.733201</span><span class="p">:</span> <span class="n">I</span> <span class="n">tensorflow</span><span class="o">/</span><span class="n">tsl</span><span class="o">/</span><span class="n">cuda</span><span class="o">/</span><span class="n">cudart_stub</span><span class="o">.</span><span class="n">cc</span><span class="p">:</span><span class="mi">28</span><span class="p">]</span> <span class="n">Could</span> <span class="ow">not</span> <span class="n">find</span> <span class="n">cuda</span> <span class="n">drivers</span> <span class="n">on</span> <span class="n">your</span> <span class="n">machine</span><span class="p">,</span> <span class="n">GPU</span> <span class="n">will</span> <span class="ow">not</span> <span class="n">be</span> <span class="n">used</span><span class="o">.</span>
+<span class="mi">2024</span><span class="o">-</span><span class="mi">06</span><span class="o">-</span><span class="mi">07</span> <span class="mi">15</span><span class="p">:</span><span class="mi">24</span><span class="p">:</span><span class="mf">36.777470</span><span class="p">:</span> <span class="n">I</span> <span class="n">tensorflow</span><span class="o">/</span><span class="n">core</span><span class="o">/</span><span class="n">platform</span><span class="o">/</span><span class="n">cpu_feature_guard</span><span class="o">.</span><span class="n">cc</span><span class="p">:</span><span class="mi">182</span><span class="p">]</span> <span class="n">This</span> <span class="n">TensorFlow</span> <span class="n">binary</span> <span class="ow">is</span> <span class="n">optimized</span> <span class="n">to</span> <span class="n">use</span> <span class="n">available</span> <span class="n">CPU</span> <span class="n">instructions</span> <span class="ow">in</span> <span class="n">performance</span><span class="o">-</span><span class="n">critical</span> <span class="n">operations</span><span class="o">.</span>
+<span class="n">To</span> <span class="n">enable</span> <span class="n">the</span> <span class="n">following</span> <span class="n">instructions</span><span class="p">:</span> <span class="n">AVX2</span> <span class="n">FMA</span><span class="p">,</span> <span class="ow">in</span> <span class="n">other</span> <span class="n">operations</span><span class="p">,</span> <span class="n">rebuild</span> <span class="n">TensorFlow</span> <span class="k">with</span> <span class="n">the</span> <span class="n">appropriate</span> <span class="n">compiler</span> <span class="n">flags</span><span class="o">.</span>
+<span class="mi">2024</span><span class="o">-</span><span class="mi">06</span><span class="o">-</span><span class="mi">07</span> <span class="mi">15</span><span class="p">:</span><span class="mi">24</span><span class="p">:</span><span class="mf">37.612544</span><span class="p">:</span> <span class="n">W</span> <span class="n">tensorflow</span><span class="o">/</span><span class="n">compiler</span><span class="o">/</span><span class="n">tf2tensorrt</span><span class="o">/</span><span class="n">utils</span><span class="o">/</span><span class="n">py_utils</span><span class="o">.</span><span class="n">cc</span><span class="p">:</span><span class="mi">38</span><span class="p">]</span> <span class="n">TF</span><span class="o">-</span><span class="n">TRT</span> <span class="ne">Warning</span><span class="p">:</span> <span class="n">Could</span> <span class="ow">not</span> <span class="n">find</span> <span class="n">TensorRT</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Dimension</span> <span class="n">selected</span><span class="p">:</span> <span class="mi">19</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tensorflow</span> <span class="n">warnings</span> <span class="n">are</span> <span class="n">seemingly</span> <span class="n">a</span> <span class="n">bug</span> <span class="ow">in</span> <span class="n">ot</span><span class="p">,</span> <span class="n">ignore</span> <span class="n">them</span>
+<span class="n">Number</span> <span class="n">of</span> <span class="n">dimensions</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="n">Wasserstein</span> <span class="n">distance</span> <span class="mf">1.00000</span>
+<span class="n">Number</span> <span class="n">of</span> <span class="n">dimensions</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="n">Wasserstein</span> <span class="n">distance</span> <span class="mf">0.98924</span>
+<span class="n">Number</span> <span class="n">of</span> <span class="n">dimensions</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="n">Wasserstein</span> <span class="n">distance</span> <span class="mf">0.98642</span>
+<span class="n">Number</span> <span class="n">of</span> <span class="n">dimensions</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="n">Wasserstein</span> <span class="n">distance</span> <span class="mf">0.98465</span>
+<span class="n">Number</span> <span class="n">of</span> <span class="n">dimensions</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="n">Wasserstein</span> <span class="n">distance</span> <span class="mf">0.98280</span>
+<span class="n">Number</span> <span class="n">of</span> <span class="n">dimensions</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="n">Wasserstein</span> <span class="n">distance</span> <span class="mf">0.98164</span>
+<span class="n">Number</span> <span class="n">of</span> <span class="n">dimensions</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="n">Wasserstein</span> <span class="n">distance</span> <span class="mf">0.98034</span>
+<span class="n">Number</span> <span class="n">of</span> <span class="n">dimensions</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="n">Wasserstein</span> <span class="n">distance</span> <span class="mf">0.97934</span>
+<span class="n">Number</span> <span class="n">of</span> <span class="n">dimensions</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span> <span class="n">Wasserstein</span> <span class="n">distance</span> <span class="mf">0.97839</span>
+<span class="n">Number</span> <span class="n">of</span> <span class="n">dimensions</span><span class="p">:</span> <span class="mi">9</span><span class="p">,</span> <span class="n">Wasserstein</span> <span class="n">distance</span> <span class="mf">0.97756</span>
+<span class="n">Number</span> <span class="n">of</span> <span class="n">dimensions</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="n">Wasserstein</span> <span class="n">distance</span> <span class="mf">0.97663</span>
+<span class="n">Number</span> <span class="n">of</span> <span class="n">dimensions</span><span class="p">:</span> <span class="mi">11</span><span class="p">,</span> <span class="n">Wasserstein</span> <span class="n">distance</span> <span class="mf">0.97613</span>
+<span class="n">Number</span> <span class="n">of</span> <span class="n">dimensions</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span> <span class="n">Wasserstein</span> <span class="n">distance</span> <span class="mf">0.97566</span>
+<span class="n">Number</span> <span class="n">of</span> <span class="n">dimensions</span><span class="p">:</span> <span class="mi">13</span><span class="p">,</span> <span class="n">Wasserstein</span> <span class="n">distance</span> <span class="mf">0.97500</span>
+<span class="n">Number</span> <span class="n">of</span> <span class="n">dimensions</span><span class="p">:</span> <span class="mi">14</span><span class="p">,</span> <span class="n">Wasserstein</span> <span class="n">distance</span> <span class="mf">0.97467</span>
+<span class="n">Number</span> <span class="n">of</span> <span class="n">dimensions</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span> <span class="n">Wasserstein</span> <span class="n">distance</span> <span class="mf">0.97428</span>
+<span class="n">Number</span> <span class="n">of</span> <span class="n">dimensions</span><span class="p">:</span> <span class="mi">16</span><span class="p">,</span> <span class="n">Wasserstein</span> <span class="n">distance</span> <span class="mf">0.97421</span>
+<span class="n">Number</span> <span class="n">of</span> <span class="n">dimensions</span><span class="p">:</span> <span class="mi">17</span><span class="p">,</span> <span class="n">Wasserstein</span> <span class="n">distance</span> <span class="mf">0.97405</span>
+<span class="n">Number</span> <span class="n">of</span> <span class="n">dimensions</span><span class="p">:</span> <span class="mi">18</span><span class="p">,</span> <span class="n">Wasserstein</span> <span class="n">distance</span> <span class="mf">0.97385</span>
+<span class="n">Number</span> <span class="n">of</span> <span class="n">dimensions</span><span class="p">:</span> <span class="mi">19</span><span class="p">,</span> <span class="n">Wasserstein</span> <span class="n">distance</span> <span class="mf">0.97376</span>
+<span class="n">Number</span> <span class="n">of</span> <span class="n">dimensions</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span> <span class="n">Wasserstein</span> <span class="n">distance</span> <span class="mf">0.97353</span>
+<span class="n">Number</span> <span class="n">of</span> <span class="n">dimensions</span><span class="p">:</span> <span class="mi">21</span><span class="p">,</span> <span class="n">Wasserstein</span> <span class="n">distance</span> <span class="mf">0.97347</span>
+<span class="n">Number</span> <span class="n">of</span> <span class="n">dimensions</span><span class="p">:</span> <span class="mi">22</span><span class="p">,</span> <span class="n">Wasserstein</span> <span class="n">distance</span> <span class="mf">0.97325</span>
+<span class="n">Number</span> <span class="n">of</span> <span class="n">dimensions</span><span class="p">:</span> <span class="mi">23</span><span class="p">,</span> <span class="n">Wasserstein</span> <span class="n">distance</span> <span class="mf">0.97321</span>
+<span class="n">Number</span> <span class="n">of</span> <span class="n">dimensions</span><span class="p">:</span> <span class="mi">24</span><span class="p">,</span> <span class="n">Wasserstein</span> <span class="n">distance</span> <span class="mf">0.97311</span>
+<span class="n">Number</span> <span class="n">of</span> <span class="n">dimensions</span><span class="p">:</span> <span class="mi">25</span><span class="p">,</span> <span class="n">Wasserstein</span> <span class="n">distance</span> <span class="mf">0.97314</span>
+<span class="n">Number</span> <span class="n">of</span> <span class="n">dimensions</span><span class="p">:</span> <span class="mi">26</span><span class="p">,</span> <span class="n">Wasserstein</span> <span class="n">distance</span> <span class="mf">0.97312</span>
+<span class="n">Number</span> <span class="n">of</span> <span class="n">dimensions</span><span class="p">:</span> <span class="mi">27</span><span class="p">,</span> <span class="n">Wasserstein</span> <span class="n">distance</span> <span class="mf">0.97310</span>
+<span class="n">Number</span> <span class="n">of</span> <span class="n">dimensions</span><span class="p">:</span> <span class="mi">28</span><span class="p">,</span> <span class="n">Wasserstein</span> <span class="n">distance</span> <span class="mf">0.97314</span>
+<span class="n">Number</span> <span class="n">of</span> <span class="n">dimensions</span><span class="p">:</span> <span class="mi">29</span><span class="p">,</span> <span class="n">Wasserstein</span> <span class="n">distance</span> <span class="mf">0.97315</span>
+<span class="n">Number</span> <span class="n">of</span> <span class="n">dimensions</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span> <span class="n">Wasserstein</span> <span class="n">distance</span> <span class="mf">0.97315</span>
+<span class="n">Number</span> <span class="n">of</span> <span class="n">dimensions</span><span class="p">:</span> <span class="mi">31</span><span class="p">,</span> <span class="n">Wasserstein</span> <span class="n">distance</span> <span class="mf">0.97321</span>
+<span class="n">Number</span> <span class="n">of</span> <span class="n">dimensions</span><span class="p">:</span> <span class="mi">32</span><span class="p">,</span> <span class="n">Wasserstein</span> <span class="n">distance</span> <span class="mf">0.97324</span>
+<span class="n">Number</span> <span class="n">of</span> <span class="n">dimensions</span><span class="p">:</span> <span class="mi">33</span><span class="p">,</span> <span class="n">Wasserstein</span> <span class="n">distance</span> <span class="mf">0.97327</span>
+<span class="n">Number</span> <span class="n">of</span> <span class="n">dimensions</span><span class="p">:</span> <span class="mi">34</span><span class="p">,</span> <span class="n">Wasserstein</span> <span class="n">distance</span> <span class="mf">0.97337</span>
+<span class="n">Number</span> <span class="n">of</span> <span class="n">dimensions</span><span class="p">:</span> <span class="mi">35</span><span class="p">,</span> <span class="n">Wasserstein</span> <span class="n">distance</span> <span class="mf">0.97345</span>
+<span class="n">Number</span> <span class="n">of</span> <span class="n">dimensions</span><span class="p">:</span> <span class="mi">36</span><span class="p">,</span> <span class="n">Wasserstein</span> <span class="n">distance</span> <span class="mf">0.97347</span>
+<span class="n">Number</span> <span class="n">of</span> <span class="n">dimensions</span><span class="p">:</span> <span class="mi">37</span><span class="p">,</span> <span class="n">Wasserstein</span> <span class="n">distance</span> <span class="mf">0.97338</span>
+<span class="n">Number</span> <span class="n">of</span> <span class="n">dimensions</span><span class="p">:</span> <span class="mi">38</span><span class="p">,</span> <span class="n">Wasserstein</span> <span class="n">distance</span> <span class="mf">0.97339</span>
+<span class="n">Number</span> <span class="n">of</span> <span class="n">dimensions</span><span class="p">:</span> <span class="mi">39</span><span class="p">,</span> <span class="n">Wasserstein</span> <span class="n">distance</span> <span class="mf">0.97340</span>
 </pre></div>
 </div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Selected dimension: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dim</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Selected</span> <span class="n">dimension</span><span class="p">:</span> <span class="mi">27</span>
+</pre></div>
+</div>
+</section>
 <section id="pca-and-tsne">
 <h2>PCA and tSNE<a class="headerlink" href="#pca-and-tsne" title="Permalink to this heading"></a></h2>
-<p>Calculate PCA embedding</p>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">zeta</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">embed</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">dim</span><span class="p">)</span>
+<p>Now we perform PCA [^1].</p>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">zeta</span> <span class="o">=</span> <span class="n">p</span><span class="o">**-</span><span class="mf">.5</span> <span class="o">*</span> <span class="n">rs</span><span class="o">.</span><span class="n">embed</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">dim</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="s1">&#39;full&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Apply t-SNE</p>
@@ -196,7 +331,6 @@ shades of the same colour</p>
 <p>Plot PCA on the LHS and PCA + t-SNE on the RHS</p>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 
-
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
 <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">targets</span><span class="p">:</span>
     <span class="n">t_df</span> <span class="o">=</span> <span class="n">zeta_df</span><span class="p">[</span><span class="n">zeta_df</span><span class="p">[</span><span class="s1">&#39;target&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">t</span><span class="p">]</span>
@@ -221,10 +355,14 @@ shades of the same colour</p>
 <span class="c1"># fig.savefig(f&quot;newsgroup.pdf&quot;, bbox_inches=&#39;tight&#39;)</span>
 </pre></div>
 </div>
-<img alt="../_images/text_analysis_22_0.png" src="../_images/text_analysis_22_0.png" />
+<img alt="../_images/text_analysis_28_0.png" src="../_images/text_analysis_28_0.png" />
 </section>
 <section id="hierarchical-clustering">
 <h2>Hierarchical clustering<a class="headerlink" href="#hierarchical-clustering" title="Permalink to this heading"></a></h2>
+<p>Here, we agglomerative clustering with dot products [^2].</p>
+<p>First we do this for the centroids of each topic and plot the
+dendrogram. Then we do HC on the whole dataset and visualise the output
+tree.</p>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">pairwise_distances</span>
 <span class="kn">from</span> <span class="nn">sklearn.cluster</span> <span class="kn">import</span> <span class="n">AgglomerativeClustering</span>
 
@@ -232,7 +370,7 @@ shades of the same colour</p>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">X</span> <span class="o">*</span> <span class="n">Y</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">ip_affinity</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">dp_affinity</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
     <span class="n">ips</span> <span class="o">=</span> <span class="n">pairwise_distances</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="n">ip_metric</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">ips</span><span class="p">)</span> <span class="o">-</span> <span class="n">ips</span>
 </pre></div>
@@ -244,47 +382,42 @@ shades of the same colour</p>
 <span class="n">t_Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">Y</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="p">:],</span><span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">idxs</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;target&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">())),</span><span class="n">p</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Perform hierarchical clustering with dot products from:
-<a class="reference external" href="https://arxiv.org/abs/2305.15022">https://arxiv.org/abs/2305.15022</a></p>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ip_t_clust</span> <span class="o">=</span> <span class="n">AgglomerativeClustering</span><span class="p">(</span>
-    <span class="n">metric</span><span class="o">=</span><span class="n">ip_affinity</span><span class="p">,</span> <span class="n">linkage</span><span class="o">=</span><span class="s1">&#39;average&#39;</span><span class="p">,</span> <span class="n">distance_threshold</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_clusters</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
-<span class="n">ip_t_clust</span> <span class="o">=</span> <span class="n">ip_t_clust</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">t_zeta</span><span class="p">)</span>
+<p>Topic HC clustering</p>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">t_dp_clust</span> <span class="o">=</span> <span class="n">AgglomerativeClustering</span><span class="p">(</span>
+    <span class="n">metric</span><span class="o">=</span><span class="n">dp_affinity</span><span class="p">,</span> <span class="n">linkage</span><span class="o">=</span><span class="s1">&#39;average&#39;</span><span class="p">,</span> <span class="n">distance_threshold</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">compute_distances</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">n_clusters</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="n">t_dp_clust</span> <span class="o">=</span> <span class="n">t_dp_clust</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">t_zeta</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Function to plot dendrogram</p>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.cluster.hierarchy</span> <span class="kn">import</span> <span class="n">dendrogram</span>
-
-
-<span class="k">def</span> <span class="nf">plot_dendrogram</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="c1"># Create linkage matrix and then plot the dendrogram</span>
-
-    <span class="c1"># create the counts of samples under each node</span>
-    <span class="n">counts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">children_</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-    <span class="n">n_samples</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">labels_</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">merge</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">children_</span><span class="p">):</span>
-        <span class="n">current_count</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="k">for</span> <span class="n">child_idx</span> <span class="ow">in</span> <span class="n">merge</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">child_idx</span> <span class="o">&lt;</span> <span class="n">n_samples</span><span class="p">:</span>
-                <span class="n">current_count</span> <span class="o">+=</span> <span class="mi">1</span>  <span class="c1"># leaf node</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">current_count</span> <span class="o">+=</span> <span class="n">counts</span><span class="p">[</span><span class="n">child_idx</span> <span class="o">-</span> <span class="n">n_samples</span><span class="p">]</span>
-        <span class="n">counts</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">current_count</span>
-
-    <span class="n">linkage_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">(</span>
-        <span class="p">[</span><span class="n">model</span><span class="o">.</span><span class="n">children_</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">distances_</span><span class="p">,</span> <span class="n">counts</span><span class="p">]</span>
-    <span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
-
-    <span class="c1"># Plot the corresponding dendrogram</span>
-    <span class="n">dendrogram</span><span class="p">(</span><span class="n">linkage_matrix</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-</pre></div>
-</div>
+<p>Plot dendrogram</p>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Hierarchical Clustering Dendrogram&quot;</span><span class="p">)</span>
 <span class="c1"># plot the top three levels of the dendrogram</span>
-<span class="n">plot_dendrogram</span><span class="p">(</span><span class="n">ip_t_clust</span><span class="p">,</span> <span class="n">orientation</span> <span class="o">=</span> <span class="s1">&#39;left&#39;</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="nb">sorted</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;target_names&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()))</span>
+<span class="n">rs</span><span class="o">.</span><span class="n">plot_dendrogram</span><span class="p">(</span><span class="n">t_dp_clust</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">,</span>
+                   <span class="n">labels</span><span class="o">=</span><span class="nb">sorted</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;target_names&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()))</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<img alt="../_images/text_analysis_31_0.png" src="../_images/text_analysis_31_0.png" />
+<img alt="../_images/text_analysis_37_0.png" src="../_images/text_analysis_37_0.png" />
+<p>Individual document HC clustering</p>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dp_clust</span> <span class="o">=</span> <span class="n">AgglomerativeClustering</span><span class="p">(</span>
+    <span class="n">metric</span><span class="o">=</span><span class="n">dp_affinity</span><span class="p">,</span> <span class="n">linkage</span><span class="o">=</span><span class="s1">&#39;average&#39;</span><span class="p">,</span> <span class="n">distance_threshold</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">compute_distances</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">n_clusters</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="n">dp_clust</span> <span class="o">=</span> <span class="n">dp_clust</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">zeta</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Plot tree</p>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">colours</span> <span class="o">=</span> <span class="p">[</span><span class="n">target_colour</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;target_names&quot;</span><span class="p">])]</span>
+</pre></div>
+</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rs</span><span class="o">.</span><span class="n">plot_HC_clustering</span><span class="p">(</span><span class="n">dp_clust</span><span class="p">,</span> <span class="n">node_colours</span><span class="o">=</span><span class="n">colours</span><span class="p">,</span> <span class="n">internal_node_colour</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">linewidths</span><span class="o">=</span><span class="mf">.1</span><span class="p">,</span>
+                      <span class="n">edgecolors</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">leaf_node_size</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">internal_node_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mf">7.5</span>
+                                                                                                         <span class="p">))</span>
+</pre></div>
+</div>
+<img alt="../_images/text_analysis_42_0.png" src="../_images/text_analysis_42_0.png" />
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this heading"></a></h2>
+<p>[^1]: Whiteley, N., Gray, A. and Rubin-Delanchy, P., 2022. Statistical exploration of the Manifold Hypothesis. arXiv preprint arXiv:2208.11665.</p>
+<p>[^2]: Gray, A., Modell, A., Rubin-Delanchy, P. and Whiteley, N., 2024. Hierarchical clustering with dot products recovers hidden tree structure. Advances in Neural Information Processing Systems, 36.</p>
 </section>
 </section>
 
